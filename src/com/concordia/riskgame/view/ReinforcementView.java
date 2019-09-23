@@ -84,7 +84,7 @@ public class ReinforcementView extends JFrame implements ActionListener {
 		else if(event.getSource().toString().contains("Submit"))
 		{
 			String playerCountValue=playerCount.getSelectedItem().toString();
-			System.out.println(playerCountValue);
+			//System.out.println(playerCountValue);
 		}
 			
 		
