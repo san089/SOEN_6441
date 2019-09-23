@@ -1,5 +1,6 @@
 package com.concordia.riskgame.view;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -20,8 +22,11 @@ public class ReinforcementView extends JFrame implements ActionListener {
 	private JPanel viewPanel;
 	private JButton submitSelectionButton;
 	private JButton mapSelectorButton;
-	FileNameExtensionFilter fileFilter;
+	private FileNameExtensionFilter fileFilter;
 	private JFileChooser mapSelector;
+	private JTextField mapPath;
+	private JLabel playerCountLabel = new JLabel("Select player count");
+	private JLabel mapSelectorLabel = new JLabel("Select the map file");
 	private JComboBox<String> playerCount;
 	private String[] playerCountValues= {"1","2","3","4","5","6","7","8"};
 			
@@ -39,20 +44,41 @@ public class ReinforcementView extends JFrame implements ActionListener {
 		
 		viewPanel = new JPanel();
 		viewPanel.setVisible(true);
+		viewPanel.setLayout(null);
 		viewWindow.add(viewPanel);
 	
-		
+			
 		playerCount=new JComboBox<String>(playerCountValues);
+		playerCountLabel = new JLabel("Select player count");
+		viewPanel.add(playerCountLabel);
+		playerCountLabel.setVisible(true);
+		playerCountLabel.setBounds(56, 30, 121, 20);
 		viewPanel.add(playerCount);
+		playerCount.setBounds(186, 30, 121, 20);
 		
+		
+
+		mapPath=new JTextField();
+		mapSelectorLabel = new JLabel("Select the map file");
 		mapSelectorButton=new JButton("Browse");
+		viewPanel.add(mapSelectorButton);
+		viewPanel.add(mapSelectorLabel);
+		viewPanel.add(mapPath);
+		mapPath.setVisible(true);
+		mapPath.setBounds(186, 60, 121, 20);
+		mapSelectorLabel.setVisible(true);
+		mapSelectorLabel.setBounds(56, 60, 121, 20);
+		mapSelectorButton.setBounds(310, 60, 121, 20);
 		mapSelectorButton.setVisible(true);
 		mapSelectorButton.addActionListener(this);
-		viewPanel.add(mapSelectorButton);
+
+		
+		//mapSelectorButton.set
 		
 		
 		submitSelectionButton=new JButton("Submit");
 		viewPanel.add(submitSelectionButton);
+		submitSelectionButton.setBounds(186, 90, 121, 21);
 		submitSelectionButton.setVisible(true);
 		submitSelectionButton.addActionListener(this);
 					
