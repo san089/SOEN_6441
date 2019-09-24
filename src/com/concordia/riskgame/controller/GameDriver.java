@@ -31,13 +31,12 @@ public class GameDriver extends Gameplay {
 
 
 
-	public void initialisePlayers(String playerCount,ArrayList<String> countries) {
+	public void initialisePlayers(int playerCount,ArrayList<String> countries) {
 		Player currentPlayer;
-		numberofPlayers=Integer.parseInt(playerCount);
-		players=new Player[numberofPlayers];
+		players=new Player[playerCount];
 		playerQueue=new LinkedList<Player>();
 
-		for(int i=0;i<numberofPlayers;i++)
+		for(int i=0;i<playerCount;i++)
 		{
 			players[i]=new Player(i+1, "Player"+(i+1));
 			playerQueue.add(players[i]);

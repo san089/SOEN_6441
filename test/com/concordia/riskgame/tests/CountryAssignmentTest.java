@@ -14,28 +14,25 @@ import com.concordia.riskgame.model.Modules.Player;
 public class CountryAssignmentTest {
 
 	private GameDriver gameDriver;
-	private String numberofPlayers;
+	private int numberofPlayers,numberofCountries;
 	private Queue<Player> playerQueue;
 	private ArrayList<String> Countries;
 	private Player currentPlayer;
+	private int floorCountryPerPlayer,ceilingCountryperPlayer;
 	
 	@Before
 	public void initialiseInputs() {
 		gameDriver=new GameDriver();
 		Countries=new ArrayList<String>();
 		playerQueue=new LinkedList<Player>();
-		numberofPlayers="3";
-		Countries.add("India");
-		Countries.add("America");
-		Countries.add("Iran");	
-		Countries.add("Canada");
-		Countries.add("Pakistan");
-		Countries.add("Japan");
-		Countries.add("China");
-		Countries.add("Afganistan");
-		Countries.add("Ukraine");
-		Countries.add("Malaysia");
-	}
+		numberofPlayers=3;
+		numberofCountries=11;
+		for(int i=0;i<numberofCountries;i++) {
+		Countries.add("Country"+(i+1));
+		}
+		floorCountryPerPlayer=Math.floorDiv(Countries.size(),numberofPlayers);
+		ceilingCountryperPlayer=(int) Math.ceil((double)(Countries.size()/(double)numberofPlayers));
+		}
 	
 	/*/
 	 * Function to test random country assignment
@@ -47,7 +44,7 @@ public class CountryAssignmentTest {
 		playerQueue=gameDriver.getPlayerQueue();
 		while(!playerQueue.isEmpty()) {
 			currentPlayer=playerQueue.remove();
-			Assert.assertTrue(currentPlayer.getCountriesOwned().size()==3||currentPlayer.getCountriesOwned().size()==4);
+			Assert.assertTrue(currentPlayer.getCountriesOwned().size()==floorCountryPerPlayer||currentPlayer.getCountriesOwned().size()==ceilingCountryperPlayer);
 			Assert.assertTrue(Countries.size()==0);
 			}
 		
