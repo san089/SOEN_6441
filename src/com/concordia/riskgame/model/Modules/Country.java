@@ -13,6 +13,17 @@ public class Country {
 	private int armyCount;
 	
 	
+	/**
+	 * Instantiates a new country.
+	 *
+	 * @param countryName the country name
+	 * @param continentName the continent name
+	 * @param coordinateX the coordinate X
+	 * @param coordinateY the coordinate Y
+	 * @param ownerIndex the owner index
+	 * @param adjacentCountries the adjacent countries
+	 * @param armyCount the army count
+	 */
 	public Country(String countryName, String continentName, String coordinateX, String coordinateY, String ownerIndex,
 			ArrayList<Country> adjacentCountries, int armyCount) {
 		this.countryName = countryName;

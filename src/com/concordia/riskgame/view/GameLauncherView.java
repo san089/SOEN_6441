@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+// TODO: Auto-generated Javadoc
 public class GameLauncherView extends JFrame implements ActionListener {
 
 	private JFrame gameWindow;
@@ -25,6 +26,9 @@ public class GameLauncherView extends JFrame implements ActionListener {
 
 	
 	
+	/**
+	 * Instantiates a new game launcher view.
+	 */
 	public GameLauncherView() {
 		
 		JFrame.setDefaultLookAndFeelDecorated(true);
@@ -51,6 +55,9 @@ public class GameLauncherView extends JFrame implements ActionListener {
 
 
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		System.out.println(event.getSource());
@@ -65,6 +72,11 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	}
 	
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String args[]) {
 		GameLauncherView game=new GameLauncherView();
 	}
