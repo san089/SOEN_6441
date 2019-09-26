@@ -1,4 +1,8 @@
+/*
+ * 
+ */
 package com.concordia.riskgame.model.Modules;
+
 
 import java.util.Random;
 

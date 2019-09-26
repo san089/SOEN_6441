@@ -8,24 +8,28 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.concordia.riskgame.controller.GameDriver;
+import com.concordia.riskgame.controller.GameInitDriver;
 import com.concordia.riskgame.model.Modules.Player;
 
+// TODO: Auto-generated Javadoc
 public class CountryAssignmentTest {
 
-	private GameDriver gameDriver;
+	private GameInitDriver gameDriver;
 	private int numberofPlayers,numberofCountries;
 	private Queue<Player> playerQueue;
 	private ArrayList<String> Countries;
 	private Player currentPlayer;
 	private int floorCountryPerPlayer,ceilingCountryperPlayer;
 	
+	/**
+	 * Initialise inputs.
+	 */
 	@Before
 	public void initialiseInputs() {
-		gameDriver=new GameDriver();
+		gameDriver=new GameInitDriver();
 		Countries=new ArrayList<String>();
 		playerQueue=new LinkedList<Player>();
-		numberofPlayers=3;
+		numberofPlayers=10;
 		numberofCountries=11;
 		for(int i=0;i<numberofCountries;i++) {
 		Countries.add("Country"+(i+1));
@@ -38,6 +42,9 @@ public class CountryAssignmentTest {
 	 * Function to test random country assignment
 	 */
 	
+	/**
+	 * Initialise players test.
+	 */
 	@Test
 	public void initialisePlayersTest() {
 		gameDriver.initialisePlayers(numberofPlayers, Countries);

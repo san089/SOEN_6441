@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,8 +16,17 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.concordia.riskgame.controller.GameInitDriver;
+import com.concordia.riskgame.model.Modules.Gameplay;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ReinforcementView.
+ */
 public class ReinforcementView extends JFrame implements ActionListener {
 
+	private static final long serialVersionUID = 1L;
+	private GameInitDriver gameDriver;
 	private JFrame viewWindow;
 	private TitledBorder border;
 	private JPanel viewPanel;
@@ -25,42 +35,49 @@ public class ReinforcementView extends JFrame implements ActionListener {
 	private FileNameExtensionFilter fileFilter;
 	private JFileChooser mapSelector;
 	private JTextField mapPath;
-	private JLabel playerCountLabel = new JLabel("Select player count");
-	private JLabel mapSelectorLabel = new JLabel("Select the map file");
+	private JLabel playerCountLabel;
+	private JLabel mapSelectorLabel;
 	private JComboBox<String> playerCount;
-	private String[] playerCountValues= {"1","2","3","4","5","6","7","8"};
-			
-	
+	private String[] playerCountValues = { "1", "2", "3", "4", "5", "6", "7", "8" };	//how many players ,min max default?
+	private ArrayList<String> countriesinMapstub;
+
+	/**
+	 * Instantiates a new reinforcement view.
+	 */
 	public ReinforcementView() {
+		initaliseUI();
+		gameDriver=new GameInitDriver();
 		
+	}
+
+	/**
+	 * Initalise UI.
+	 */
+	public void initaliseUI() {
+
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		viewWindow=new JFrame("REINFORCEMENT VIEW");
+		viewWindow = new JFrame("REINFORCEMENT VIEW");
 		viewWindow.setVisible(true);
 		viewWindow.setSize(500, 500);
-		viewWindow.setLocation(600,200);
+		viewWindow.setLocation(600, 200);
 		viewWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		
+
 		viewPanel = new JPanel();
 		viewPanel.setVisible(true);
 		viewPanel.setLayout(null);
 		viewWindow.add(viewPanel);
-	
-			
-		playerCount=new JComboBox<String>(playerCountValues);
+
+		playerCount = new JComboBox<String>(playerCountValues);
 		playerCountLabel = new JLabel("Select player count");
 		viewPanel.add(playerCountLabel);
 		playerCountLabel.setVisible(true);
 		playerCountLabel.setBounds(56, 30, 121, 20);
 		viewPanel.add(playerCount);
 		playerCount.setBounds(186, 30, 121, 20);
-		
-		
 
-		mapPath=new JTextField();
+		mapPath = new JTextField();
 		mapSelectorLabel = new JLabel("Select the map file");
-		mapSelectorButton=new JButton("Browse");
+		mapSelectorButton = new JButton("Browse");
 		viewPanel.add(mapSelectorButton);
 		viewPanel.add(mapSelectorLabel);
 		viewPanel.add(mapPath);
@@ -73,26 +90,21 @@ public class ReinforcementView extends JFrame implements ActionListener {
 		mapSelectorButton.addActionListener(this);
 
 		
-		//mapSelectorButton.set
-		
-		
-		submitSelectionButton=new JButton("Submit");
+		submitSelectionButton = new JButton("Submit");
 		viewPanel.add(submitSelectionButton);
 		submitSelectionButton.setBounds(186, 90, 121, 21);
 		submitSelectionButton.setVisible(true);
 		submitSelectionButton.addActionListener(this);
-					
 	}
 
-
-
-
-
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource().toString().contains("Browse"))
 		{
-			System.out.println("Inside Submit Player");
+			System.out.println("Inside Browse Map");
 		
 			mapSelector = new JFileChooser();
 			fileFilter = new FileNameExtensionFilter(" .map", "map", "map");
@@ -104,19 +116,17 @@ public class ReinforcementView extends JFrame implements ActionListener {
 			mapSelector.setSize(500, 500);
 			mapSelector.setVisible(true);
 			viewPanel.add(mapSelector);
-		//	mapSelector.setVisible(true);
+	
 						
 		}
-		else if(event.getSource().toString().contains("Submit"))
+		else if(event.getSource().toString().contains("Submit"))	// add check that both fields should be selected before submit
 		{
-			String playerCountValue=playerCount.getSelectedItem().toString();
-			//System.out.println(playerCountValue);
+			gameDriver.initialisePlayers(Integer.parseInt(playerCount.getSelectedItem().toString()),countriesinMapstub);//Initialise Map as well
+			
 		}
 			
 		
 		
 	}
 
-	
-	
 }
