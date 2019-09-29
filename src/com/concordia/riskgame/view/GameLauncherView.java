@@ -51,7 +51,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		startButton.addActionListener(this);
 		CreateMenuBar();
 		while(true) {
-			
+		if()	
 			//read Inputs
 		}
 		

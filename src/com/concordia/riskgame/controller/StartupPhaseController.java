@@ -6,6 +6,7 @@ import java.util.Queue;
 import java.util.Random;
 
 import com.concordia.riskgame.model.Modules.Continent;
+import com.concordia.riskgame.model.Modules.Country;
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Player;
 
@@ -95,6 +96,15 @@ public class StartupPhaseController extends Gameplay {
 		}	
 		
 		
+		
+	}
+	
+	
+	public void placeArmy(Player player,Country country) {
+		if(player.getCountriesOwned().contains(country))
+			{country.setArmyCount(country.getArmyCount()+1);
+			player.setReinforcementArmyCount(player.getReinforcementArmyCount()-1);
+			}
 		
 	}
 	
