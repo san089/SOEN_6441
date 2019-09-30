@@ -1,137 +1,54 @@
-/*
- * 
- */
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.List;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class Continent.
- */
+
 public class Continent {
 
-	/** The continent name. */
-	private String continentName;
-	
-	/** The continent owner index. */
-	private int continentOwnerIndex;
-	
-	/** The control value. */
-	private int controlValue;
-	
-	/** The containing countries. */
-	private LinkedHashMap<String,Country> containingCountries;
-	
-	
-	
-	/**
-	 * Instantiates a new continent.
-	 *
-	 * @param continentName the continent name
-	 * @param controlValue the control value
-	 */
-	public Continent(String continentName, int controlValue) {
-		this.continentName = continentName;
-		this.continentOwnerIndex = -1;
-		this.controlValue = controlValue;
-		this.containingCountries=new LinkedHashMap<String,Country>();
-	}
+    private String continentName;
+    private List<Country> countriesPresent;
+    private int controlValue;
 
 
-
-	/**
-	 * Gets the continent name.
-	 *
-	 * @return the continent name
-	 */
-	public String getContinentName() {
-		return continentName;
-	}
+    public Continent() {
+        controlValue = 0;
+        countriesPresent = new ArrayList<Country>();
+    }
 
 
-
-	/**
-	 * Sets the continent name.
-	 *
-	 * @param continentName the new continent name
-	 */
-	public void setContinentName(String continentName) {
-		this.continentName = continentName;
-	}
+    public String getContinentName() {
+        return continentName;
+    }
 
 
-
-	/**
-	 * Gets the continent owner index.
-	 *
-	 * @return the continent owner index
-	 */
-	public int getContinentOwnerIndex() {
-		return continentOwnerIndex;
-	}
+    public void setContinentName(String continentName) {
+        this.continentName = continentName;
+    }
 
 
-
-	/**
-	 * Sets the continent owner index.
-	 *
-	 * @param continentOwnerIndex the new continent owner index
-	 */
-	public void setContinentOwnerIndex(int continentOwnerIndex) {
-		this.continentOwnerIndex = continentOwnerIndex;
-	}
+    public List<Country> getCountriesPresent() {
+        return countriesPresent;
+    }
 
 
+    public void setCountriesPresent(List<Country> countriesPresent) {
+        this.countriesPresent = countriesPresent;
+    }
 
-	/**
-	 * Gets the control value.
-	 *
-	 * @return the control value
-	 */
-	public int getControlValue() {
-		return controlValue;
-	}
+    public int getControlValue() {
+        return controlValue;
+    }
 
+    public void setControlValue(int controlValue) {
+        this.controlValue = controlValue;
+    }
 
+    public void addCountry(Country name) {
+        countriesPresent.add(name);
+    }
 
-	/**
-	 * Sets the control value.
-	 *
-	 * @param controlValue the new control value
-	 */
-	public void setControlValue(int controlValue) {
-		this.controlValue = controlValue;
-	}
-
-
-
-	/**
-	 * Gets the containing countries.
-	 *
-	 * @return the containing countries
-	 */
-	public LinkedHashMap<String, Country> getContainingCountries() {
-		return containingCountries;
-	}
-
-
-
-	/**
-	 * Sets the containing countries.
-	 *
-	 * @param containingCountries the containing countries
-	 */
-	public void setContainingCountries(LinkedHashMap<String, Country> containingCountries) {
-		this.containingCountries = containingCountries;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+    public void removeCountry(Country name) {
+        countriesPresent.remove(name);
+    }
 }
