@@ -13,13 +13,15 @@ import static org.junit.Assert.*;
 
 public class DiceTest {
     private Dice randomNo;
-    private int r = new Random().nextInt(6);
-    private int n=2;
+    private int r;
+    private int n;
 
 
     @Before
     public void setUp()  {
         randomNo= new Dice();
+        r = new Random().nextInt(6);
+        n=2;
     }
 
     @Test
