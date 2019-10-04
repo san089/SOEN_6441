@@ -53,22 +53,34 @@ public class Reinforcement extends Gameplay {
         while (reinforcementCount != 0) {
             System.out.println("You still have " + reinforcementCount + "Armies.");
             String[] command;
+            Boolean done;
             //inner while loop done when user input the correct command, other wise keep asking to input command.
             do {
+                done= true;
                 System.out.println("Input CountryName and the Number You Want to Add");
                 String input = new Scanner(System.in).nextLine();
                 command = input.split(" ");
                 addArmy = Integer.parseInt(command[2]);
+                if (command.length != 3) {
+                    System.out.println("Incorrect Command");
+                    done = false;
+                    continue;
+                }
                 if (!command[0].equals("reinforce")) {
                     System.out.println("Incorrect Command");
+                    done = false;
+                    continue;
                 }
                 if (!currentPlayer.getCountriesOwned().contains(command[1])) {
                     System.out.println("Cannot Find the Country");
+                    done = false;
+                    continue;
                 }
                 if (addArmy > reinforcementCount || addArmy <= 0) {
                     System.out.println("You cannot place armies more than you have.");
+                    done = false;
                 }
-            } while (!command[0].equals("reinforce") || !currentPlayer.getCountriesOwned().contains(command[1]) || !(addArmy < reinforcementCount) || !(addArmy > 0));
+            } while (!done);
             //get the index of countries from input according the name of the country. super class should have a list of country object
             int index = Collections.binarySearch(super.countries, command[2], getCountryName); // because super class have no country object, so here can't resolve getCountryName
             //add number of armies to selected country
