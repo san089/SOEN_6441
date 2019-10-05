@@ -6,6 +6,8 @@ import com.concordia.riskgame.utilities.Constants;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -85,12 +87,47 @@ public class MapEditor extends JFrame {
         countryLabelViewPanel.add(countriesLabel);
         scrollPane = new JScrollPane(tableMatrix);
         scrollPane.setBounds(treeScrollPane.getBounds().x + (int) (treeScrollPane.getBounds().getWidth()), 70,frameSize.width - 300, frameSize.height - 600);
-
         add(scrollPane);
         add(treeScrollPane);
         add(toolBar);
 
 
+    }
+
+    public void countriesMatrix() {
+        System.out.println("inside countriesMAtrix");
+        count = gameMap.listOfCountryNames();
+        int noOfCountries = count.size();
+        DefaultTableModel dtm = new DefaultTableModel(noOfCountries, noOfCountries) {
+            private static final long serialVersionUID = 1L;
+
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        data = new String[noOfCountries][noOfCountries + 1];
+        countryColumn = new String[noOfCountries + 1];
+        countryColumn[0] = "**";
+        int i = 0;
+        int j = 0;
+        for (String countryName : count) {
+            data[i++][0] = countryName;
+            countryColumn[++j] = countryName;
+        }
+        dtm.setDataVector(data, countryColumn);
+        tableMatrix = new JTable(dtm) {
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
+                Component component = super.prepareRenderer(renderer, row, col);
+                String value = (String) dtm.getValueAt(row, col);
+                if (value.equals("N")) {
+                    component.setBackground(Color.LIGHT_GRAY);
+                } else {
+                    component.setBackground(Color.WHITE);
+                }
+                return component;
+            }
+        };
     }
 
 }
