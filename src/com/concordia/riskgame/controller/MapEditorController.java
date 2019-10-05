@@ -69,7 +69,7 @@ public class MapEditorController implements ActionListener {
                 } else if ((continentName != null) && (gameMap.searchContinent(continentName) == "")) {
                     continent.setContinentName(continentName);
                     gameMap.addContinent(continent);
-               //     mapEditorView.createTree();
+                    mapEditorView.createTree();
                     loop = false;
                 }
             } else {
@@ -135,8 +135,8 @@ public class MapEditorController implements ActionListener {
                         }
                         tempContinent.addCountry(newCountry);
                         tempContinent.setControlValue(tempContinent.getCountriesPresent().size());
-                    //    mapEditorView.createTree();
-                    //    mapEditorView.countriesMatrix();
+                        mapEditorView.createTree();
+                         mapEditorView.countriesMatrix();
                         loop = false;
                     }
                 } else {
@@ -184,8 +184,8 @@ public class MapEditorController implements ActionListener {
                             }
                         }
                     }
-                //    mapEditorView.createTree();
-                //    mapEditorView.countriesMatrix();
+                   mapEditorView.createTree();
+                   mapEditorView.countriesMatrix();
                 }
             }
         }
@@ -257,8 +257,8 @@ public class MapEditorController implements ActionListener {
                                         }
                                     }
                                 }
-                              //  mapEditorView.createTree();
-                              //  mapEditorView.countriesMatrix();
+                               mapEditorView.createTree();
+                               mapEditorView.countriesMatrix();
                             }
                         }
                     }
