@@ -1,16 +1,11 @@
 package com.concordia.riskgame.view;
 
+import com.concordia.riskgame.model.Modules.Map;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 // TODO: Auto-generated Javadoc
@@ -27,9 +22,11 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	private JButton exitButton;
 	private JLabel titleLabel;
 	private ReinforcementView rView;
+	private com.concordia.riskgame.view.MapEditor mapEditorView;
 
-	
-	
+
+
+
 	/**
 	 * Instantiates a new game launcher view.
 	 */
@@ -78,12 +75,25 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	private void CreateMenuBar() {
 	
         JMenu menu, submenu;  
-        JMenuItem i1, i2, i3, i4, i5;  
+        JMenuItem newMap, existingMap;
         JMenuBar mb=new JMenuBar();  
-        menu=new JMenu("Map Editor");  
-        i1=new JMenuItem("Create New Map");  
-        i2=new JMenuItem("Edit Existing Map");   
-        menu.add(i1); menu.add(i2); 
+        menu=new JMenu("Map Editor");
+        newMap=new JMenuItem(new AbstractAction("Create New Map") {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				Map newMap=new Map();
+				mapEditorView=new MapEditor(newMap);
+				mapEditorView.setVisible(true);
+
+			}
+		});
+        existingMap=new JMenuItem(new AbstractAction("Edit Existing Map") {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+
+			}
+		});
+        menu.add(newMap); menu.add(existingMap);
         mb.add(menu);  
         gameWindow.setJMenuBar(mb);  
         gameWindow.setVisible(true);  
