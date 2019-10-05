@@ -22,7 +22,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	private JButton exitButton;
 	private JLabel titleLabel;
 	private ReinforcementView rView;
-	private MapEditor mapEditorView;
+	private com.concordia.riskgame.view.MapEditor mapEditorView;
 
 
 
