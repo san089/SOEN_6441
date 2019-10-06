@@ -66,8 +66,9 @@ public class StartupPhaseController extends Gameplay {
 		Player currentPlayer;
 		playerQueue.addAll(getPlayers());
 		countries=getSelectedMap().getCountries();//stub method for getting country list from Map
-		currentPlayer.getCountriesOwned().clear();
-		
+		for(Player player:getPlayers())
+			player.getCountriesOwned().clear();
+				
 		while(countries.size()!=0) {
 			Random random = new Random();
 			int index=random.nextInt(countries.size());
@@ -94,8 +95,6 @@ public class StartupPhaseController extends Gameplay {
 				player.setReinforcementArmyCount(3);
 			
 		}	
-		
-		
 		
 	}
 	
