@@ -4,6 +4,7 @@ import com.concordia.riskgame.model.Modules.Map;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -21,16 +22,24 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	private JButton loadGameButton;
 	private JButton exitButton;
 	private JLabel titleLabel;
+<<<<<<< HEAD
 	private ReinforcementView rView;
 	private com.concordia.riskgame.view.MapEditor mapEditorView;
 
 
 
 
+=======
+	private StartUpPhaseView sView;
+	private Scanner in;
+	
+	
+>>>>>>> SOEN6441_sucheta
 	/**
 	 * Instantiates a new game launcher view.
 	 */
 	public GameLauncherView() {
+		in=new Scanner(System.in);
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		gameWindow=new JFrame("****RISK GAME*****");
 		gameWindow.setVisible(true);
@@ -45,8 +54,10 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		gamePanel.add(startButton);
 		startButton.addActionListener(this);
 		CreateMenuBar();
-
-		
+		while(true) {
+		if()	
+			//read Inputs
+		}
 		
 	}
 
@@ -57,13 +68,12 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		System.out.println(event.getSource());
-		if(event.getSource().toString().contains("Start Game"))
+		//System.out.println(event.getSource());
+		if(event.getSource()==startButton)
 		{
-			System.out.println("Start Game button clicked");
-			gamePanel.setVisible(false);
-			rView=new ReinforcementView();
-			rView.setVisible(true);
+			gameWindow.setVisible(false);
+			sView=new StartUpPhaseView();
+			sView.setVisible(true);
 		}
 			
 	}
@@ -107,7 +117,9 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	 * @param args the arguments
 	 */
 	public static void main(String args[]) {
+			
 		GameLauncherView game=new GameLauncherView();
+	
 	}
 
 	
