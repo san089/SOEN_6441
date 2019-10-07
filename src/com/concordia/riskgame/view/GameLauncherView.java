@@ -1,36 +1,42 @@
 package com.concordia.riskgame.view;
 
+import com.concordia.riskgame.controller.ReinforcementView;
+import com.concordia.riskgame.model.Modules.Map;
+
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 // TODO: Auto-generated Javadoc
 public class GameLauncherView extends JFrame implements ActionListener {
 
 	private JFrame gameWindow;
+	final static String GAMELAUNCHERPANEL = "Card with Game Launching View";
+	private CardLayout cardLayout;
+	private JPanel cardsContainerPanel;
+	
 	private TitledBorder border;
-	private JPanel gamePanel;
+	private JPanel gameLaunchPanel;
 	private JButton startButton;
-	private JButton createMapButton;
+	private JButton MapEditor;
 	private JButton editMapButton;
 	private JButton tournamentButton;
 	private JButton loadGameButton;
 	private JButton exitButton;
 	private JLabel titleLabel;
+//<<<<<<< HEAD
+	private ReinforcementView rView;
+	private com.concordia.riskgame.view.MapEditorView mapEditorView;
 	private StartUpPhaseView sView;
 	private Scanner in;
 	
 	
+//>>>>>>> SOEN6441_sucheta
 	/**
 	 * Instantiates a new game launcher view.
 	 */
@@ -38,22 +44,51 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		in=new Scanner(System.in);
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		gameWindow=new JFrame("****RISK GAME*****");
-		gameWindow.setVisible(true);
-		gameWindow.setSize(900, 800);
-		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gamePanel = new JPanel();
-		gamePanel.setVisible(true);
-		gameWindow.add(gamePanel);
+				
+		gameLaunchPanel = new JPanel();
+		gameLaunchPanel.setLayout(null); 
+		gameLaunchPanel.setVisible(true);
+	
+										 
 		startButton=new JButton("Start Game");
 		startButton.setVisible(true);
-		gamePanel.add(startButton);
+		startButton.setBounds(386, 30, 121, 20);
+		MapEditor=new JButton("Map Editor");
+		MapEditor.setVisible(true);
+		MapEditor.setBounds(386, 60, 121, 20);
+		gameLaunchPanel.add(MapEditor);
+		gameLaunchPanel.add(startButton);
+		
 		startButton.addActionListener(this);
-		CreateMenuBar();
+		MapEditor.addActionListener(this);
+		
+		initaliseCardLayoutUI();
+		
+		//CreateMenuBar();
 		while(true) {
-		if()	
+		//if()	
 			//read Inputs
 		}
+		
+	}
+	
+	
+	public void initaliseCardLayoutUI() {
+
+		cardsContainerPanel=new JPanel(new CardLayout());
+		cardsContainerPanel.add(gameLaunchPanel,GAMELAUNCHERPANEL);
+		
+		gameWindow.getContentPane().add(cardsContainerPanel, BorderLayout.CENTER);
+		cardLayout=(CardLayout) cardsContainerPanel.getLayout();
+		cardLayout.show(cardsContainerPanel, GAMELAUNCHERPANEL);
+	
+		gameWindow.pack();
+		gameWindow.setSize(900, 800);
+		gameWindow.setLocationRelativeTo(null);
+		gameWindow.setVisible(true);
+		
+		 
 		
 	}
 
@@ -64,12 +99,14 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		//System.out.println(event.getSource());
+		
 		if(event.getSource()==startButton)
 		{
-			gameWindow.setVisible(false);
-			sView=new StartUpPhaseView();
-			sView.setVisible(true);
+			sView=new StartUpPhaseView(gameWindow,cardsContainerPanel);
+		}
+		else if(event.getSource()==MapEditor)
+		{
+			//new MapEditorView(new Map());
 		}
 			
 	}
@@ -81,12 +118,25 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	private void CreateMenuBar() {
 	
         JMenu menu, submenu;  
-        JMenuItem i1, i2, i3, i4, i5;  
+        JMenuItem newMap, existingMap;
         JMenuBar mb=new JMenuBar();  
-        menu=new JMenu("Map Editor");  
-        i1=new JMenuItem("Create New Map");  
-        i2=new JMenuItem("Edit Existing Map");   
-        menu.add(i1); menu.add(i2); 
+        menu=new JMenu("Map Editor");
+        newMap=new JMenuItem(new AbstractAction("Create New Map") {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				Map newMap=new Map();
+				mapEditorView=new MapEditorView(newMap);
+				mapEditorView.setVisible(true);
+
+			}
+		});
+        existingMap=new JMenuItem(new AbstractAction("Edit Existing Map") {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+
+			}
+		});
+        menu.add(newMap); menu.add(existingMap);
         mb.add(menu);  
         gameWindow.setJMenuBar(mb);  
         gameWindow.setVisible(true);  
