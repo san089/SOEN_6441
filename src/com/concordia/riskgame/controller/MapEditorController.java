@@ -4,7 +4,7 @@ import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Country;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.utilities.MapTools;
-import com.concordia.riskgame.view.MapEditor;
+import com.concordia.riskgame.view.MapEditorView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,12 +15,12 @@ import java.util.List;
 
 public class MapEditorController implements ActionListener {
     private Continent continent;
-    private com.concordia.riskgame.view.MapEditor mapEditorView;
+    private com.concordia.riskgame.view.MapEditorView mapEditorView;
     private Map gameMap;
 
 
 
-    public MapEditorController(MapEditor mapEditorView) {
+    public MapEditorController(MapEditorView mapEditorView) {
         this.gameMap = mapEditorView.gameMap;
         this.mapEditorView = mapEditorView;
     }

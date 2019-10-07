@@ -2,12 +2,14 @@ package com.concordia.riskgame.controller;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
 import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Country;
 import com.concordia.riskgame.model.Modules.Gameplay;
+import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 
 
@@ -18,7 +20,7 @@ import com.concordia.riskgame.model.Modules.Player;
  */
 public class StartupPhaseController extends Gameplay {
 	private Queue<Player> playerQueue;
-	private ArrayList<String> countries;
+	private List<String> countries;
 	
 		
 	public StartupPhaseController() {
@@ -27,7 +29,7 @@ public class StartupPhaseController extends Gameplay {
 	}
 
 
-	public ArrayList<String> getCountries() {
+	public List<String> getCountries() {
 		return countries;
 	}
 
@@ -48,13 +50,13 @@ public class StartupPhaseController extends Gameplay {
 
 	
 	public boolean validateStartupInputs() {
-		if(players.size()>0 && getSelectedMap()!=null)
+		if(getPlayers().size()==getPlayerCount() && getSelectedMap()!=null)
 			return true;
 		else
 			return false;
 		
 	}
-	
+		
 
 	/**
 	 * Initialise the gameplay class with the player count,playernames and map selected.Assign available countries equally to players.
@@ -65,8 +67,7 @@ public class StartupPhaseController extends Gameplay {
 	public void initialisePlayers() {
 		Player currentPlayer;
 		playerQueue.addAll(getPlayers());
-		countries=getSelectedMap().getCountries();//stub method for getting country list from Map
-		currentPlayer.getCountriesOwned().clear();
+		countries=getSelectedMap().listOfCountryNames();
 		
 		while(countries.size()!=0) {
 			Random random = new Random();
@@ -102,7 +103,7 @@ public class StartupPhaseController extends Gameplay {
 	
 	public void placeArmy(Player player,Country country) {
 		if(player.getCountriesOwned().contains(country))
-			{country.setArmyCount(country.getArmyCount()+1);
+			{country.setNoOfArmiesPresent(country.getNoOfArmiesPresent()+1);
 			player.setReinforcementArmyCount(player.getReinforcementArmyCount()-1);
 			}
 		

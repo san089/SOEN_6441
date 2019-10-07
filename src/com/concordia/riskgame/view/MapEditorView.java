@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class MapEditor extends JFrame implements Serializable {
+public class MapEditorView extends JFrame implements Serializable {
     private JLabel countriesLabel;
     private JLabel continentLabel;
     private ToolBar toolBar;
@@ -51,7 +51,7 @@ public class MapEditor extends JFrame implements Serializable {
      * map editor constructor
      * @param gameMap object of Map class
      */
-    public MapEditor(Map gameMap) {
+    public MapEditorView(Map gameMap) {
         super("Game Window");
         this.gameMap = gameMap;
         setSize(Constants.MAP_EDITOR_WIDTH, Constants.MAP_EDITOR_HEIGHT);
@@ -232,5 +232,9 @@ public class MapEditor extends JFrame implements Serializable {
         }
         mapTree = new JTree(top);
         treeScrollPane.getViewport().add(mapTree);
+    }
+    
+    public static void main(String args[]) {
+    	MapEditorView mapView=new MapEditorView(new Map());
     }
 }

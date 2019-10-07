@@ -1,7 +1,9 @@
+/*
+ * 
+ */
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.List;
 
 
@@ -154,34 +156,23 @@ public class Map {
         }
         return null;
     }
-=======
 
-/**
- * The Class Map.
- */
-public class Map {
-	
-	private ArrayList<Continent> continents;
-	
-	
-	public ArrayList<Country> getCountryList(String Continent) {
-		return null;
-	}
-	
-	
-	public ArrayList<Continent> getContinents() {
-		return null;	
-	}
->>>>>>> SOEN6441_sucheta
 
-	
+
+
+	/**
+	 * Return the continents owned by a particular player.
+	 *
+	 * @param playerName the player name
+	 * @return the list of continents owned by the player
+	 */
 	public ArrayList<Continent> ownedContinents(String playerName) {
 		ArrayList<Continent> ownedContinents=new ArrayList<Continent>();
 		for(Continent continent:continents)
 		{
 			boolean isOwned=true;
-			for(Country country:continent.getContainingCountries().values())
-				if(!country.getOwnerName().equalsIgnoreCase(playerName))
+			for(Country country:continent.getCountriesPresent())
+				if(!country.getOwnedBy().getPlayerName().equalsIgnoreCase(playerName))
 					{isOwned=false;
 					break;
 					}

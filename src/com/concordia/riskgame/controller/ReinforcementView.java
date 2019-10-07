@@ -12,7 +12,7 @@ import java.util.*;
  */
 
 
-public class Reinforcement extends Gameplay {
+public class ReinforcementView extends Gameplay {
     private GameInitDriver gameDriver;
     private Queue<Player> playerQueue;
 
