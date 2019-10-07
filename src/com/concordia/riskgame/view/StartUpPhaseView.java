@@ -308,8 +308,12 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 			
 			if(!(startupController.validateStartupInputs()))
 			{
+<<<<<<< HEAD
+				JOptionPane.showMessageDialog(viewWindow,
+=======
 				cardLayout.show(cardsContainerPanel, ASSIGNARMYPANEL);
 				JOptionPane.showMessageDialog(gameWindow,
+>>>>>>> master
 					          "Inputs not provided- Please provide both the player names and map file", "Error Message",
 		          JOptionPane.ERROR_MESSAGE);
 				
