@@ -1,4 +1,4 @@
-package com.concordia.riskgame.model.Modules;
+package com.concordia.riskgame.controller;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,16 +6,18 @@ import java.util.Iterator;
 import java.util.Observable;
 
 import com.concordia.riskgame.controller.MapEditorController;
+import com.concordia.riskgame.model.Modules.Map;
+import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.MapTools;
 
 public class Gameplay extends Observable{
 
-	private int playerCount;
-	private ArrayList<Player> players;
+	private static int playerCount;
+	private static ArrayList<Player> players;
 	//protected String mapfilePath;
-	private Map selectedMap;
-	private String currentPhase;
-	private MapTools mapTools;
+	private static Map selectedMap;
+	private static String currentPhase;
+	private static MapTools mapTools;
 	
 	
 	
@@ -31,7 +33,7 @@ public class Gameplay extends Observable{
 	
 	
 	public void setPlayerCount(int playerCount) {
-		this.playerCount = playerCount;
+		playerCount = playerCount;
 	}
 
 
@@ -43,7 +45,7 @@ public class Gameplay extends Observable{
 		return players;
 	}
 			
-	public void addPlayer(String playerName) {
+	public static void addPlayer(String playerName) {
 		players.add(new Player(players.size()+1, playerName));
 		if(players.size()==playerCount)
 		{
@@ -87,16 +89,18 @@ public class Gameplay extends Observable{
 		return selectedMap;
 		
 	}
+
+	/*
 	public boolean setSelectedMap(String selectedMapPath) {
 		
-		Map selectedMap=new File(selectedMapPath);
+		Map selectedMap = new Map(selectedMapPath);
 		if(selectedMap.listOfCountryNames().size()<playerCount)
 			return false;
 				
 		return true;
 	
 	}
-
+	*/
 	
 	
 	public String getCurrentPhase() {
