@@ -1,5 +1,7 @@
 package com.concordia.riskgame.controller;
 
+import com.concordia.riskgame.model.Modules.Gameplay;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,14 +11,16 @@ import java.util.HashMap;
 public class CommandController {
 
     public static String commandType; // command type
-    public static HashMap<String, Integer> addContinent;
-    public static ArrayList<String> removeContinent;
-    public static HashMap<String, String> addCountry;
-    public static ArrayList<String> removeCountry;
-    public static HashMap<String, String> addNeighbour;
-    public static HashMap<String, String> removeNeighbour;
-    public static ArrayList<String> addPlayer;
-    public static ArrayList<String> removePlayer;
+    public static HashMap<String, Integer> addContinent = new HashMap<>();
+    public static ArrayList<String> removeContinent = new ArrayList<>();
+    public static HashMap<String, String> addCountry = new HashMap<>();
+    public static ArrayList<String> removeCountry = new ArrayList<>();
+    public static HashMap<String, String> addNeighbour = new HashMap<>();
+    public static HashMap<String, String> removeNeighbour = new HashMap<>();
+    public static ArrayList<String> addPlayer = new ArrayList<>();
+    public static ArrayList<String> removePlayer = new ArrayList<>();
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
 
     /**
@@ -25,28 +29,83 @@ public class CommandController {
      * @param command takes command input from user
      */
     public static void parseCommand(String command) {
-        command = command.trim().replace(" +", " "); //replace multiple whitespaces with one.
+        command = command.trim().replaceAll(" +", " "); //replace multiple whitespaces with one.
         commandType = command.split(" ")[0];
 
-        switch (commandType)
-        {
-            case "editcontinent": editContinent(command); break;
-            case "editcountry": editCountry(command); break;
-            case "editneighbor": editNeighbour(command); break;
-            case "showmap": System.out.println("Yet to configure"); break;
-            case "savemap": System.out.println("Yet to configure"); break;
-            case "editmap": System.out.println("Yet to configure"); break;
-            case "vaildatemap": System.out.println("Yet to configure"); break;
-            case "loadmap" : System.out.println("Yet to configure"); break;
-            case "gameplayer" : gamePlayer(command); break;
-            case "populatecountries" : System.out.println("Yet to configure"); break;
-            case "placearmy" : System.out.println("Yet to configure"); break;
-            case "placeall" : System.out.println("Yet to configure"); break;
-            case "reinforce" : System.out.println("Yet to configure"); break;
-            case "fortify" : System.out.println("Yet to configure"); break;
-            case "help" : showHelpOptions(); break;
-            default: System.out.println("Invalid Command"); showHelpOptions(); break;
+        switch (commandType) {
+            case "editcontinent":
+                editContinent(command);
+                break;
+            case "editcountry":
+                editCountry(command);
+                break;
+            case "editneighbor":
+                editNeighbour(command);
+                break;
+            case "showmap":
+                showMap();
+                break;
+            case "savemap":
+                saveMap(command);
+                break;
+            case "editmap":
+                editMap(command);
+                break;
+            case "vaildatemap":
+                validateMap();
+                break;
+            case "loadmap":
+                loadMap(command);
+                break;
+            case "gameplayer":
+                gamePlayer(command);
+                break;
+            case "populatecountries":
+                populateCountries();
+                break;
+            case "placearmy":
+                placeArmy(command);
+                break;
+            case "placeall":
+                placeAll();
+                break;
+            case "reinforce":
+                reinforce(command);
+                break;
+            case "fortify":
+                System.out.println("Yet to configure");
+                break;
+            case "help":
+                showHelpOptions();
+                break;
+            default:
+                invalidCommandMessage();
+                break;
         }
+    }
+
+
+    /**
+     * @param val Takes a string input
+     * @return return true if the string has only characters a-z, else return false.
+     */
+    public static boolean verifyAllCharacters(String val) {
+        return val.matches("^[a-zA-Z]*$");
+    }
+
+    public static boolean verifyNumber(String val) {
+        try {
+            Integer.parseInt(val);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+    }
+
+    public static void invalidCommandMessage() {
+        System.out.println(ANSI_RED + "INVALID COMMAND !!, Check the command format below. ");
+        showHelpOptions();
+        System.out.println(ANSI_RESET);
     }
 
 
@@ -55,38 +114,16 @@ public class CommandController {
      *
      * @param command Command to execute
      */
-    public static void editContinent(String command)
-    {
-        if(validateEditContinentCommand(command)){
-            for(String Key : addContinent.keySet())
-            {
+    public static void editContinent(String command) {
+        if (validateEditContinentCommand(command)) {
+            for (String Key : addContinent.keySet()) {
                 //Add continent functiono call.
             }
-            for(String val : removeContinent)
-            {
+            for (String val : removeContinent) {
                 //Remove continent function call.
             }
-        }
-    }
-
-    /**
-     * @param val Takes a string input
-     * @return return true if the string has only characters a-z, else return false.
-     */
-    public static boolean verifyAllCharacters(String val)
-    {
-        return  val.matches("^[a-zA-Z]*$");
-    }
-
-    public static boolean verifyNumber(String val)
-    {
-        try {
-            Integer.parseInt(val);
-            return true;
-        }
-        catch (NumberFormatException ex)
-        {
-            return false;
+        } else {
+            invalidCommandMessage();
         }
     }
 
@@ -96,8 +133,8 @@ public class CommandController {
      * @param command Command to validate
      * @return True if the command is valid, else false.
      */
-    public static boolean validateEditContinentCommand(String command)
-    {
+    public static boolean validateEditContinentCommand(String command) {
+
         addContinent.clear();
         removeContinent.clear();
 
@@ -105,26 +142,21 @@ public class CommandController {
         String arg_type;
         String value1;
         String value2;
-        for (int i=1; i< args.length ; i+=2)
-        {
+        for (int i = 1; i < args.length; i += 2) {
             arg_type = args[i];
-            if(arg_type.trim().equals("-add")) {
-                value1 = args[i+1];
-                value2 = args[i+2];
-                if(verifyAllCharacters(value1) && verifyNumber(value2))
-                {
+            if (arg_type.trim().equals("-add")) {
+                value1 = args[i + 1];
+                value2 = args[i + 2];
+                if (verifyAllCharacters(value1) && verifyNumber(value2)) {
                     addContinent.put(value1, Integer.parseInt(value2));
                 }
-                i+=1;
-            }
-            else if(arg_type.trim().equals("-remove"))  {
-                value1 = args[i+1];
-                if(verifyAllCharacters(value1)) {
+                i += 1;
+            } else if (arg_type.trim().equals("-remove")) {
+                value1 = args[i + 1];
+                if (verifyAllCharacters(value1)) {
                     removeContinent.add(value1);
                 }
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -136,18 +168,16 @@ public class CommandController {
      *
      * @param command command to execute
      */
-    public static void editCountry(String command)
-    {
-        if(validateEditCountryCommand(command))
-        {
-            for(String countryName : addCountry.keySet())
-            {
+    public static void editCountry(String command) {
+        if (validateEditCountryCommand(command)) {
+            for (String countryName : addCountry.keySet()) {
                 //add country code
             }
-            for(String countryName : removeCountry)
-            {
+            for (String countryName : removeCountry) {
                 // remove country code
             }
+        } else {
+            invalidCommandMessage();
         }
     }
 
@@ -157,8 +187,7 @@ public class CommandController {
      * @param command Command to validate
      * @return True if the command is valid, else false.
      */
-    public static boolean validateEditCountryCommand(String command)
-    {
+    public static boolean validateEditCountryCommand(String command) {
         addContinent.clear();
         removeCountry.clear();
 
@@ -166,26 +195,21 @@ public class CommandController {
         String arg_type;
         String value1;
         String value2;
-        for (int i=1; i< args.length ; i+=2)
-        {
+        for (int i = 1; i < args.length; i += 2) {
             arg_type = args[i];
-            if(arg_type.trim().equals("-add")) {
-                value1 = args[i+1];
-                value2 = args[i+2];
-                if(verifyAllCharacters(value1) && verifyAllCharacters(value2))
-                {
+            if (arg_type.trim().equals("-add")) {
+                value1 = args[i + 1];
+                value2 = args[i + 2];
+                if (verifyAllCharacters(value1) && verifyAllCharacters(value2)) {
                     addCountry.put(value1, value2);
                 }
-                i+=1;
-            }
-            else if(arg_type.trim().equals("-remove"))  {
-                value1 = args[i+1];
-                if(verifyAllCharacters(value1)) {
+                i += 1;
+            } else if (arg_type.trim().equals("-remove")) {
+                value1 = args[i + 1];
+                if (verifyAllCharacters(value1)) {
                     removeCountry.add(value1);
                 }
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -197,20 +221,18 @@ public class CommandController {
      *
      * @param command command to execute
      */
-    public static void editNeighbour(String command)
-    {
-        if(validateEditNeighbourCommand(command))
-        {
-            for(String countryName : addNeighbour.keySet())
-            {
+    public static void editNeighbour(String command) {
+        if (validateEditNeighbourCommand(command)) {
+            for (String countryName : addNeighbour.keySet()) {
                 String neighbourName = addNeighbour.get(countryName);
                 //add country code
             }
-            for(String countryName : removeNeighbour.keySet())
-            {
+            for (String countryName : removeNeighbour.keySet()) {
                 String neighbourName = addNeighbour.get(countryName);
                 // remove country code
             }
+        } else {
+            invalidCommandMessage();
         }
     }
 
@@ -221,8 +243,7 @@ public class CommandController {
      * @param command Command to validate
      * @return True if the command is valid, else false.
      */
-    public static boolean validateEditNeighbourCommand(String command)
-    {
+    public static boolean validateEditNeighbourCommand(String command) {
         addNeighbour.clear();
         removeNeighbour.clear();
 
@@ -230,12 +251,11 @@ public class CommandController {
         String arg_type;
         String value1;
         String value2;
-        for (int i=1; i< args.length ; i+=3)
-        {
+        for (int i = 1; i < args.length; i += 3) {
             arg_type = args[i];
-            value1 = args[i+1];
-            value2 = args[i+2];
-            if(verifyAllCharacters(value1) && verifyAllCharacters(value2)) {
+            value1 = args[i + 1];
+            value2 = args[i + 2];
+            if (verifyAllCharacters(value1) && verifyAllCharacters(value2)) {
                 if (arg_type.trim().equals("-add")) {
                     addNeighbour.put(value1, value2);
                 } else if (arg_type.trim().equals("-remove")) {
@@ -255,18 +275,16 @@ public class CommandController {
      * @param command Command to validate
      * @return True if the command is valid, else false.
      */
-    public static void gamePlayer(String command)
-    {
-        if(validateGamePlayerCommand(command))
-        {
-            for(String playerName : addPlayer)
-            {
-                //add player command here
+    public static void gamePlayer(String command) {
+        if (validateGamePlayerCommand(command)) {
+            for (String playerName : addPlayer) {
+                Gameplay.Gameplay().addPlayer(playerName);
             }
-            for(String playerName : removePlayer)
-            {
-                //remove player command here
+            for (String playerName : removePlayer) {
+                Gameplay.Gameplay().removePlayer(playerName);
             }
+        } else {
+            invalidCommandMessage();
         }
     }
 
@@ -277,32 +295,26 @@ public class CommandController {
      * @param command Command to validate
      * @return True if the command is valid, else false.
      */
-    public static boolean validateGamePlayerCommand(String command)
-    {
+    public static boolean validateGamePlayerCommand(String command) {
         addPlayer.clear();
         removePlayer.clear();
 
         String[] args = command.split(" ");
         String arg_type;
         String value1;
-        for (int i=1; i< args.length ; i+=2)
-        {
+        for (int i = 1; i < args.length; i += 2) {
             arg_type = args[i];
-            value1 = args[i+1];
+            value1 = args[i + 1];
 
             if (arg_type.trim().equals("-add")) {
-                if(verifyAllCharacters(value1)){
+                if (verifyAllCharacters(value1)) {
                     addPlayer.add(value1);
                 }
-            }
-            else if(arg_type.trim().equals("-remove"))
-            {
-                if(verifyAllCharacters(value1))
-                {
+            } else if (arg_type.trim().equals("-remove")) {
+                if (verifyAllCharacters(value1)) {
                     removePlayer.add(value1);
                 }
-            }
-            else{
+            } else {
                 return false;
             }
         }
@@ -311,31 +323,102 @@ public class CommandController {
 
 
     /**
+     * This method validates if the map loaded is
+     */
+    public static void validateMap() {
+
+    }
+
+    /**
+     * Method to display map to the players.
+     */
+    public static void showMap() {
+
+    }
+
+
+    public static void saveMap(String command)
+    {
+        String fileName = command.split(" ")[1];
+    }
+
+
+    public static void editMap(String command)
+    {
+        String fileName = command.split(" ")[1];
+    }
+
+
+    /**
+     * This method will load the map from the file specified by user in the command.
+     *
+     * @param command loadmap command as input
+     */
+    public static void loadMap(String command)
+    {
+        String fileName = command.split(" ")[1];
+    }
+
+    /**
+     * Method to populate countries and assign country to players.
+     */
+    public static void populateCountries()
+    {
+        
+    }
+
+    public static void placeArmy(String command)
+    {
+        String countryName = command.split(" ")[1];
+
+    }
+
+
+    public static void placeAll()
+    {
+
+    }
+
+
+    public static void reinforce(String command)
+    {
+        String countryName = command.split(" ")[1];
+        String num = command.split(" ")[2];
+
+        //Execute method
+    }
+
+
+    public static void fortify(String command)
+    {
+
+    }
+
+    /**
      * Method to print help options for commands
      */
     public static void showHelpOptions()
     {
-        System.out.println("For getting help on commands, type help.");
-        System.out.println("editcontinent [-add] <continentname> <continentvalue> \t command to add continent to a map.");
-        System.out.println("editcontinent [-remove] <continentname> \t command to remove continent from a map.");
-        System.out.println("editcountry [-add] <countryname> <continentname> \t command to add country to a map.");
-        System.out.println("editcountry [-remove] <countryname>  \t command to remove country from a map.");
-        System.out.println("editneighbour [-add] <countryname> <neighbourcountryname> \t command to add neighbour country to a map.");
-        System.out.println("editcountry [-remove] <countryname> \t command to remove neighbour country from a map.");
-        System.out.println("showmap \t command to display map");
-        System.out.println("savemap <filename> \t command to save map");
-        System.out.println("editmap <filename> \t command to load and edit map");
-        System.out.println("validatemap \t command to validate loaded map");
-        System.out.println("showmap \t command to display loaded map");
-        System.out.println("loadmap <filename> \t command to load a map");
-        System.out.println("gameplayer [-add] <playername> \t command to add player to game");
-        System.out.println("gameplayer [-remove] <playername> \t command to remove player from game");
-        System.out.println("populatecountries \t command initialize game and assign country to players");
-        System.out.println("placearmy <countryname> \t command to place army for a player in a country");
-        System.out.println("placeall \t automatically randomly place all remaining unplaced armies for all players");
-        System.out.println("reinforce <countryname> <num> \t until all reinforcements have been placed");
-        System.out.println("fortify <fromcountry> <tocountry> <num> \t command to Fortify country");
-        System.out.println("fortify none \t commad to choose to not do a move");
+        System.out.println("For getting help menu, type help.\n");
+        System.out.format("%-20s%-50s%-50s\n","editcontinent", "[-add] <continentname> <continentvalue>", " command to add continent to a map." );
+        System.out.format("%-20s%-50s%-50s\n","editcontinent", "[-remove] <continentname> ", " command to add continent to a map." );
+        System.out.format("%-20s%-50s%-50s\n", "editcountry", "[-add] <countryname> <continentname>", " command to add country to a map.");
+        System.out.format("%-20s%-50s%-50s\n", "editcountry", "[-remove] <countryname> ", " command to remove country from a map.");
+        System.out.format("%-20s%-50s%-50s\n", "editneighbour", "[-add] <countryname> <neighbourcountryname>", " command to add neighbour country to a map.");
+        System.out.format("%-20s%-50s%-50s\n", "editneighbour", "[-remove] <countryname> ", " command to remove neighbour country from a map.");
+        System.out.format("%-20s%-50s%-50s\n", "showmap", " ", " command to display map.");
+        System.out.format("%-20s%-50s%-50s\n", "savemap", "<filename>", " command to save map.");
+        System.out.format("%-20s%-50s%-50s\n", "editmap", "<filename> ", " command to load and edit map.");
+        System.out.format("%-20s%-50s%-50s\n", "validatemap", " ", " command to validate loaded map.");
+        System.out.format("%-20s%-50s%-50s\n", "loadmap", "<filename> ", " command to load map.");
+        System.out.format("%-20s%-50s%-50s\n", "gameplayer", "[-add] <playername> ", " command to add player to game.");
+        System.out.format("%-20s%-50s%-50s\n", "gameplayer", "[-remove] <playername> ", " command to remove player from game.");
+        System.out.format("%-20s%-50s%-50s\n", "populatecountries", " ", " command initialize game and assign country to players.");
+        System.out.format("%-20s%-50s%-50s\n", "placearmy", "<countryname> ", " command to place army for a player in a country.");
+        System.out.format("%-20s%-50s%-50s\n", "placeall", " ", " automatically randomly place all remaining unplaced armies for all players.");
+        System.out.format("%-20s%-50s%-50s\n", "reinforce", "<countryname> <num> ", " until all reinforcements have been placed.");
+        System.out.format("%-20s%-50s%-50s\n", "fortify", "<fromcountry> <tocountry> <num> ", " command to Fortify country");
+        System.out.format("%-20s%-50s%-50s\n", "fortify", "none ", " commad to choose to not do a move");
 
     }
 }
