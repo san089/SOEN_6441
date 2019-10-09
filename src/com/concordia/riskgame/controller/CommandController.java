@@ -278,10 +278,10 @@ public class CommandController {
     public static void gamePlayer(String command) {
         if (validateGamePlayerCommand(command)) {
             for (String playerName : addPlayer) {
-                Gameplay.Gameplay().addPlayer(playerName);
+                Gameplay.getInstance().addPlayer(playerName);
             }
             for (String playerName : removePlayer) {
-                Gameplay.Gameplay().removePlayer(playerName);
+                Gameplay.getInstance().removePlayer(playerName);
             }
         } else {
             invalidCommandMessage();
@@ -364,7 +364,7 @@ public class CommandController {
      */
     public static void populateCountries()
     {
-        
+
     }
 
     public static void placeArmy(String command)
@@ -401,7 +401,7 @@ public class CommandController {
     {
         System.out.println("For getting help menu, type help.\n");
         System.out.format("%-20s%-50s%-50s\n","editcontinent", "[-add] <continentname> <continentvalue>", " command to add continent to a map." );
-        System.out.format("%-20s%-50s%-50s\n","editcontinent", "[-remove] <continentname> ", " command to add continent to a map." );
+        System.out.format("%-20s%-50s%-50s\n","editcontinent", "[-remove] <continentname> ", " command to remove continent from a map." );
         System.out.format("%-20s%-50s%-50s\n", "editcountry", "[-add] <countryname> <continentname>", " command to add country to a map.");
         System.out.format("%-20s%-50s%-50s\n", "editcountry", "[-remove] <countryname> ", " command to remove country from a map.");
         System.out.format("%-20s%-50s%-50s\n", "editneighbour", "[-add] <countryname> <neighbourcountryname>", " command to add neighbour country to a map.");
