@@ -52,7 +52,7 @@ public class MapEditorView extends JFrame implements Serializable {
      * @param gameMap object of Map class
      */
     public MapEditorView(Map gameMap) {
-        super("Game Window");
+        super("Map Editor Window");
         this.gameMap = gameMap;
         setSize(Constants.MAP_EDITOR_WIDTH, Constants.MAP_EDITOR_HEIGHT);
         setMinimumSize(new Dimension(Constants.MAP_EDITOR_WIDTH, Constants.MAP_EDITOR_HEIGHT));
@@ -63,9 +63,12 @@ public class MapEditorView extends JFrame implements Serializable {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                GameLauncherView mainMenuScreen = new GameLauncherView();
-                mainMenuScreen.setVisible(true);
                 dispose();
+                //  GameLauncherView mainMenuScreen = new GameLauncherView();
+                //   mainMenuScreen.setVisible(true);
+                //  repaint();
+                //   revalidate();
+
             }
         });
     }
@@ -233,8 +236,8 @@ public class MapEditorView extends JFrame implements Serializable {
         mapTree = new JTree(top);
         treeScrollPane.getViewport().add(mapTree);
     }
-    
+
     public static void main(String args[]) {
-    	MapEditorView mapView=new MapEditorView(new Map());
+        MapEditorView mapView=new MapEditorView(new Map());
     }
 }

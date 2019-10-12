@@ -9,7 +9,6 @@ import java.util.Random;
 import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Country;
 import com.concordia.riskgame.model.Modules.Gameplay;
-import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 
 
@@ -18,14 +17,15 @@ import com.concordia.riskgame.model.Modules.Player;
 /**
  * This class is to initialize the  gameplay and and assign countries to players.
  */
-public class StartupPhaseController extends Gameplay {
+public class StartupPhaseController  {
 	private Queue<Player> playerQueue;
 	private List<String> countries;
-	
+	private Gameplay gameplay;
 		
 	public StartupPhaseController() {
 		playerQueue=new LinkedList<Player>();
 		countries=new ArrayList<String>();
+		this.gameplay = Gameplay.getInstance();
 	}
 
 
@@ -50,7 +50,7 @@ public class StartupPhaseController extends Gameplay {
 
 	
 	public boolean validateStartupInputs() {
-		if(getPlayers().size()==getPlayerCount() && getSelectedMap()!=null)
+		if(this.gameplay.getPlayers().size() == this.gameplay.getPlayerCount() && this.gameplay.getSelectedMap()!=null)
 			return true;
 		else
 			return false;
@@ -66,16 +66,9 @@ public class StartupPhaseController extends Gameplay {
 	 */
 	public void initialisePlayers() {
 		Player currentPlayer;
-		playerQueue.addAll(getPlayers());
-<<<<<<< HEAD
-		countries=getSelectedMap().getCountries();//stub method for getting country list from Map
-		for(Player player:getPlayers())
-			player.getCountriesOwned().clear();
-				
-=======
-		countries=getSelectedMap().listOfCountryNames();
+		playerQueue.addAll(this.gameplay.getPlayers());
+		countries=this.gameplay.getSelectedMap().listOfCountryNames();
 		
->>>>>>> master
 		while(countries.size()!=0) {
 			Random random = new Random();
 			int index=random.nextInt(countries.size());
@@ -94,9 +87,9 @@ public class StartupPhaseController extends Gameplay {
 	
 	public void assignArmies() {
 		
-		for(Player player:getPlayers()) {
+		for(Player player:this.gameplay.getPlayers()) {
 			player.setReinforcementArmyCount((player.getCountriesOwned().size()/3));
-			for(Continent continent:getSelectedMap().ownedContinents(player.getPlayerName()))
+			for(Continent continent:this.gameplay.getSelectedMap().ownedContinents(player.getPlayerName()))
 				player.setReinforcementArmyCount((player.getReinforcementArmyCount()+continent.getControlValue()));
 			if(player.getReinforcementArmyCount()<3)
 				player.setReinforcementArmyCount(3);
@@ -113,15 +106,5 @@ public class StartupPhaseController extends Gameplay {
 			}
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

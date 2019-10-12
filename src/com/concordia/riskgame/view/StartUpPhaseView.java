@@ -38,10 +38,10 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 	private JPanel cardsContainerPanel;
 	private CardLayout cardLayout;
 	final static String MAPPANEL = "Card with MapLoaderView";
-    final static String PLAYERPANEL = "Card with Add/Removing Player";
-    final static String ASSIGNARMYPANEL = "Card with Assign Armies View";
-    final static String[] playerCountValues = { "2", "3", "4", "5", "6" };
-    
+	final static String PLAYERPANEL = "Card with Add/Removing Player";
+	final static String ASSIGNARMYPANEL = "Card with Assign Armies View";
+	final static String[] playerCountValues = { "2", "3", "4", "5", "6" };
+
 	private StartupPhaseController startupController;
 	private Gameplay gamePlay;
 	private JFrame gameWindow;
@@ -62,22 +62,22 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 	private JTextField removePlayerName;
 	private JButton removePlayerButton;
 	private JButton populateCountriesButton;
-	
+
 	private JComboBox<String> playerCount;
 	private JLabel playerCountLabel;
 	private JLabel playerLimitLabel;
 	private JButton nextCard;
-	
-	
-	
+
+
+
 	private JComboBox<String> playerList;
 	private JLabel playerListLabel;
 	private JComboBox countryList;
 	private JLabel countryListLabel;
 	private JButton placeArmyButton;
 	private JPanel placeArmiesViewPanel;
-	
-			
+
+
 
 	/**
 	 * Instantiates a new reinforcement view.
@@ -86,11 +86,11 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 		this.gameWindow=frame;
 		this.cardsContainerPanel=panel;
 		this.startupController=new StartupPhaseController();
-		this.gamePlay=new Gameplay();
+		this.gamePlay = Gameplay.getInstance();
 		gamePlay.setCurrentPhase("Startup");
 		gamePlay.addObserver(this);
 		initaliseUI();
-		
+
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 		StartupViewPanel = new JPanel();
 		StartupViewPanel.setVisible(true);
 		StartupViewPanel.setLayout(null);
-		
+
 
 		mapPath = new JTextField();
 		mapSelectorLabel = new JLabel("Select the map file");
@@ -116,78 +116,78 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 		mapSelectorButton.setVisible(true);
 		mapSelectorButton.addActionListener(this);
 
-		
+
 		loadMapButton = new JButton("Load Map");
 		StartupViewPanel.add(loadMapButton);
 		loadMapButton.setBounds(186, 60, 121, 21);
 		loadMapButton.setVisible(true);
 		loadMapButton.addActionListener(this);
-			
+
 		nextCard=new JButton("Next View");
 		StartupViewPanel.add(nextCard);
 		nextCard.setBounds(186, 320, 121, 21);
 		nextCard.setVisible(true);
 		nextCard.addActionListener(this);
-		
-		
+
+
 	}
-	
+
 	public void editPlayerUI() {
-		
+
 		playerCount = new JComboBox<String>(playerCountValues);
-		 playerCountLabel = new JLabel("Select player count"); 
-		 StartupViewPanel.add(playerCountLabel);
-		 playerCountLabel.setVisible(true);
-		 playerCountLabel.setBounds(56, 90, 121,20); 
-		 StartupViewPanel.add(playerCount);
-		 playerCount.setBounds(186, 90, 121, 20);
-		
-		
-		
-		
+		playerCountLabel = new JLabel("Select player count");
+		StartupViewPanel.add(playerCountLabel);
+		playerCountLabel.setVisible(true);
+		playerCountLabel.setBounds(56, 90, 121,20);
+		StartupViewPanel.add(playerCount);
+		playerCount.setBounds(186, 90, 121, 20);
+
+
+
+
 		playerNameLabel = new JLabel("Enter Player name to be added");
 		StartupViewPanel.add(playerNameLabel);
 		playerNameLabel.setVisible(true);
 		playerNameLabel.setBounds(56, 120, 121, 20);
-		
+
 		playerName = new JTextField();
 		StartupViewPanel.add(playerName);
 		playerName.setVisible(true);
 		playerName.setBounds(216, 120, 121, 20);
-		
+
 		addPlayerButton=new JButton("Add Player");
 		addPlayerButton.setBounds(310, 120, 121, 20);
 		addPlayerButton.setVisible(true);
 		StartupViewPanel.add(addPlayerButton);
 		addPlayerButton.addActionListener(this);
-		
+
 		removeplayerLabel = new JLabel("Enter Player name to be removed");
 		StartupViewPanel.add(removeplayerLabel);
 		removeplayerLabel.setVisible(true);
 		removeplayerLabel.setBounds(56, 150, 121, 20);
-		
+
 		removePlayerName = new JTextField();
 		StartupViewPanel.add(removePlayerName);
 		removePlayerName.setVisible(true);
 		removePlayerName.setBounds(216, 150, 121, 20);
-		
+
 		removePlayerButton=new JButton("Remove Player");
 		removePlayerButton.setBounds(310, 150, 121, 20);
 		removePlayerButton.setVisible(true);
 		StartupViewPanel.add(removePlayerButton);
 		removePlayerButton.addActionListener(this);
-						
-		
+
+
 		populateCountriesButton = new JButton("Populate Countries and Assign Armies");
 		StartupViewPanel.add(populateCountriesButton);
 		populateCountriesButton.setBounds(186, 180, 200, 21);
 		populateCountriesButton.setVisible(true);
 		populateCountriesButton.addActionListener(this);
-	
-	
+
+
 	}
-	
-	
+
+
 	public void placeArmiesUI() {
 		placeArmiesViewPanel=new JPanel();
 		ArrayList<String> playerNames=new ArrayList<String>();
@@ -198,35 +198,35 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 		playerListLabel=new JLabel("Select the player ");
 		placeArmiesViewPanel.setVisible(true);
 		gameWindow.add(placeArmiesViewPanel);
-		
-		
+
+
 	}
-	
-	
+
+
 	public void initaliseUI() {
 
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		mapSelectUI();
 		editPlayerUI();
 		placeArmiesUI();
-					
-		
+
+
 		cardsContainerPanel.add(StartupViewPanel,MAPPANEL);
 		//cardsContainerPanel.add(addPlayersViewPanel,PLAYERPANEL);
 		cardsContainerPanel.add(placeArmiesViewPanel, ASSIGNARMYPANEL);
-		
+
 		gameWindow.getContentPane().add(cardsContainerPanel, BorderLayout.CENTER);
 		cardLayout=(CardLayout) cardsContainerPanel.getLayout();
 		cardLayout.show(cardsContainerPanel, MAPPANEL);
-		
-		
+
+
 		gameWindow.pack();
 		gameWindow.setSize(900, 800);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setVisible(true);
-		
-		 
-		
+
+
+
 	}
 
 	/* (non-Javadoc)
@@ -234,7 +234,7 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		
+
 		System.out.println(event.getSource());
 		if (event.getSource()==mapSelectorButton)
 		{
@@ -247,14 +247,14 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 			mapSelector.setLocation(500, 200);
 			mapSelector.setSize(500, 500);
 			mapSelector.setVisible(true);
-							
+
 		}
-		
+
 		else if (event.getSource() == loadMapButton) {
 			// cardLayout.show(cardsContainerPanel, PLAYERPANEL);
 
 			if (!(mapPath.getText().contentEquals(""))) {
-				
+
 				if (!gamePlay.setSelectedMap(mapPath.getText())) {
 					JOptionPane.showMessageDialog(gameWindow, "Invalid map selected.Please select a valid map",
 							"Error Message", JOptionPane.ERROR_MESSAGE);
@@ -272,91 +272,96 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-				
+
 		else if(event.getSource()==addPlayerButton)
 		{	if(gamePlay.getPlayerCount()==0)
 				gamePlay.setPlayerCount(Integer.parseInt(playerCount.getSelectedItem().toString()));
-		
+
 			if(playerName.getText().contentEquals(""))
 				JOptionPane.showMessageDialog(gameWindow,
-				          "Please enter a player name", "Error Message",
-				          JOptionPane.ERROR_MESSAGE);
-			else if(!gamePlay.findDuplicatePlayer(playerName.getText()))
+						"Please enter a player name", "Error Message",
+						JOptionPane.ERROR_MESSAGE);
+		/*	else if(!gamePlay.findDuplicatePlayer(playerName.getText()))
 				JOptionPane.showMessageDialog(gameWindow,
-				          "Another player with the same name already exists.PLease enter another name", "Error Message",
-				          JOptionPane.ERROR_MESSAGE);
+						"Another player with the same name already exists.PLease enter another name", "Error Message",
+						JOptionPane.ERROR_MESSAGE);*/
 			else
-				gamePlay.addPlayer(playerName.getText());
-						
+			{
+				String message=gamePlay.addPlayer(playerName.getText());
+				JOptionPane.showMessageDialog(gameWindow,
+						message, "Message",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+
+
+
 		}
-		
+
 		else if(event.getSource()==removePlayerButton)
 		{
 			if(!(playerName.getText().contentEquals("")))
 				gamePlay.removePlayer(playerName.getText());
 			else
 				JOptionPane.showMessageDialog(gameWindow,
-				          "Please enter a player name", "Error Message",
-				          JOptionPane.ERROR_MESSAGE);
-						
+						"Please enter a player name", "Error Message",
+						JOptionPane.ERROR_MESSAGE);
+
 		}
-		
-		
-		
+
+
+
 		else if(event.getSource()==populateCountriesButton)
 		{
-			
+
 			if(!(startupController.validateStartupInputs()))
 			{
-<<<<<<< HEAD
-				JOptionPane.showMessageDialog(viewWindow,
-=======
-				cardLayout.show(cardsContainerPanel, ASSIGNARMYPANEL);
+
 				JOptionPane.showMessageDialog(gameWindow,
->>>>>>> master
-					          "Inputs not provided- Please provide both the player names and map file", "Error Message",
-		          JOptionPane.ERROR_MESSAGE);
-				
+						"Inputs not provided- Please provide both the player names and map file", "Error Message",
+						JOptionPane.ERROR_MESSAGE);
+
 			}
 			else
 			{
-			startupController.initialisePlayers();	
-			JOptionPane.showMessageDialog(gameWindow,
-				          "Player Initialisation complete-Press OK to continue", "Information Message",
-	          JOptionPane.INFORMATION_MESSAGE);
+				startupController.initialisePlayers();
+				JOptionPane.showMessageDialog(gameWindow,
+						"Player Initialisation complete-Press OK to continue", "Information Message",
+						JOptionPane.INFORMATION_MESSAGE);
 				cardLayout.show(cardsContainerPanel, ASSIGNARMYPANEL);
 			}
-				
+
 		}
-		
+
 		else if (event.getSource()==nextCard)
 		{
 			cardLayout.show(cardsContainerPanel, PLAYERPANEL);
-							
-		}
-		
-		
-		
 
-}
+		}
+
+
+
+
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("<--------------------------OBSERVER TRIGGERED--------------------->");
 		if(Integer.parseInt(arg.toString())==gamePlay.getPlayerCount()) {
-		playerLimitLabel=new JLabel("Maximum PLayer Limit Reached");
-		playerLimitLabel.setBounds(310, 120, 121, 20);
-		StartupViewPanel.add(playerLimitLabel);
-		addPlayerButton.setVisible(false);
-		playerLimitLabel.setVisible(true);
+			System.out.println(arg.toString());
+			System.out.println(gamePlay.getPlayerCount());
+			playerLimitLabel=new JLabel("Maximum PLayer Limit Reached");
+			playerLimitLabel.setBounds(310, 120, 121, 20);
+			StartupViewPanel.add(playerLimitLabel);
+			addPlayerButton.setVisible(false);
+			playerLimitLabel.setVisible(true);
 		}
 		else if(Integer.parseInt(arg.toString())<gamePlay.getPlayerCount())
 		{
 			if(playerLimitLabel!=null)
 				playerLimitLabel.setVisible(false);
 			addPlayerButton.setVisible(true);
-		}	
-		
-		
+		}
+
+
 	}
 }

@@ -1,4 +1,4 @@
-package com.concordia.riskgame.controller;
+package com.concordia.riskgame.model.Modules;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,28 +12,39 @@ import com.concordia.riskgame.utilities.MapTools;
 
 public class Gameplay extends Observable{
 
-	private static int playerCount;
-	private static ArrayList<Player> players;
+	private  int playerCount;
+	private  ArrayList<Player> players;
 	//protected String mapfilePath;
-	private static Map selectedMap;
-	private static String currentPhase;
-	private static MapTools mapTools;
+	private  Map selectedMap;
+	private  String currentPhase;
+	private  MapTools mapTools;
+	
+	private static Gameplay gameplayObj = null;
+
+	public static Gameplay getInstance(){
+		if(gameplayObj == null){
+			gameplayObj = new Gameplay();
+			gameplayObj.players = new ArrayList<Player>();
+			gameplayObj.selectedMap = null;
+			gameplayObj.currentPhase = null;
+			gameplayObj.playerCount=6;
+		}
+		return gameplayObj;
+	}
 	
 	
-	
-	
-	public Gameplay() {
+	private Gameplay() {
 		this.players = new ArrayList<Player>();
 		this.selectedMap = null;
 		this.currentPhase = null;
-		this.playerCount=0;
+		this.playerCount=6;
 	}
 
 	
 	
 	
 	public void setPlayerCount(int playerCount) {
-		playerCount = playerCount;
+		gameplayObj.playerCount = playerCount;
 	}
 
 
@@ -45,25 +56,32 @@ public class Gameplay extends Observable{
 		return players;
 	}
 			
-	public static void addPlayer(String playerName) {
-		players.add(new Player(players.size()+1, playerName));
+	public String addPlayer(String playerName) {
 		if(players.size()==playerCount)
 		{
-			System.out.println("PLAYER LIMIT REACHED.CANNOT ADD MORE PLAYERS");
+			//System.out.println("PLAYER LIMIT REACHED.CANNOT ADD MORE PLAYERS");
 			setChanged();
 			notifyObservers(playerCount);
+			return "PLAYER LIMIT REACHED.CANNOT ADD MORE PLAYERS";
 		}
-		
-	
+
+		if(existDuplicatePlayer(playerName))
+			return "Another player with the same name exists.Please enter a different name";
+		else{
+			players.add(new Player(players.size()+1, playerName));
+			System.out.println("Player " + playerName + " added to the game.");
+			return "Player"+playerName+"added to the game";
+		}
+
 	}
 	
-	public boolean findDuplicatePlayer(String playerName)
+	public boolean existDuplicatePlayer(String playerName)
 	{
 		for(Player player:players)
 			if(player.getPlayerName().equalsIgnoreCase(playerName))
-				return false;
+				return true;
 		
-		return true;
+		return false;
 			
 		
 	}
@@ -71,16 +89,22 @@ public class Gameplay extends Observable{
 	
 	public void removePlayer(String playerName) {
 		Player currentPlayer;
+		boolean playerFound = false;
 		for(Iterator<Player> playerIt=players.iterator();playerIt.hasNext();)
 			{
 			currentPlayer=playerIt.next();
-			if(currentPlayer.getPlayerName().equalsIgnoreCase(playerName))
-				{
+			if(currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
+				playerFound = true;
 				playerIt.remove();
+				System.out.println("Player " + playerName + " removed from the game.");
 				setChanged();
 				notifyObservers(players.size());
 				}
-	}
+			}
+		if(playerFound == false)
+		{
+			System.out.println("Player not found.");
+		}
 	
 	}
 		
@@ -90,17 +114,18 @@ public class Gameplay extends Observable{
 		
 	}
 
-	/*
+
 	public boolean setSelectedMap(String selectedMapPath) {
 		
-		Map selectedMap = new Map(selectedMapPath);
+		/*
+		Map selectedMap = new File(selectedMapPath);
 		if(selectedMap.listOfCountryNames().size()<playerCount)
 			return false;
-				
+		*/
 		return true;
 	
 	}
-	*/
+
 	
 	
 	public String getCurrentPhase() {
@@ -112,6 +137,6 @@ public class Gameplay extends Observable{
 		this.currentPhase = currentPhase;
 	}
 	
-	
+
 	
 }

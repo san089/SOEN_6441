@@ -278,7 +278,7 @@ public class CommandController {
     public static void gamePlayer(String command) {
         if (validateGamePlayerCommand(command)) {
             for (String playerName : addPlayer) {
-                Gameplay.getInstance().addPlayer(playerName);
+                System.out.println(Gameplay.getInstance().addPlayer(playerName));
             }
             for (String playerName : removePlayer) {
                 Gameplay.getInstance().removePlayer(playerName);
