@@ -16,6 +16,10 @@ import javax.swing.border.TitledBorder;
 // TODO: Auto-generated Javadoc
 public class GameLauncherView extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JFrame gameWindow;
 	final static String GAMELAUNCHERPANEL = "Card with Game Launching View";
 	private CardLayout cardLayout;
@@ -55,14 +59,9 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		startButton=new JButton("Start Game");
 		startButton.setVisible(true);
 		startButton.setBounds(386, 30, 121, 20);
-		MapEditor=new JButton("Map Editor");
-		MapEditor.setVisible(true);
-		MapEditor.setBounds(386, 60, 121, 20);
-		gameLaunchPanel.add(MapEditor);
 		gameLaunchPanel.add(startButton);
 
 		startButton.addActionListener(this);
-		MapEditor.addActionListener(this);
 
 		initaliseCardLayoutUI();
 

@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
+import java.util.Observer;
 
 import com.concordia.riskgame.controller.MapEditorController;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.view.StartUpPhaseView;
 
 public class Gameplay extends Observable{
 
@@ -28,16 +30,16 @@ public class Gameplay extends Observable{
 			gameplayObj.selectedMap = null;
 			gameplayObj.currentPhase = null;
 			gameplayObj.playerCount=6;
+			gameplayObj.addObserver(new StartUpPhaseView());
 		}
 		return gameplayObj;
 	}
 	
 	
-	private Gameplay() {
-		this.players = new ArrayList<Player>();
-		this.selectedMap = null;
-		this.currentPhase = null;
-		this.playerCount=6;
+	private Gameplay() {/*
+						 * this.players = new ArrayList<Player>(); this.selectedMap = null;
+						 * this.currentPhase = null; this.playerCount=6;
+						 */
 	}
 
 	

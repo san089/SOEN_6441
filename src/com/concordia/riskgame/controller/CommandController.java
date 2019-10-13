@@ -1,6 +1,9 @@
 package com.concordia.riskgame.controller;
 
+import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Gameplay;
+import com.concordia.riskgame.model.Modules.Map;
+import com.concordia.riskgame.view.MapEditorView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +24,8 @@ public class CommandController {
     public static ArrayList<String> removePlayer = new ArrayList<>();
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
+    
+    public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
 
 
     /**
@@ -117,10 +122,11 @@ public class CommandController {
     public static void editContinent(String command) {
         if (validateEditContinentCommand(command)) {
             for (String Key : addContinent.keySet()) {
-                //Add continent functiono call.
+               mapEditor.addContinentService(Key,addContinent.get(Key),false);//Add continent functiono call.
             }
             for (String val : removeContinent) {
-                //Remove continent function call.
+            	mapEditor.removeContinentService(val,false);//Add continent functiono call.
+                 //Remove continent function call.
             }
         } else {
             invalidCommandMessage();
@@ -171,11 +177,11 @@ public class CommandController {
     public static void editCountry(String command) {
         if (validateEditCountryCommand(command)) {
             for (String countryName : addCountry.keySet()) {
-                //add country code
+            	mapEditor.addCountriesService(addCountry.get(countryName), countryName,false);
             }
             for (String countryName : removeCountry) {
-                // remove country code
-            }
+            	mapEditor.removeCountryService(new Continent(), countryName,false);
+             }
         } else {
             invalidCommandMessage();
         }
@@ -190,6 +196,8 @@ public class CommandController {
     public static boolean validateEditCountryCommand(String command) {
         addContinent.clear();
         removeCountry.clear();
+        addCountry.clear();
+        
 
         String[] args = command.split(" ");
         String arg_type;
@@ -225,11 +233,11 @@ public class CommandController {
         if (validateEditNeighbourCommand(command)) {
             for (String countryName : addNeighbour.keySet()) {
                 String neighbourName = addNeighbour.get(countryName);
-                //add country code
+                mapEditor.addNeighbourService(countryName,neighbourName);
             }
             for (String countryName : removeNeighbour.keySet()) {
                 String neighbourName = addNeighbour.get(countryName);
-                // remove country code
+                mapEditor.removeNeighbourService(countryName,neighbourName);
             }
         } else {
             invalidCommandMessage();
@@ -333,7 +341,7 @@ public class CommandController {
      * Method to display map to the players.
      */
     public static void showMap() {
-
+    	mapEditor.showMapService();
     }
 
 
