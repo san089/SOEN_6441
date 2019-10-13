@@ -82,6 +82,12 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 	/**
 	 * Instantiates a new reinforcement view.
 	 */
+	
+	public StartUpPhaseView() {
+		
+	}
+	
+	
 	public StartUpPhaseView(JFrame frame,JPanel panel) {
 		this.gameWindow=frame;
 		this.cardsContainerPanel=panel;
@@ -353,12 +359,13 @@ public class StartUpPhaseView extends JFrame implements ActionListener,Observer 
 			playerLimitLabel.setBounds(310, 120, 121, 20);
 			StartupViewPanel.add(playerLimitLabel);
 			addPlayerButton.setVisible(false);
-			playerLimitLabel.setVisible(true);
+			JOptionPane.showMessageDialog(gameWindow,
+					"Player limit reached.Cannot add anymore players", "Error Message",
+					JOptionPane.ERROR_MESSAGE);
+			//playerLimitLabel.setVisible(true);
 		}
 		else if(Integer.parseInt(arg.toString())<gamePlay.getPlayerCount())
 		{
-			if(playerLimitLabel!=null)
-				playerLimitLabel.setVisible(false);
 			addPlayerButton.setVisible(true);
 		}
 

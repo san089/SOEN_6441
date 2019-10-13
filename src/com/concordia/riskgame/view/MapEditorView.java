@@ -15,6 +15,8 @@ import java.awt.event.WindowEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -29,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class MapEditorView extends JFrame implements Serializable {
+public class MapEditorView extends JFrame implements Serializable,Observer {
     private JLabel countriesLabel;
     private JLabel continentLabel;
     private ToolBar toolBar;
@@ -237,7 +239,9 @@ public class MapEditorView extends JFrame implements Serializable {
         treeScrollPane.getViewport().add(mapTree);
     }
 
-    public static void main(String args[]) {
-        MapEditorView mapView=new MapEditorView(new Map());
-    }
+    
+	@Override
+	public void update(Observable o, Object arg) {
+		//if(arg.ge)
+	}
 }
