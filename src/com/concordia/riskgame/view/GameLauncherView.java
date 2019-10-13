@@ -3,6 +3,7 @@ package com.concordia.riskgame.view;
 //import com.concordia.riskgame.controller.ReinforcementView;
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.model.Modules.Map;
+import com.concordia.riskgame.utilities.MapTools;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -30,6 +31,8 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	private JButton loadGameButton;
 	private JButton exitButton;
 	private JLabel titleLabel;
+	private MapTools mapTool;
+
 
 	//private ReinforcementView rView;
 	private com.concordia.riskgame.view.MapEditorView mapEditorView;
@@ -46,7 +49,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		gameWindow=new JFrame("****RISK GAME*****");
 		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		mapTool=new MapTools();
 		gameLaunchPanel = new JPanel();
 		gameLaunchPanel.setLayout(null);
 		gameLaunchPanel.setVisible(true);
@@ -141,8 +144,24 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		existingMap=new JMenuItem(new AbstractAction("Edit Existing Map") {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-
+				Map existingMap=new Map();
+				String sFinal=mapTool.pickMapFile(existingMap);
+				System.out.println(sFinal);
+				if(sFinal == null || (sFinal.isEmpty())) {}
+				else {
+					boolean isMapValid=mapTool.parseAndValidateMap(existingMap,3);
+					if(isMapValid) {
+						JOptionPane.showMessageDialog(null, "Map successfully loaded");
+						MapEditorView mapEditorView=new MapEditorView(existingMap);
+						mapEditorView.setVisible(true);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Invalid Map selected");
+						System.out.println(existingMap.getErrorMessage());
+					}
+				}
 			}
+
 		});
 		menu.add(newMap); menu.add(existingMap);
 		mb.add(menu);
