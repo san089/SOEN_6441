@@ -502,6 +502,7 @@ public class MapEditorController implements ActionListener {
     
     public void showMapService() {
     	mapEditorView.setVisible(true);
+    	System.out.println("GameMap object---------------->"+getGameMap());
     	mapEditorView.createTree(getGameMap());
         mapEditorView.countriesMatrix(getGameMap());
     
