@@ -51,4 +51,12 @@ public class Continent {
     public void removeCountry(Country name) {
         countriesPresent.remove(name);
     }
+    
+    
+    public Country searchCountry(String countryName) {
+    	for(Country country:getCountriesPresent())
+    		if(country.getCountryName().contentEquals(countryName))
+    			return country;
+    	return null;
+    }
 }

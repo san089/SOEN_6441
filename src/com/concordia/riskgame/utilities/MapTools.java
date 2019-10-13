@@ -15,9 +15,6 @@
 
 
 public class MapTools  {
-	
-
-
 	public String pickMapFile(Map gameMap) {
 		String sAppendFileName = null;
 		try {
@@ -27,15 +24,15 @@ public class MapTools  {
 			chooser.setDialogTitle("Choose Map file");
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			chooser.setAcceptAllFileFilterUsed(false);
-			chooser.addChoosableFileFilter(new FileNameExtensionFilter("*.map", "map","bin"));
+			chooser.addChoosableFileFilter(new FileNameExtensionFilter("*.map", "map"));
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				importFileName = chooser.getSelectedFile().getAbsolutePath();
 				if (importFileName.trim().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "File name invalid");
 				} 
 				else {
-					if (importFileName.trim().substring(importFileName.length() - 4).equals(".map") || 
-							importFileName.trim().substring(importFileName.length() - 4).equals(".bin")) {
+					if (importFileName.trim().substring(importFileName.length() - 4).equals(".map") /*|| 
+							importFileName.trim().substring(importFileName.length() - 4).equals(".bin"))*/ ){
 						File f = new File(importFileName);
 						gameMap.setName(f.getName());
 						gameMap.setPath(importFileName.substring(0, importFileName.lastIndexOf("\\")));
@@ -56,6 +53,36 @@ public class MapTools  {
 			e.printStackTrace();
 		}
 		return sAppendFileName;
+	}
+	
+	
+	
+	public boolean pickMapFileService(Map gameMap,String importFileName) {
+		String sAppendFileName = null;
+		boolean isMapValid=false;
+		if (importFileName.trim().isEmpty()) {
+			System.out.println("File name invalid");
+		} 
+		else {
+			if (importFileName.trim().substring(importFileName.length() - 4).equals(".map") /*|| 
+					importFileName.trim().substring(importFileName.length() - 4).equals(".bin"))*/ ){
+				File f = new File(importFileName);
+				gameMap.setName(f.getName());
+				gameMap.setPath(importFileName.substring(0, importFileName.lastIndexOf("\\")));
+					System.out.println("File in Correct format");
+				System.out.println(gameMap.getPath());
+				System.out.println(gameMap.getName());
+				sAppendFileName=gameMap.getPath();
+				isMapValid=parseAndValidateMap(gameMap,2);
+			}
+			else {
+				System.out.println("File name invalid");
+				String sPrint = importFileName.trim().substring(importFileName.length() - 4);
+				System.out.println(sPrint);
+			}
+		}
+		return isMapValid;
+		//return sAppendFileName;
 	}
 
 	public boolean parseAndValidateMap(Map gameMap, int size) {

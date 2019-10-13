@@ -14,18 +14,27 @@ import java.util.List;
 import java.util.Observable;
 
 
-public class MapEditorController extends Observable implements ActionListener {
+public class MapEditorController implements ActionListener {
   //  private Continent continent;
-    private com.concordia.riskgame.view.MapEditorView mapEditorView;
+    private MapEditorView mapEditorView;
     private Map gameMap;
     
 
-    public MapEditorController(MapEditorView mapEditorView) {
-        this.gameMap = mapEditorView.gameMap;
+   	public MapEditorController(MapEditorView mapEditorView) {
         this.mapEditorView = mapEditorView;
-		/*
-		 * setChanged(); notifyObservers(mapEditorView);
-		 */}
+        this.gameMap = mapEditorView.gameMap;
+        	
+   	}
+
+    public void setGameMap(Map gameMap) {
+		this.gameMap = gameMap;
+		
+	}
+
+    public Map getGameMap() {
+		return gameMap;
+				
+    }
 
 
     @Override
@@ -75,7 +84,7 @@ public class MapEditorController extends Observable implements ActionListener {
                 	addContinentService(continentName,controlValue,true);
                 	JOptionPane.showMessageDialog(null, "Continent"+continentName+"Added !");
                     
-                    mapEditorView.createTree();
+                    mapEditorView.createTree(getGameMap());
                     loop = false;
                 }
             } else {
@@ -144,8 +153,8 @@ public class MapEditorController extends Observable implements ActionListener {
                         JOptionPane.showMessageDialog(null, "Country already exists!");
                     } else {
                     	addCountriesService((String)continentBox.getItemAt(continentBox.getSelectedIndex()),inputCountry.getText(),true);
-                        mapEditorView.createTree();
-                         mapEditorView.countriesMatrix();
+                        mapEditorView.createTree(getGameMap());
+                         mapEditorView.countriesMatrix(getGameMap());
                         loop = false;
                     }
                 } else {
@@ -167,16 +176,15 @@ public class MapEditorController extends Observable implements ActionListener {
                  }
     		
             for (Continent continentNameIter : gameMap.getContinents()) {
-            for (Country name : continentNameIter.getCountriesPresent()) {
-                if (name.getCountryName().equalsIgnoreCase(countryName)) {
+            if(continentNameIter.searchCountry(countryName)!=null)
+            {
                     System.out.println("Country "+countryName+" already exists!");
                     return;
                 }
             }
         }
-    	}
     	
-    	   	
+    	   	   	
     	 Continent tempContinent = null;
     	 boolean flag=false;
          for (Continent name : gameMap.getContinents()) {
@@ -191,14 +199,14 @@ public class MapEditorController extends Observable implements ActionListener {
         countryNames = gameMap.listOfCountryNames();
         Country newCountry = new Country();
         newCountry.setCountryName(countryName);
-        if (countryNames.size() > 0) {
-            newCountry.setListOfNeighbours(countryNames);
-        }
-        for (Country country : tempContinent.getCountriesPresent()) {
-            country.getListOfNeighbours().add(countryName);
-        }
-        tempContinent.addCountry(newCountry);
-        System.out.println("Country "+countryName+" added to map");
+		/*
+		 * if (countryNames.size() > 0) { newCountry.setListOfNeighbours(countryNames);
+		 * }
+		 *//*
+		 * for (Country country : tempContinent.getCountriesPresent()) {
+		 * country.getListOfNeighbours().add(countryName); }
+		 */tempContinent.addCountry(newCountry);
+        System.out.println("Country "+countryName+" added to "+tempContinent);
         
       //  tempContinent.setControlValue(tempContinent.getCountriesPresent().size());
     }
@@ -225,8 +233,8 @@ public class MapEditorController extends Observable implements ActionListener {
                 int result = JOptionPane.showConfirmDialog(null, "Deleting Continent will delete all the countries! \n Do you want to Continue ?");
                 if (result == JOptionPane.YES_OPTION) {
                 	removeContinentService((String) continentBox.getItemAt(continentBox.getSelectedIndex()),true);
-                   mapEditorView.createTree();
-                   mapEditorView.countriesMatrix();
+                   mapEditorView.createTree(getGameMap());
+                   mapEditorView.countriesMatrix(getGameMap());
                 }
             }
         }
@@ -321,8 +329,8 @@ public class MapEditorController extends Observable implements ActionListener {
                                 
                             	removeCountryService(continentName,(String) countryBox.getItemAt(countryBox.getSelectedIndex()),true);
                                 }
-                               mapEditorView.createTree();
-                               mapEditorView.countriesMatrix();
+                               mapEditorView.createTree(getGameMap());
+                               mapEditorView.countriesMatrix(getGameMap());
                             }
                         }
                     }
@@ -340,21 +348,19 @@ public class MapEditorController extends Observable implements ActionListener {
 			if(!calledfromUI) {
 			boolean flag=false;
 			for(Continent continent:gameMap.getContinents())
-				for(Country country:continent.getCountriesPresent())
-					if(country.getCountryName().equalsIgnoreCase(countryName)) {
+				if(continent.searchCountry(countryName)!=null) {
 						flag=true;continentName=continent;}
 	
 			if(!flag) {
 				System.out.println("Country not present in the Map");
 				return;}
 			}
-	      Country tempCountry = null;
-          for (Country name : continentName.getCountriesPresent()) {
-              if (name.getCountryName().equalsIgnoreCase(countryName)) {
-                  tempCountry = name;
-                  break;
-              }
-          }
+	      Country tempCountry = continentName.searchCountry(countryName);
+		/*
+		 * for (Country name : continentName.getCountriesPresent()) { if
+		 * (name.getCountryName().equalsIgnoreCase(countryName)) { tempCountry = name;
+		 * break; } }
+		 */
           String removedCountry = tempCountry.getCountryName();
           continentName.removeCountry(tempCountry);
         //  continentName.setControlValue(continentName.getCountriesPresent().size());
@@ -370,57 +376,69 @@ public class MapEditorController extends Observable implements ActionListener {
 	
 	
 	public void removeNeighbourService(String countryName,String neighbourCountryName) {
-		boolean countryflag=false,neighbourcountryflag=false;
-		for(Continent continent:gameMap.getContinents()) {
-			for(Country country:continent.getCountriesPresent()) {
-				if(country.getCountryName().equalsIgnoreCase(countryName)) {
-					countryflag=true;
-					for(String neighbourCountry:country.getListOfNeighbours()) {
-						if(neighbourCountry.equalsIgnoreCase(neighbourCountryName)) {
-							country.getListOfNeighbours().remove(neighbourCountry);
-							System.out.println(neighbourCountryName+" removed from the neighbour list of "+countryName);
-							neighbourcountryflag=true;
-						}
-					}
-						if(!neighbourcountryflag)
-							System.out.println(neighbourCountryName+" is not a neighbor of "+countryName);
-					}
-							
-				}
-			}
+		Country[] inputCountries=checkNeighborArgumentValidity(countryName,neighbourCountryName);
+		if(!((inputCountries[0]!=null) && (inputCountries[1]!=null)))
+			return;
 		
-			if(!countryflag)
-			System.out.println("CountryName"+" is not present in the map");
-			
-	}
-	
-	public void addNeighbourService(String countryName,String neighbourCountryName) {
-		boolean countryflag=false,neighborcountryflag=false;;
-		for(Continent continent:gameMap.getContinents()) {
-			for(Country country:continent.getCountriesPresent()) {
-				if(country.getCountryName().equalsIgnoreCase(countryName)) {
-					countryflag=true;
-					for(String neighbourCountry:country.getListOfNeighbours()) {
-						if(neighbourCountry.equalsIgnoreCase(neighbourCountryName)) {
-							System.out.println(neighbourCountryName+" is already a neighbour of "+countryName);
-							neighborcountryflag=true;
-							break;
-						}
-					}
-						if(!neighborcountryflag) {
-							country.getListOfNeighbours().add(neighbourCountryName);
-							System.out.println(neighbourCountryName+" added as a neighbour of "+countryName);
-							
-						}
-					}
-			}
+		if(!inputCountries[0].getListOfNeighbours().contains(neighbourCountryName)) {
+				System.out.println(neighbourCountryName+" and "+countryName+" are not neighbors ");
+				return;
 		}
-				
-			if(!countryflag)
-			System.out.println("CountryName"+" is not present in the map");
+		
+		else{				
+			inputCountries[0].getListOfNeighbours().remove(neighbourCountryName);
+			inputCountries[1].getListOfNeighbours().remove(countryName);
+			System.out.println(neighbourCountryName+" and "+countryName+" are no longer neighbors ");
+			}
 			
+			
+		
 	}
 
+	
+	public void addNeighbourService(String countryName,String neighbourCountryName) {
+			Country[] inputCountries=checkNeighborArgumentValidity(countryName,neighbourCountryName);
+			if(!((inputCountries[0]!=null) && (inputCountries[1]!=null)))
+				return;
+			
+			if(inputCountries[0].getListOfNeighbours().contains(neighbourCountryName)) {
+					System.out.println(neighbourCountryName+" and "+countryName+" are already neighbors ");
+					return;
+			}
+			
+			else{				
+				inputCountries[0].getListOfNeighbours().add(neighbourCountryName);
+				inputCountries[1].getListOfNeighbours().add(countryName);
+				System.out.println(neighbourCountryName+" and "+countryName+" are now neighbors ");
+				}
+				
+		}		
+					
+	
+	
+	public Country[] checkNeighborArgumentValidity(String countryName,String neighborName) {
+		Country[] resultCountries=new Country[2];
+		
+		for(Continent continent:gameMap.getContinents()) {
+			Country returnVal1=continent.searchCountry(countryName);
+			Country returnVal2=continent.searchCountry(neighborName);
+			if(returnVal1!=null)
+					{resultCountries[0]=returnVal1;}
+			if(returnVal2!=null)
+					{resultCountries[1]=returnVal2;}
+			if((returnVal1!=null) && (returnVal2!=null) )
+				break;
+			}
+			
+			if(resultCountries[0]==null)
+				System.out.println(countryName+" is not present in the selected Map");
+			
+			if(resultCountries[1]==null)
+				System.out.println(neighborName+" is not present in the selected Map");
+				
+		
+			return (resultCountries);
+	}
 
 
 
@@ -454,12 +472,38 @@ public class MapEditorController extends Observable implements ActionListener {
         }
     }
     
-    
+    public void saveMapService(String mapName) {
+   	 MapTools mapTool = new MapTools();
+        if (mapTool.validateMap(gameMap, 2)) {
+            System.out.println("Done");
+            boolean bool = true;
+            while (bool) {
+                if (mapName != null) {
+                    if (mapName.trim().isEmpty()) {
+                        System.out.println("Please enter some name!");
+                    } else {
+                        gameMap.setName(mapName);
+                        if (mapTool.saveDataIntoFile(gameMap, mapName)) {
+                            System.out.println("Map has been saved");
+                        } else {
+                            System.out.println("Not able to save map file, enter different map name.");
+                        }
+                        bool = false;
+                    }
+                } else {
+                    bool = false;
+                }
+            }
+        } else {
+            System.out.println("Invalid Map, can not save.");
+            System.out.println(gameMap.getErrorMessage());
+        }
+   }
     
     public void showMapService() {
     	mapEditorView.setVisible(true);
-    	mapEditorView.createTree();
-        mapEditorView.countriesMatrix();
+    	mapEditorView.createTree(getGameMap());
+        mapEditorView.countriesMatrix(getGameMap());
     
     }
 }

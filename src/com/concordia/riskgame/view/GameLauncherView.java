@@ -140,7 +140,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		existingMap=new JMenuItem(new AbstractAction("Edit Existing Map") {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-
+				
 			}
 		});
 		menu.add(newMap); menu.add(existingMap);

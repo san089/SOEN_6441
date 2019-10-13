@@ -3,6 +3,7 @@ package com.concordia.riskgame.controller;
 import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Map;
+import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.view.MapEditorView;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class CommandController {
     public static final String ANSI_RESET = "\u001B[0m";
     
     public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
+    public static MapTools mapTools=new MapTools();
 
 
     /**
@@ -56,7 +58,7 @@ public class CommandController {
             case "editmap":
                 editMap(command);
                 break;
-            case "vaildatemap":
+            case "validatemap":
                 validateMap();
                 break;
             case "loadmap":
@@ -236,7 +238,7 @@ public class CommandController {
                 mapEditor.addNeighbourService(countryName,neighbourName);
             }
             for (String countryName : removeNeighbour.keySet()) {
-                String neighbourName = addNeighbour.get(countryName);
+                String neighbourName = removeNeighbour.get(countryName);
                 mapEditor.removeNeighbourService(countryName,neighbourName);
             }
         } else {
@@ -334,7 +336,7 @@ public class CommandController {
      * This method validates if the map loaded is
      */
     public static void validateMap() {
-
+    	mapTools.validateMap(mapEditor.getGameMap(), 2);
     }
 
     /**
@@ -348,12 +350,18 @@ public class CommandController {
     public static void saveMap(String command)
     {
         String fileName = command.split(" ")[1];
+        mapEditor.saveMapService(fileName);
+        
+        
     }
 
 
     public static void editMap(String command)
     {
-        String fileName = command.split(" ")[1];
+        String fileName = command.split(" ")[1]; 
+        Map gameMap=new Map();
+        if(mapTools.pickMapFileService(gameMap,fileName))
+        	mapEditor.setGameMap(gameMap);
     }
 
 

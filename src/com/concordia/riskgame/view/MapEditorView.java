@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class MapEditorView extends JFrame implements Serializable,Observer {
+public class MapEditorView extends JFrame implements Serializable {
     private JLabel countriesLabel;
     private JLabel continentLabel;
     private ToolBar toolBar;
@@ -66,11 +66,7 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
             @Override
             public void windowClosing(WindowEvent e) {
                 dispose();
-                //  GameLauncherView mainMenuScreen = new GameLauncherView();
-                //   mainMenuScreen.setVisible(true);
-                //  repaint();
-                //   revalidate();
-
+            
             }
         });
     }
@@ -119,12 +115,12 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
         add(treeScrollPane);
         add(toolBar);
 
-        countriesMatrix();
-        createTree();
+        countriesMatrix(gameMap);
+        createTree(gameMap);
     }
 
 
-    public void countriesMatrix(){
+    public void countriesMatrix(Map gameMap){
         System.out.println("inside countriesMAtrix");
         countries = gameMap.listOfCountryNames();
         int noOfCountries = countries.size();
@@ -225,7 +221,7 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
     }
 
 
-    public void createTree() {
+    public void createTree(Map gameMap) {
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("Map - " + gameMap.getName() + "");
         for (Continent continent : gameMap.getContinents()) {
             DefaultMutableTreeNode branch = new DefaultMutableTreeNode(continent.getContinentName());
@@ -240,8 +236,4 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
     }
 
     
-	@Override
-	public void update(Observable o, Object arg) {
-		//if(arg.ge)
-	}
 }
