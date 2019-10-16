@@ -138,6 +138,10 @@ public class CommandController {
      * @param command Command to execute
      */
     public static void editContinent(String command) {
+        if(gameplay.getCurrentPhase() != Phases.MapEditor){
+            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            return;
+        }
         if (validateEditContinentCommand(command)) {
             for (String Key : addContinent.keySet()) {
                mapEditor.addContinentService(Key,addContinent.get(Key),false);//Add continent functiono call.
@@ -198,6 +202,10 @@ public class CommandController {
      * @param command command to execute
      */
     public static void editCountry(String command) {
+        if(gameplay.getCurrentPhase() != Phases.MapEditor){
+            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            return;
+        }
         if (validateEditCountryCommand(command)) {
             for (String countryName : addCountry.keySet()) {
             	mapEditor.addCountriesService(addCountry.get(countryName), countryName,false);
@@ -258,6 +266,10 @@ public class CommandController {
      * @param command command to execute
      */
     public static void editNeighbour(String command) {
+        if(gameplay.getCurrentPhase() != Phases.MapEditor){
+            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            return;
+        }
         if (validateEditNeighbourCommand(command)) {
             for (String countryName : addNeighbour.keySet()) {
                 String neighbourName = addNeighbour.get(countryName);
@@ -318,6 +330,10 @@ public class CommandController {
      * @return True if the command is valid, else false.
      */
     public static void gamePlayer(String command) {
+        if(gameplay.getCurrentPhase() != Phases.Startup){
+            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            return;
+        }
         if (validateGamePlayerCommand(command)) {
             System.out.println("");
         } else {
@@ -376,6 +392,10 @@ public class CommandController {
      * This method validates if the map loaded is.
      */
     public static void validateMap() {
+        if(gameplay.getCurrentPhase() != Phases.MapEditor){
+            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            return;
+        }
     	mapTools.validateMap(mapEditor.getGameMap(), 2);
     }
 
@@ -397,6 +417,10 @@ public class CommandController {
      */
     public static void saveMap(String command)
     {
+        if(gameplay.getCurrentPhase() != Phases.MapEditor){
+            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            return;
+        }
         String fileName = command.split(" ")[1];
         mapEditor.saveMapService(fileName);
         
@@ -411,6 +435,10 @@ public class CommandController {
      */
     public static void editMap(String command)
     {
+        if(gameplay.getCurrentPhase() != Phases.MapEditor){
+            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            return;
+        }
         String fileName = command.split(" ")[1]; 
         Map gameMap=new Map();
         if(mapTools.pickMapFileService(gameMap,fileName))
@@ -423,14 +451,15 @@ public class CommandController {
      *
      * @param command loadmap command as input
      */
-    public static void loadMap(String command)
-    {
-    	String fileName = command.split(" ")[1];
-    	Map selectedMap=new Map();
-    	if(mapTools.pickMapFileService(selectedMap, fileName))
-    		gameplay.setSelectedMap(selectedMap);
-    	else
-    		System.out.println("The selected Map is invalid.Please select another map.Reason for Invalidity :"+selectedMap.getErrorMessage());
+    public static void loadMap(String command) {
+        String fileName = command.split(" ")[1];
+        Map selectedMap = new Map();
+        if (mapTools.pickMapFileService(selectedMap, fileName)) {
+            gameplay.setSelectedMap(selectedMap);
+            gameplay.setCurrentPhase(Phases.Startup);
+        } else {
+            System.out.println("The selected Map is invalid.Please select another map.Reason for Invalidity :" + selectedMap.getErrorMessage());
+        }
     }
 
     /**
@@ -438,6 +467,10 @@ public class CommandController {
      */
     public static void populateCountries()
     {
+        if(gameplay.getCurrentPhase() != Phases.Startup){
+            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            return;
+        }
     	String message=gameplay.validateStartupInputs();
 		if(!message.contentEquals("Success"))
 			System.out.println(message);
