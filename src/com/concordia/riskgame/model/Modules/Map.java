@@ -215,13 +215,13 @@ public class Map {
 	 * @param playerName the player name
 	 * @return the list of continents owned by the player
 	 */
-	public ArrayList<Continent> ownedContinents(String playerName) {
+	public ArrayList<Continent> getOwnedContinents(String playerName) {
 		ArrayList<Continent> ownedContinents=new ArrayList<Continent>();
 		for(Continent continent:continents)
 		{
 			boolean isOwned=true;
 			for(Country country:continent.getCountriesPresent()) {
-				if(!country.getOwnedBy().getPlayerName().equalsIgnoreCase(playerName))
+				if(!country.getOwnedBy().getPlayerName().equals(playerName))
 					{isOwned=false;
 					break;
 					}
@@ -233,6 +233,29 @@ public class Map {
 		return ownedContinents;
 				
 	}
+	
+	/**
+	 * Return the continents owned by a particular player.
+	 *
+	 * @param playerName the player name
+	 * @return the list of continents owned by the player
+	 */
+	public ArrayList<Country> getOwnedCountries(String playerName) {
+		ArrayList<Country> ownedCountries=new ArrayList<Country>();
+		for(Continent continent:continents)
+		{
+			for(Country country:continent.getCountriesPresent()) {
+				if(country.getOwnedBy().getPlayerName().equals(playerName))
+					{
+					ownedCountries.add(country);
+					}
+			}
+				
+		}
+		return ownedCountries;
+				
+	}
+	
 	
 	
 }

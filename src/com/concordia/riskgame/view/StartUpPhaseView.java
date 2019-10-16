@@ -33,6 +33,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.concordia.riskgame.controller.StartupPhaseController;
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Player;
+import com.concordia.riskgame.utilities.Phases;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -89,7 +90,7 @@ public class StartUpPhaseView extends JFrame implements Observer {
 		this.gameWindow=frame;
 		StartUpPhaseView.cardsContainerPanel=panel;
 		this.gamePlay = Gameplay.getInstance();
-		gamePlay.setCurrentPhase("Startup");
+		gamePlay.setCurrentPhase(Phases.Startup);
 		gamePlay.addObserver(this);
 		initaliseUI();
 

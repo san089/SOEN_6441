@@ -5,10 +5,12 @@ import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.MapEditorView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Scanner;
@@ -48,9 +50,6 @@ public class CommandController {
         commandType = command.split(" ")[0];
 
         switch (commandType) {
-        	case "phase":
-        		gameplay.setCurrentPhase(command.split("")[1]);
-        		break;
             case "editcontinent":
                 editContinent(command);
                 break;
@@ -365,7 +364,7 @@ public class CommandController {
      * Method to display map to the players.
      */
     public static void showMap() {
-    	if(gameplay.getCurrentPhase().equalsIgnoreCase("Mapeditor"))
+    	if(gameplay.getCurrentPhase()==Phases.MapEditor)
     		mapEditor.showMapService(mapEditor.getGameMap());
     	else
     		mapEditor.showMapService(gameplay.getSelectedMap());
@@ -443,14 +442,23 @@ public class CommandController {
         System.out.println("Enter the number armies to be placed ");
         boolean loop=true;
         while(loop) {
-        armyCount=in.nextInt();
-        if(gameplay.getCurrentPlayer().getArmyCount()>=armyCount) 
-        	loop=false;
-        else	
+        try {
+        	armyCount=in.nextInt();
+        }
+        catch(InputMismatchException ex) {
+        	System.out.println("Please enter a number");
+        }
+        
+        if(gameplay.getAbandonedCountryCount()>gameplay.getCurrentPlayer().getArmyCount()-armyCount)
+        	System.out.println("There are not enough armies to be deploy "+armyCount+" in one country .Please place such that every country has at least one army");
+	    else if(!(gameplay.getCurrentPlayer().getArmyCount()>=armyCount) )
         	System.out.println("Entered count more than the number of armies available for the current player.Please enter a different value.");      
+        else
+        	loop=false;
+        
         }   	
            	
-        if(gameplay.placeArmy(countryName,armyCount)) {
+        if(gameplay.placeArmy(countryName,armyCount,true)) {
         	if(gameplay.getCurrentPlayer().getArmyCount()>0)
         		gameplay.getPlayerQueue().add(gameplay.getPlayerQueue().remove());
         	gameplay.setCurrentPlayer(gameplay.getPlayerQueue().element());

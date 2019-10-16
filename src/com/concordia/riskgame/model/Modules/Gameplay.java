@@ -15,6 +15,7 @@ import com.concordia.riskgame.controller.MapEditorController;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.StartUpPhaseView;
 
 // TODO: Auto-generated Javadoc
@@ -23,18 +24,19 @@ public class Gameplay extends Observable{
 	private  int playerCount;
 	private  ArrayList<Player> players;
 	private  Map selectedMap;
-	private  String currentPhase;
 	private Queue<Player> playerQueue;
 	private Player currentPlayer;
 	private static final int MAX_PLAYER_LIMIT=6;
+	private Phases currentPhase;
 	private static Gameplay gameplayObj = null;
+	
 	
 	public static Gameplay getInstance(){
 		if(gameplayObj == null){
 			gameplayObj = new Gameplay();
 			gameplayObj.players = new ArrayList<Player>();
 			gameplayObj.selectedMap = null;
-			gameplayObj.currentPhase = "startup";
+			gameplayObj.currentPhase =Phases.MapEditor;
 			gameplayObj.playerCount=0;
 			gameplayObj.playerQueue=new LinkedList<Player>();
 		}
@@ -113,13 +115,13 @@ public class Gameplay extends Observable{
 
 	
 	
-	public String getCurrentPhase() {
+	public Phases getCurrentPhase() {
 		return currentPhase;
 	}
 	
 	
-	public void setCurrentPhase(String currentPhase) {
-		this.currentPhase = currentPhase;
+	public void setCurrentPhase(Phases currentPhase) {
+		gameplayObj.currentPhase = currentPhase;
 	}
 	
 	
@@ -157,7 +159,7 @@ public class Gameplay extends Observable{
 	public boolean existDuplicatePlayer(String playerName)
 	{
 		for(Player player:players)
-			if(player.getPlayerName().equalsIgnoreCase(playerName))
+			if(player.getPlayerName().equals(playerName))
 				return true;
 		
 		return false;
@@ -177,7 +179,7 @@ public class Gameplay extends Observable{
 		for(Iterator<Player> playerIt=players.iterator();playerIt.hasNext();)
 			{
 			currentPlayer=playerIt.next();
-			if(currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
+			if(currentPlayer.getPlayerName().equals(playerName)) {
 				playerFound = true;
 				playerIt.remove();
 				setChanged();
@@ -239,7 +241,7 @@ public class Gameplay extends Observable{
 			
 		}
 		assignStartupArmies();
-		System.out.println("Populate Countries Operation Succesful.Entering Army Placement Phase ");
+		System.out.println("*******Populate Countries Operation Succesful.Entering Army Placement Phase******** ");
 		playerQueue.clear();
 		playerQueue.addAll(getPlayers());
 		currentPlayer=playerQueue.element();
@@ -283,7 +285,7 @@ public class Gameplay extends Observable{
 		
 		for(Player player:getPlayers()) {
 			int reinforcementArmyCount=((player.getCountriesOwned().size())/3);
-			for(Continent continent:getSelectedMap().ownedContinents(player.getPlayerName())) {
+			for(Continent continent:getSelectedMap().getOwnedContinents(player.getPlayerName())) {
 				reinforcementArmyCount=reinforcementArmyCount+continent.getControlValue();
 			}
 			reinforcementArmyCount=(reinforcementArmyCount<3)?(3):reinforcementArmyCount;
@@ -299,7 +301,7 @@ public class Gameplay extends Observable{
 	 * @param count the count
 	 * @return true, if successful
 	 */
-	public boolean placeArmy(String countryName,int count) {
+	public boolean placeArmy(String countryName,int count,boolean displayArmy) {
 		if(!getSelectedMap().listOfCountryNames().contains(countryName)) {
 			System.out.println("The country "+countryName+" do not exist in the current game map");
 			return false;
@@ -308,7 +310,6 @@ public class Gameplay extends Observable{
 			System.out.println("The country "+countryName+" is not owned by "+currentPlayer.getPlayerName());
 			return false;
 			}
-		
 		else
 		{
 			for(Continent continent:getSelectedMap().getContinents()) {
@@ -316,18 +317,48 @@ public class Gameplay extends Observable{
 				if(country==null)
 					continue;
 				country.setNoOfArmiesPresent(country.getNoOfArmiesPresent()+count);
-				System.out.println("Country "+countryName+" now has "+country.getNoOfArmiesPresent()+" armies");
-	        	break;
+				break;
 			
 			}
 			currentPlayer.setArmyCount(currentPlayer.getArmyCount()-count);
+			if(displayArmy)
+				displayArmyDistribution();
 			
 			return true;
 		}
+		
+		
 	}
 	
 	
+	/**
+	 * 
+	 */
 	
+	public int getAbandonedCountryCount() {
+		int count=0;
+		for(Country country:selectedMap.getOwnedCountries(currentPlayer.getPlayerName()))
+			if(country.getNoOfArmiesPresent()==0)
+				count++;
+		return count;
+
+	}
+	
+	
+	/**
+	 * 
+	 */
+	public void displayArmyDistribution() {
+		System.out.println("PLAYER NAME : [(Country , Armies in the country)]");
+		for (Player player : getPlayers()) {
+			System.out.print(player.getPlayerName() + " :  [");
+			for (Country country : selectedMap.getOwnedCountries(player.getPlayerName()))
+				System.out.print("(" + country.getCountryName() + " , " + country.getNoOfArmiesPresent() + ") ");
+			System.out.print("]");
+			System.out.println();
+		}
+
+	}
 	
 	/**
 	 * Place all armies.
@@ -337,15 +368,15 @@ public class Gameplay extends Observable{
 		while(tempQueue.size()!=0) {
     		setCurrentPlayer(tempQueue.remove());
     		ArrayList<String> countries=getCurrentPlayer().getCountriesOwned();
-			Random random = new Random();
 			System.out.println("Placing army for "+getCurrentPlayer().getPlayerName());
 			int countryindex=0;
 			while(getCurrentPlayer().getArmyCount()!=0) 
 			{
 			int armycount=1;
-			placeArmy(countries.get(countryindex), armycount);
+			placeArmy(countries.get(countryindex), armycount,false);
 			countryindex=(countryindex==countries.size()-1)?0:++countryindex;		
 			}
+			displayArmyDistribution();
     	}
 		
 		

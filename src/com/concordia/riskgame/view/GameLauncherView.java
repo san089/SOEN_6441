@@ -72,9 +72,6 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	}
 
 
-	/**
-	 * Initalise card layout UI.
-	 */
 	public void initaliseCardLayoutUI() {
 
 		cardsContainerPanel=new JPanel(new CardLayout());
@@ -111,7 +108,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 
 
 	/**
-	 * create menu bar method.
+	 * create menu bar method
 	 */
 	private void CreateMenuBar() {
 
