@@ -13,8 +13,9 @@
  import java.util.List;
 
 
-
-// TODO: Auto-generated Javadoc
+ /**
+  * Class containing Map manipulation related functionalities
+  */
 public class MapTools  {
 	
 	/**
@@ -341,8 +342,11 @@ public class MapTools  {
 		}
 		return true;
 	}
-	
 
+
+	 /**
+	  * Class to create a graph of Map.
+	  */
 	class Graph {
 		private int Value; 
 		private ArrayList<Integer> adj[]; 
@@ -390,8 +394,12 @@ public class MapTools  {
 				}
 			}
 		}
-		
 
+
+		 /**
+		  * Get the graph transpose
+		  * @return graph
+		  */
 		Graph getTranspose() {
 			Graph graph = new Graph(Value);
 			for (int v = 0; v < Value; v++) {
