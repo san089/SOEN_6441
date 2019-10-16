@@ -3,7 +3,7 @@ package com.concordia.riskgame.model.Modules;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Instantiates a new country.
  *
@@ -45,61 +45,99 @@ public class Country {
     }
 
 
+    /**
+     * Getter for countryName
+     * @return countryName
+     */
     public String getCountryName() {
         return countryName;
     }
 
 
+    /**
+     * Setter for countryName attribute.
+     * @param countryName
+     */
     public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
-
+    /**
+     * Getter for owner name
+     * @return ownedBy
+     */
     public Player getOwnedBy() {
         return ownedBy;
     }
 
-
+    /**
+     * Setter for ownedBy attribute.
+     * @param ownedBy
+     */
     public void setOwnedBy(Player ownedBy) {
         this.ownedBy = ownedBy;
     }
 
-
+    /**
+     * Getter for number of armies in the country
+     * @return noOfArmiesPresent
+     */
     public int getNoOfArmiesPresent() {
         return this.noOfArmiesPresent;
     }
 
-
+    /**
+     * Setter for setting armies into country.
+     * @param noOfArmiesPresent
+     */
     public void setNoOfArmiesPresent(int noOfArmiesPresent) {
         this.noOfArmiesPresent = noOfArmiesPresent;
     }
 
-
+    /**
+     * Getter for list of neighbours for the country
+     * @return listOfNeighbours
+     */
     public List<String> getListOfNeighbours() {
         return listOfNeighbours;
     }
 
-
+    /**
+     * Setter for setting neighbours attribute.
+     * @param listOfNeighbours
+     */
     public void setListOfNeighbours(List<String> listOfNeighbours) {
         this.listOfNeighbours = listOfNeighbours;
     }
 
-
+    /**
+     * Getter for longitude
+     * @return longitude
+     */
     public double getLongitude() {
         return longitude;
     }
 
-
+    /**
+     * Setter for longitude attribute.
+     * @param longitude
+     */
     public void setLongitude(double longitude) {
         longitude = longitude;
     }
 
-
+    /**
+     * Getter for latitude
+     * @return latitude
+     */
     public double getLatitude() {
         return latitude;
     }
 
-
+    /**
+     * Setter for latitude attribute.
+     * @param latitude
+     */
     public void setLatitude(double latitude) {
         latitude = latitude;
     }
@@ -119,14 +157,4 @@ public class Country {
         this.noOfArmiesPresent--;
     }
 
-	/*
-	 * <<<<<<< HEAD ======= private final String countryName; private final String
-	 * continentName; private String coordinateX; private String coordinateY;
-	 * private String ownerName; private ArrayList<Country> adjacentCountries;
-	 * private int armyCount;
-	 */
-	
-	
-
-	
 }
