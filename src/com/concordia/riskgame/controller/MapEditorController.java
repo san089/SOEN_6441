@@ -14,14 +14,16 @@ import java.util.List;
 import java.util.Observable;
 
 
-// TODO: Auto-generated Javadoc
+/**
+ * This class performs commands related to editing map components e.g. editcountry, editccontinent, editneighbour
+ */
 public class MapEditorController implements ActionListener {
-  //  private Continent continent;
+
     private MapEditorView mapEditorView;
     private Map gameMap;
     
 
-   	/**
+   	    /**
 	    * Instantiates a new map editor controller.
 	    *
 	    * @param mapEditorView the map editor view
@@ -33,11 +35,19 @@ public class MapEditorController implements ActionListener {
         	
    	}
 
+    /**
+     * Setter method to setup GameMap
+     * @param gameMap
+     */
     public void setGameMap(Map gameMap) {
 		this.gameMap = gameMap;
 		
 	}
 
+    /**
+     * Getter method to get GameMap
+     * @return gameMap
+     */
     public Map getGameMap() {
 		return this.gameMap;
 				
@@ -79,7 +89,7 @@ public class MapEditorController implements ActionListener {
 
 
     /**
-     * Adds the continent.
+     * This method is integrated with the UI, and it performs add continent action
      */
     public void addContinent() {
         boolean loop = true;
@@ -507,7 +517,7 @@ public class MapEditorController implements ActionListener {
 
 
     /**
-     * Save.
+     * Save the File.
      */
     public void save() {
         MapTools mapTool = new MapTools();

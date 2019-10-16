@@ -45,13 +45,20 @@ public class StartupPhaseController implements ActionListener  {
 		initView();
 	}
 
-	
 
+	/**
+	 * Getter method to get counties list
+	 * @return counties
+	 */
 	public List<String> getCountries() {
 		return countries;
 	}
 
 
+	/**
+	 * Setter method to set countries.
+	 * @param countries
+	 */
 	public void setCountries(ArrayList<String> countries) {
 		this.countries = countries;
 	}	
@@ -67,7 +74,7 @@ public class StartupPhaseController implements ActionListener  {
 	
 	
 	/**
-	 * Inits the controller.
+	 * Initialise the controller.
 	 */
 	public void initController() {
 		sView.getAddPlayerButton().addActionListener(this);

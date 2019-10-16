@@ -1,8 +1,14 @@
 package com.concordia.riskgame.controller;
 
+/**
+ * Reinforcement Controller class to help control the reinforcement phase in the game.
+ */
 public class ReinforcementController {
 
-	
+
+	/**
+	 * Method to help reinforce army for player before the Attack Phase
+	 */
 	public static void reinforceArmy() {
 		System.out.println("\nReinforcement Functionality is currently abstract.\n==============================================================\n");
 		System.out.println(" Rules for Reinforcement Phase: \nThe player is given a number of armies that depends on the number of countries he owns (# of countries owned divided by 3, rounded down). " +
