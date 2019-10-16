@@ -16,12 +16,14 @@ import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
-// TODO: Auto-generated Javadoc
+/**
+ * ===============================================
+ * THIS IS THE DRIVER CLASS FOR PROJECT
+ * ================================================
+ * THIS CLASS IS THE INITAL VIEW OF THE GAME.
+ */
 public class GameLauncherView extends JFrame implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JFrame gameWindow;
 	final static String GAMELAUNCHERPANEL = "Card with Game Launching View";
@@ -72,6 +74,9 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	}
 
 
+	/**
+	 * Method to initialise card layout variables.
+	 */
 	public void initaliseCardLayoutUI() {
 
 		cardsContainerPanel=new JPanel(new CardLayout());

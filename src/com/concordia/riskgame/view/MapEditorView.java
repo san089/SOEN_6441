@@ -32,7 +32,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-// TODO: Auto-generated Javadoc
+
+/**
+ * This class is the view of the MapEditor Functionalities
+ */
 public class MapEditorView extends JFrame implements Serializable {
     private JLabel countriesLabel;
     private JLabel continentLabel;
