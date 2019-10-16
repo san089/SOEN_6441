@@ -21,6 +21,7 @@ import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+// TODO: Auto-generated Javadoc
 public class MapEditorView extends JFrame implements Serializable {
     private JLabel countriesLabel;
     private JLabel continentLabel;
@@ -50,7 +52,8 @@ public class MapEditorView extends JFrame implements Serializable {
 
 
     /**
-     * map editor constructor
+     * map editor constructor.
+     *
      * @param gameMap object of Map class
      */
     public MapEditorView(Map gameMap) {
@@ -72,7 +75,8 @@ public class MapEditorView extends JFrame implements Serializable {
     }
 
     /**
-     * adding components to map editor
+     * adding components to map editor.
+     *
      * @param mapEditorController object of MapEditorController class
      */
     public void addComponents(MapEditorController mapEditorController) {
@@ -110,7 +114,8 @@ public class MapEditorView extends JFrame implements Serializable {
         countryLabelViewPanel.add(countriesLabel);
         scrollPane = new JScrollPane(tableMatrix);
         scrollPane.setBounds(treeScrollPane.getBounds().x + (int) (treeScrollPane.getBounds().getWidth()), 70,frameSize.width - 300, frameSize.height - 600);
-
+        
+        
         add(scrollPane);
         add(treeScrollPane);
         add(toolBar);
@@ -120,8 +125,13 @@ public class MapEditorView extends JFrame implements Serializable {
     }
 
 
+    /**
+     * Countries matrix.
+     *
+     * @param gameMap the game map
+     */
     public void countriesMatrix(Map gameMap){
-        System.out.println("inside countriesMAtrix");
+      //  System.out.println("inside countriesMAtrix");
         countries = gameMap.listOfCountryNames();
         int noOfCountries = countries.size();
         DefaultTableModel dtm = new DefaultTableModel(noOfCountries,noOfCountries) {
@@ -221,18 +231,33 @@ public class MapEditorView extends JFrame implements Serializable {
     }
 
 
+    /**
+     * Creates the tree.
+     *
+     * @param gameMap the game map
+     */
     public void createTree(Map gameMap) {
+    	
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("Map - " + gameMap.getName() + "");
         for (Continent continent : gameMap.getContinents()) {
             DefaultMutableTreeNode branch = new DefaultMutableTreeNode(continent.getContinentName());
             for (Country country : continent.getCountriesPresent()) {
                 DefaultMutableTreeNode subBranch = new DefaultMutableTreeNode(country.getCountryName());
                 branch.add(subBranch);
+				if(country.getOwnedBy()!=null) 
+				{
+                DefaultMutableTreeNode ownerName = new DefaultMutableTreeNode(country.getOwnedBy().getPlayerName());
+                subBranch.add(ownerName);
+				DefaultMutableTreeNode armyCount = new DefaultMutableTreeNode(country.getNoOfArmiesPresent());
+				subBranch.add(armyCount);
+				}
+                
             }
             top.add(branch);
         }
         mapTree = new JTree(top);
         treeScrollPane.getViewport().add(mapTree);
+    	        
     }
 
     

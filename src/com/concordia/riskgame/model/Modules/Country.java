@@ -3,6 +3,7 @@ package com.concordia.riskgame.model.Modules;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * Instantiates a new country.
  *
@@ -22,18 +23,25 @@ public class Country {
     private List<String> listOfNeighbours;
     private double longitude;
     private double latitude;
-    private boolean isVisited;
-    private String continentName;
-
+    
+    /**
+     * Instantiates a new country.
+     */
     public Country() {
         listOfNeighbours = new ArrayList<String>();
     }
 
+    /**
+     * Instantiates a new country.
+     *
+     * @param countryName the country name
+     * @param continent the continent
+     */
     public Country(String countryName, Continent continent) {
         this.setCountryName(countryName);
         this.listOfNeighbours = new ArrayList<String>();
-        isVisited = false;
-
+        this.noOfArmiesPresent=0;
+        
     }
 
 
@@ -97,10 +105,16 @@ public class Country {
     }
 
 
+    /**
+     * Adds the no of armies country.
+     */
     public void addNoOfArmiesCountry() {
         this.noOfArmiesPresent++;
     }
 
+    /**
+     * Removes the no of armies country.
+     */
     public void removeNoOfArmiesCountry() {
         this.noOfArmiesPresent--;
     }

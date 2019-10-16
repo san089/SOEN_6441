@@ -21,6 +21,11 @@ public class ToolBar extends JPanel implements Serializable {
 
 
 
+    /**
+     * Instantiates a new tool bar.
+     *
+     * @param mapEditorController the map editor controller
+     */
     public ToolBar(MapEditorController mapEditorController) {
         setLayout(new FlowLayout());
         continent = new Continent();

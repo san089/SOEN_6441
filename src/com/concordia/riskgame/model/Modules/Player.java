@@ -21,16 +21,22 @@ public class Player {
 	
 	private ArrayList<Card> cardsOwned;
 	
-	private int reinforcementArmyCount;
+	private int armyCount;
 	
 	
 	
+	/**
+	 * Instantiates a new player.
+	 *
+	 * @param playerIndex the player index
+	 * @param playerName the player name
+	 */
 	public Player(int playerIndex, String playerName) {
 		this.playerIndex = playerIndex;
 		this.playerName = playerName;
 		this.countriesOwned = new ArrayList<String>();
 		this.cardsOwned = new ArrayList<Card>();
-		this.reinforcementArmyCount = 0;
+		this.armyCount = 0;
 	}
 
 	
@@ -53,8 +59,8 @@ public class Player {
 		this.cardsOwned = cardsOwned;
 	}
 
-	public void setReinforcementArmyCount(int reinforcementArmyCount) {
-		this.reinforcementArmyCount = reinforcementArmyCount;
+	public void setArmyCount(int armyCount) {
+		this.armyCount = armyCount;
 	}
 
 
@@ -76,8 +82,8 @@ public class Player {
 	}
 
 	
-	public int getReinforcementArmyCount() {
-		return reinforcementArmyCount;
+	public int getArmyCount() {
+		return armyCount;
 	}
 	
 		

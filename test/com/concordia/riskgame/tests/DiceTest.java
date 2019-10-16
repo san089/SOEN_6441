@@ -11,12 +11,16 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
+// TODO: Auto-generated Javadoc
 public class DiceTest {
     private Dice randomNo;
     private int r;
     private int n;
 
 
+    /**
+     * Sets the up.
+     */
     @Before
     public void setUp()  {
         randomNo= new Dice();
@@ -24,6 +28,9 @@ public class DiceTest {
         n=2;
     }
 
+    /**
+     * Roll N dice.
+     */
     @Test
     public void rollNDice() {
         ArrayList<Integer> result = new ArrayList<>();

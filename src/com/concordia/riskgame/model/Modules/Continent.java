@@ -1,9 +1,13 @@
+/*
+ * 
+ */
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+// TODO: Auto-generated Javadoc
 public class Continent {
 
     private String continentName;
@@ -11,6 +15,9 @@ public class Continent {
     private int controlValue;
 
 
+    /**
+     * Instantiates a new continent.
+     */
     public Continent() {
         controlValue = 0;
         countriesPresent = new ArrayList<Country>();
@@ -44,15 +51,31 @@ public class Continent {
         this.controlValue = controlValue;
     }
 
+    /**
+     * Adds the country.
+     *
+     * @param name the name
+     */
     public void addCountry(Country name) {
         countriesPresent.add(name);
     }
 
+    /**
+     * Removes the country.
+     *
+     * @param name the name
+     */
     public void removeCountry(Country name) {
         countriesPresent.remove(name);
     }
     
     
+    /**
+     * Search country.
+     *
+     * @param countryName the country name
+     * @return the country
+     */
     public Country searchCountry(String countryName) {
     	for(Country country:getCountriesPresent())
     		if(country.getCountryName().contentEquals(countryName))

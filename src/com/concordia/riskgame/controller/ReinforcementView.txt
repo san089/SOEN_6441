@@ -1,19 +1,5 @@
 
 
-package com.concordia.riskgame.controller;
-
-import com.concordia.riskgame.model.Modules.Gameplay;
-import com.concordia.riskgame.model.Modules.Player;
-
-import java.util.*;
-
-/**
- * Reinforcement class contains two method, first one is at the game beginning, every country has only one army, each player
- * places their reinforcement in turn, it's only called at the beginning of the game. Second method is each player places
- * their reinforcement to owned countries till they have no more reinforcement. Second method can be called in game phase.
- */
-
-
 public class ReinforcementView extends Gameplay {
     private GameInitDriver gameDriver;
     private Queue<Player> playerQueue;

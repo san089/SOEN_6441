@@ -2,11 +2,13 @@ package com.concordia.riskgame.view;
 
 //import com.concordia.riskgame.controller.ReinforcementView;
 import com.concordia.riskgame.controller.CommandController;
+import com.concordia.riskgame.controller.StartupPhaseController;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.utilities.MapTools;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
@@ -26,32 +28,20 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	private CardLayout cardLayout;
 	private JPanel cardsContainerPanel;
 
-	private TitledBorder border;
 	private JPanel gameLaunchPanel;
 	private JButton startButton;
-	private JButton MapEditor;
-	private JButton editMapButton;
-	private JButton tournamentButton;
-	private JButton loadGameButton;
-	private JButton exitButton;
-	private JLabel titleLabel;
 	private MapTools mapTool;
 
 
-	//private ReinforcementView rView;
 	private com.concordia.riskgame.view.MapEditorView mapEditorView;
-	private StartUpPhaseView sView;
-	private Scanner in;
-
-
-//>>>>>>> SOEN6441_sucheta
+	
 	/**
 	 * Instantiates a new game launcher view.
 	 */
 	public GameLauncherView() {
-		in=new Scanner(System.in);
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		gameWindow=new JFrame("****RISK GAME*****");
+		gameWindow=new JFrame("***********************************************************RISK GAME****************************************************");
+		
 		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mapTool=new MapTools();
 		gameLaunchPanel = new JPanel();
@@ -61,7 +51,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 
 		startButton=new JButton("Start Game");
 		startButton.setVisible(true);
-		startButton.setBounds(386, 30, 121, 20);
+		startButton.setBounds(300, 210, 121, 21);
 		gameLaunchPanel.add(startButton);
 
 		startButton.addActionListener(this);
@@ -82,6 +72,9 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	}
 
 
+	/**
+	 * Initalise card layout UI.
+	 */
 	public void initaliseCardLayoutUI() {
 
 		cardsContainerPanel=new JPanel(new CardLayout());
@@ -92,7 +85,8 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		cardLayout.show(cardsContainerPanel, GAMELAUNCHERPANEL);
 
 		gameWindow.pack();
-		gameWindow.setSize(900, 800);
+		//gameWindow.setFont(Font.CE);
+		gameWindow.setSize(700, 700);
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setVisible(true);
 
@@ -110,22 +104,18 @@ public class GameLauncherView extends JFrame implements ActionListener {
 
 		if(event.getSource()==startButton)
 		{
-			sView=new StartUpPhaseView(gameWindow,cardsContainerPanel);
+			new StartupPhaseController(new StartUpPhaseView(gameWindow,cardsContainerPanel));
 		}
-		else if(event.getSource()==MapEditor)
-		{
-			//new MapEditorView(new Map());
-		}
-
+		
 	}
 
 
 	/**
-	 * create menu bar method
+	 * create menu bar method.
 	 */
 	private void CreateMenuBar() {
 
-		JMenu menu, submenu;
+		JMenu menu;
 		JMenuItem newMap, existingMap;
 		JMenuBar mb=new JMenuBar();
 		menu=new JMenu("Map Editor");
@@ -178,7 +168,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	 * @param args the arguments
 	 */
 	public static void main(String args[]) {
-		GameLauncherView game=new GameLauncherView();
+		new GameLauncherView();
 
 	}
 

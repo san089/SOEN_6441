@@ -14,13 +14,20 @@ import java.util.List;
 import java.util.Observable;
 
 
+// TODO: Auto-generated Javadoc
 public class MapEditorController implements ActionListener {
   //  private Continent continent;
     private MapEditorView mapEditorView;
     private Map gameMap;
     
 
-   	public MapEditorController(MapEditorView mapEditorView) {
+   	/**
+	    * Instantiates a new map editor controller.
+	    *
+	    * @param mapEditorView the map editor view
+	    */
+	   public MapEditorController(MapEditorView mapEditorView) {
+   		
         this.mapEditorView = mapEditorView;
         this.gameMap = mapEditorView.gameMap;
         	
@@ -32,11 +39,16 @@ public class MapEditorController implements ActionListener {
 	}
 
     public Map getGameMap() {
-		return gameMap;
+		return this.gameMap;
 				
     }
+    
+    
 
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String button = e.getActionCommand();
@@ -66,6 +78,9 @@ public class MapEditorController implements ActionListener {
 
 
 
+    /**
+     * Adds the continent.
+     */
     public void addContinent() {
         boolean loop = true;
         while (loop) {
@@ -93,6 +108,13 @@ public class MapEditorController implements ActionListener {
         }
     }
     
+    /**
+     * Adds the continent service.
+     *
+     * @param continentName the continent name
+     * @param controlValue the control value
+     * @param calledByUI the called by UI
+     */
     public void addContinentService(String continentName,int controlValue,boolean calledByUI) {
     	if(!calledByUI) {
     		if (continentName.isEmpty()) {
@@ -114,6 +136,9 @@ public class MapEditorController implements ActionListener {
 
     
     
+    /**
+     * Adds the countries.
+     */
     public void addCountries() {
         JTextField inputCountry = new JTextField();
         String lastContinent = "";
@@ -164,6 +189,13 @@ public class MapEditorController implements ActionListener {
         }
     }
 
+    /**
+     * Adds the countries service.
+     *
+     * @param continentName the continent name
+     * @param countryName the country name
+     * @param calledbyUI the calledby UI
+     */
     public void addCountriesService(String continentName,String countryName,boolean calledbyUI) {
     	if(!calledbyUI) {
     		 if (gameMap.getContinents().size() == 0) {
@@ -199,26 +231,22 @@ public class MapEditorController implements ActionListener {
         countryNames = gameMap.listOfCountryNames();
         Country newCountry = new Country();
         newCountry.setCountryName(countryName);
-		/*
-		 * if (countryNames.size() > 0) { newCountry.setListOfNeighbours(countryNames);
-		 * }
-		 *//*
-		 * for (Country country : tempContinent.getCountriesPresent()) {
-		 * country.getListOfNeighbours().add(countryName); }
-		 */tempContinent.addCountry(newCountry);
+        tempContinent.addCountry(newCountry);
         System.out.println("Country "+countryName+" added to "+tempContinent);
         
-      //  tempContinent.setControlValue(tempContinent.getCountriesPresent().size());
-    }
+      }
     
     
     
     
     
 
+    /**
+     * Removes the continent.
+     */
     public void removeContinent() {
-      //  System.out.println("Aya 1");
         if (gameMap.getContinents().size() == 0) {
+        	System.out.println("-------->MAP OBEJCT "+gameMap);
             JOptionPane.showMessageDialog(null, "Map Contains Zero Continent!");
         } else {
             String continents[] = new String[gameMap.getContinents().size()];
@@ -241,6 +269,12 @@ public class MapEditorController implements ActionListener {
     }
     
     
+    /**
+     * Removes the continent service.
+     *
+     * @param continentName the continent name
+     * @param calledfromUI the calledfrom UI
+     */
     public void removeContinentService(String continentName,boolean calledfromUI) {
     	if(!calledfromUI) {
     		boolean flag=false;
@@ -278,6 +312,9 @@ public class MapEditorController implements ActionListener {
       
 
 
+    /**
+     * Removes the country.
+     */
     public void removeCountry() {
         if (gameMap.getContinents().size() == 0) {
             JOptionPane.showMessageDialog(null, "Map Contains Zero Continent, So no country to remove!");
@@ -344,6 +381,13 @@ public class MapEditorController implements ActionListener {
 
 
 
+	/**
+	 * Removes the country service.
+	 *
+	 * @param continentName the continent name
+	 * @param countryName the country name
+	 * @param calledfromUI the calledfrom UI
+	 */
 	public void removeCountryService(Continent continentName,String countryName,boolean calledfromUI) {
 			if(!calledfromUI) {
 			boolean flag=false;
@@ -375,6 +419,12 @@ public class MapEditorController implements ActionListener {
 	}	
 	
 	
+	/**
+	 * Removes the neighbour service.
+	 *
+	 * @param countryName the country name
+	 * @param neighbourCountryName the neighbour country name
+	 */
 	public void removeNeighbourService(String countryName,String neighbourCountryName) {
 		Country[] inputCountries=checkNeighborArgumentValidity(countryName,neighbourCountryName);
 		if(!((inputCountries[0]!=null) && (inputCountries[1]!=null)))
@@ -396,6 +446,12 @@ public class MapEditorController implements ActionListener {
 	}
 
 	
+	/**
+	 * Adds the neighbour service.
+	 *
+	 * @param countryName the country name
+	 * @param neighbourCountryName the neighbour country name
+	 */
 	public void addNeighbourService(String countryName,String neighbourCountryName) {
 			Country[] inputCountries=checkNeighborArgumentValidity(countryName,neighbourCountryName);
 			if(!((inputCountries[0]!=null) && (inputCountries[1]!=null)))
@@ -416,6 +472,13 @@ public class MapEditorController implements ActionListener {
 					
 	
 	
+	/**
+	 * Check neighbor argument validity.
+	 *
+	 * @param countryName the country name
+	 * @param neighborName the neighbor name
+	 * @return the country[]
+	 */
 	public Country[] checkNeighborArgumentValidity(String countryName,String neighborName) {
 		Country[] resultCountries=new Country[2];
 		
@@ -443,6 +506,9 @@ public class MapEditorController implements ActionListener {
 
 
 
+    /**
+     * Save.
+     */
     public void save() {
         MapTools mapTool = new MapTools();
         if (mapTool.validateMap(gameMap, 3)) {
@@ -472,6 +538,11 @@ public class MapEditorController implements ActionListener {
         }
     }
     
+    /**
+     * Save map service.
+     *
+     * @param mapName the map name
+     */
     public void saveMapService(String mapName) {
    	 MapTools mapTool = new MapTools();
         if (mapTool.validateMap(gameMap, 2)) {
@@ -500,11 +571,16 @@ public class MapEditorController implements ActionListener {
         }
    }
     
-    public void showMapService() {
+    /**
+     * Show map service.
+     *
+     * @param map the map
+     */
+    public void showMapService(Map map) {
     	mapEditorView.setVisible(true);
-    	System.out.println("GameMap object---------------->"+getGameMap());
-    	mapEditorView.createTree(getGameMap());
-        mapEditorView.countriesMatrix(getGameMap());
+      	System.out.println("GameMap object---------------->"+map);
+    	mapEditorView.createTree(map);
+        mapEditorView.countriesMatrix(map);
     
     }
 }

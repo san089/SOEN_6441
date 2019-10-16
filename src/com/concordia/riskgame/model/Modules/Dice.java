@@ -1,9 +1,13 @@
+/*
+ * 
+ */
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+// TODO: Auto-generated Javadoc
 /**
  * Dice class is used to roll, provide the result of attack
  * @since Build I
@@ -13,13 +17,19 @@ import java.util.Random;
 public class Dice {
     private final int NUMBER_CEIL = 6;
 
+    /**
+     * Roll one dice.
+     *
+     * @return the int
+     */
     public int rollOneDice(){
         int r = new Random().nextInt(NUMBER_CEIL);
         return r;
     }
 
     /**
-     * Rolling n dices
+     * Rolling n dices.
+     *
      * @param n , number of dice are used: n
      * @return dice result as an array which is descending, for comparing battle result
      */

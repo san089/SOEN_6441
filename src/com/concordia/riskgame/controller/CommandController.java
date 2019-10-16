@@ -3,12 +3,19 @@ package com.concordia.riskgame.controller;
 import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Map;
+import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.view.MapEditorView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
+// TODO: Auto-generated Javadoc
 /**
  * Class to parse the commands entered by user and perform actions based on commands
  */
@@ -26,6 +33,7 @@ public class CommandController {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
     
+    public static Gameplay gameplay=Gameplay.getInstance();
     public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
     public static MapTools mapTools=new MapTools();
 
@@ -40,6 +48,9 @@ public class CommandController {
         commandType = command.split(" ")[0];
 
         switch (commandType) {
+        	case "phase":
+        		gameplay.setCurrentPhase(command.split("")[1]);
+        		break;
             case "editcontinent":
                 editContinent(command);
                 break;
@@ -93,6 +104,8 @@ public class CommandController {
 
 
     /**
+     * Verify all characters.
+     *
      * @param val Takes a string input
      * @return return true if the string has only characters a-z, else return false.
      */
@@ -100,6 +113,12 @@ public class CommandController {
         return val.matches("^[a-zA-Z]*$");
     }
 
+    /**
+     * Verify number.
+     *
+     * @param val the val
+     * @return true, if successful
+     */
     public static boolean verifyNumber(String val) {
         try {
             Integer.parseInt(val);
@@ -109,6 +128,9 @@ public class CommandController {
         }
     }
 
+    /**
+     * Invalid command message.
+     */
     public static void invalidCommandMessage() {
         System.out.println(ANSI_RED + "INVALID COMMAND !!, Check the command format below. ");
         showHelpOptions();
@@ -291,7 +313,7 @@ public class CommandController {
                 System.out.println(Gameplay.getInstance().addPlayer(playerName));
             }
             for (String playerName : removePlayer) {
-                Gameplay.getInstance().removePlayer(playerName);
+                System.out.println(Gameplay.getInstance().removePlayer(playerName));
             }
         } else {
             invalidCommandMessage();
@@ -333,7 +355,7 @@ public class CommandController {
 
 
     /**
-     * This method validates if the map loaded is
+     * This method validates if the map loaded is.
      */
     public static void validateMap() {
     	mapTools.validateMap(mapEditor.getGameMap(), 2);
@@ -343,10 +365,18 @@ public class CommandController {
      * Method to display map to the players.
      */
     public static void showMap() {
-    	mapEditor.showMapService();
+    	if(gameplay.getCurrentPhase().equalsIgnoreCase("Mapeditor"))
+    		mapEditor.showMapService(mapEditor.getGameMap());
+    	else
+    		mapEditor.showMapService(gameplay.getSelectedMap());
     }
 
 
+    /**
+     * Save map.
+     *
+     * @param command the command
+     */
     public static void saveMap(String command)
     {
         String fileName = command.split(" ")[1];
@@ -356,6 +386,11 @@ public class CommandController {
     }
 
 
+    /**
+     * Edits the map.
+     *
+     * @param command the command
+     */
     public static void editMap(String command)
     {
         String fileName = command.split(" ")[1]; 
@@ -372,7 +407,12 @@ public class CommandController {
      */
     public static void loadMap(String command)
     {
-        String fileName = command.split(" ")[1];
+    	String fileName = command.split(" ")[1];
+    	Map selectedMap=new Map();
+    	if(mapTools.pickMapFileService(selectedMap, fileName))
+    		gameplay.setSelectedMap(selectedMap);
+    	else
+    		System.out.println("The selected Map is invalid.Please select another map.Reason for Invalidity :"+selectedMap.getErrorMessage());
     }
 
     /**
@@ -380,22 +420,60 @@ public class CommandController {
      */
     public static void populateCountries()
     {
+    	String message=gameplay.validateStartupInputs();
+		if(!message.contentEquals("Success"))
+			System.out.println(message);
+		else
+			{
+			gameplay.initialisePlayers();
+			}
 
     }
 
+    /**
+     * Place army.
+     *
+     * @param command the command
+     */
     public static void placeArmy(String command)
     {
-        String countryName = command.split(" ")[1];
-
+    	Scanner in=new Scanner(System.in);   
+    	int armyCount = 0;
+        String countryName = command.split(" ")[1];   
+        System.out.println("Enter the number armies to be placed ");
+        boolean loop=true;
+        while(loop) {
+        armyCount=in.nextInt();
+        if(gameplay.getCurrentPlayer().getArmyCount()>=armyCount) 
+        	loop=false;
+        else	
+        	System.out.println("Entered count more than the number of armies available for the current player.Please enter a different value.");      
+        }   	
+           	
+        if(gameplay.placeArmy(countryName,armyCount)) {
+        	if(gameplay.getCurrentPlayer().getArmyCount()>0)
+        		gameplay.getPlayerQueue().add(gameplay.getPlayerQueue().remove());
+        	gameplay.setCurrentPlayer(gameplay.getPlayerQueue().element());
+        	System.out.println("PLAYER TURN : Place army for "+gameplay.getCurrentPlayer().getPlayerName()+". Number of remaining armies "+gameplay.getCurrentPlayer().getArmyCount());
+    		
+        }
     }
 
 
+    /**
+     * Place all.
+     */
     public static void placeAll()
     {
-
+    	gameplay.placeAllArmies();
     }
 
 
+    /**
+     * Reinforce.
+     *
+     * @param command the command
+     */
     public static void reinforce(String command)
     {
         String countryName = command.split(" ")[1];
@@ -405,13 +483,18 @@ public class CommandController {
     }
 
 
+    /**
+     * Fortify.
+     *
+     * @param command the command
+     */
     public static void fortify(String command)
     {
 
     }
 
     /**
-     * Method to print help options for commands
+     * Method to print help options for commands.
      */
     public static void showHelpOptions()
     {

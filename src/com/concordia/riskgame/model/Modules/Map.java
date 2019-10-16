@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+// TODO: Auto-generated Javadoc
 public class Map {
     private String name;
     private String authorName;
@@ -17,6 +18,9 @@ public class Map {
 
 
 
+    /**
+     * Instantiates a new map.
+     */
     public Map() {
         continents = new ArrayList<Continent>();
         path = "";
@@ -82,6 +86,12 @@ public class Map {
     }
 
 
+    /**
+     * Search continent.
+     *
+     * @param continentName the continent name
+     * @return the string
+     */
     public String searchContinent(String continentName) {
         for (Continent name : getContinents()) {
             if (name.getContinentName().equalsIgnoreCase(continentName)) {
@@ -92,11 +102,21 @@ public class Map {
     }
 
 
+    /**
+     * Removes the continent.
+     *
+     * @param continent the continent
+     */
     public void removeContinent(Continent continent) {
         getContinents().remove(continent);
     }
 
 
+    /**
+     * Adds the continent.
+     *
+     * @param continent the continent
+     */
     public void addContinent(Continent continent) {
         if (searchContinent(continent.getContinentName()) == "") {
             getContinents().add(continent);
@@ -104,6 +124,11 @@ public class Map {
     }
 
 
+    /**
+     * List of country names.
+     *
+     * @return the list
+     */
     public List<String> listOfCountryNames() {
         List<String> countryNames = new ArrayList<String>();
         for (Continent continent : getContinents()) {
@@ -115,6 +140,11 @@ public class Map {
     }
 
 
+    /**
+     * List of continent names.
+     *
+     * @return the list
+     */
     public List<String> listOfContinentNames() {
         List<String> continentNames = new ArrayList<String>();
         for (Continent continent : getContinents()) {
@@ -123,6 +153,13 @@ public class Map {
         return continentNames;
     }
 
+    /**
+     * Search country.
+     *
+     * @param countryName the country name
+     * @param continentName the continent name
+     * @return the string
+     */
     public String searchCountry(String countryName, String continentName) {
         for (Continent name : getContinents()) {
             if (name.getContinentName().equalsIgnoreCase(continentName)) {
@@ -137,6 +174,12 @@ public class Map {
     }
 
 
+    /**
+     * Search country.
+     *
+     * @param countryName the country name
+     * @return the country
+     */
     public Country searchCountry(String countryName) {
         for (Continent name : getContinents()) {
             for (Country cName : name.getCountriesPresent()) {
@@ -148,6 +191,12 @@ public class Map {
         return null;
     }
 
+    /**
+     * Search continent.
+     *
+     * @param c the c
+     * @return the continent
+     */
     public Continent searchContinent(Country c) {
         for (Continent cont : getContinents()) {
             if (cont.getCountriesPresent().contains(c)) {
@@ -171,11 +220,12 @@ public class Map {
 		for(Continent continent:continents)
 		{
 			boolean isOwned=true;
-			for(Country country:continent.getCountriesPresent())
+			for(Country country:continent.getCountriesPresent()) {
 				if(!country.getOwnedBy().getPlayerName().equalsIgnoreCase(playerName))
 					{isOwned=false;
 					break;
 					}
+			}
 			if(isOwned)
 				ownedContinents.add(continent);
 				

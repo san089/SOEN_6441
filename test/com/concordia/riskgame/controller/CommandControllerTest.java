@@ -4,8 +4,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+// TODO: Auto-generated Javadoc
 public class CommandControllerTest {
 
+    /**
+     * Parses the command.
+     */
     @Test
     public void parseCommand() {
         String command = "help";
@@ -14,6 +18,9 @@ public class CommandControllerTest {
 
     }
 
+    /**
+     * Edits the continent.
+     */
     @Test
     public void editContinent() {
         String command = "editcontinent -add    asia 7 -remove   asa";
@@ -22,14 +29,23 @@ public class CommandControllerTest {
         CommandController.parseCommand(invalidCommand);
     }
 
+    /**
+     * Edits the country.
+     */
     @Test
     public void editCountry() {
     }
 
+    /**
+     * Edits the neighbour.
+     */
     @Test
     public void editNeighbour() {
     }
 
+    /**
+     * Game player.
+     */
     @Test
     public void gamePlayer() {
         String command = "gameplayer -add sanchit";
