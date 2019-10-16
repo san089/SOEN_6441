@@ -19,7 +19,7 @@ public class CommandControllerTest {
     }
 
     /**
-     * Edits the continent.
+     * Test case for testing commands for editing the continent.
      */
     @Test
     public void editContinent() {
@@ -37,7 +37,7 @@ public class CommandControllerTest {
     }
 
     /**
-     * Edits the country.
+     * Test case for testing commands for editing the country.
      */
     @Test
     public void editCountry() {
@@ -55,7 +55,7 @@ public class CommandControllerTest {
     }
 
     /**
-     * Edits the neighbour.
+     * Test case for testing commands for editing the neighbours.
      */
     @Test
     public void editNeighbour() {
@@ -73,7 +73,7 @@ public class CommandControllerTest {
     }
 
     /**
-     * Game player.
+     * Test case for testing commands for editing the game players.
      */
     @Test
     public void gamePlayer() {

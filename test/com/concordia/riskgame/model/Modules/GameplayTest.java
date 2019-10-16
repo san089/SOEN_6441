@@ -9,6 +9,9 @@ import java.io.PrintStream;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test class for testing GamePlayer class
+ */
 public class GameplayTest {
     Gameplay gamePlay;
     PrintStream console = null;

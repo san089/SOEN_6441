@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test Class to test Map Tools class
+ */
 public class MapToolsTest {
 
     @Test
