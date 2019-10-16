@@ -6,6 +6,7 @@ import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.MapEditorView;
+import com.concordia.riskgame.controller.ReinforcementController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -89,6 +90,9 @@ public class CommandController {
                 break;
             case "help":
                 showHelpOptions();
+                break;
+            case "exit":
+                System.exit(0);
                 break;
             default:
                 invalidCommandMessage();
@@ -456,6 +460,7 @@ public class CommandController {
         Map selectedMap = new Map();
         if (mapTools.pickMapFileService(selectedMap, fileName)) {
             gameplay.setSelectedMap(selectedMap);
+            System.out.println("Switched to " + Phases.Startup + " Phase.");
             gameplay.setCurrentPhase(Phases.Startup);
         } else {
             System.out.println("The selected Map is invalid.Please select another map.Reason for Invalidity :" + selectedMap.getErrorMessage());
@@ -537,10 +542,21 @@ public class CommandController {
      */
     public static void reinforce(String command)
     {
-        String countryName = command.split(" ")[1];
-        String num = command.split(" ")[2];
-
-        //Execute method
+        try {
+            if(gameplay.getCurrentPhase() == Phases.Startup){
+                String countryName = command.split(" ")[1];
+                String num = command.split(" ")[2];
+                System.out.println("Reinforce " + num + " armies in " + countryName);
+                System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+                gameplay.setCurrentPhase(Phases.Reinforcement);
+                ReinforcementController.reinforceArmy();
+            }else{
+                System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot move to " + Phases.Reinforcement + " phase.");
+            }
+        }catch (Exception e){
+            System.out.println("Some exception occured.");
+            showHelpOptions();
+        }
     }
 
 
