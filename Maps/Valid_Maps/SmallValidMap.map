@@ -1,0 +1,13 @@
+[Map]
+author=Sanchit
+[Continents]
+AFRICA=9
+ASIA=6
+USA=6
+ANTARTICA=9
+[Territories]
+Pak,0.0,0.0,AFRICA,India,Canada
+India,0.0,0.0,ASIA,Pak,China
+Canada,0.0,0.0,USA,Pak
+China,0.0,0.0,ANTARTICA,India
+
