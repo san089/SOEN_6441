@@ -9,11 +9,8 @@ import com.concordia.riskgame.view.MapEditorView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Queue;
-import java.util.Random;
 import java.util.Scanner;
 
-import javax.swing.JOptionPane;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -172,23 +169,28 @@ public class CommandController {
         String arg_type;
         String value1;
         String value2;
-        for (int i = 1; i < args.length; i += 2) {
-            arg_type = args[i];
-            if (arg_type.trim().equals("-add")) {
-                value1 = args[i + 1];
-                value2 = args[i + 2];
-                if (verifyAllCharacters(value1) && verifyNumber(value2)) {
-                    addContinent.put(value1, Integer.parseInt(value2));
+        try {
+            for (int i = 1; i < args.length; i += 2) {
+                arg_type = args[i];
+                if (arg_type.trim().equals("-add")) {
+                    value1 = args[i + 1];
+                    value2 = args[i + 2];
+                    if (verifyAllCharacters(value1) && verifyNumber(value2)) {
+                        addContinent.put(value1, Integer.parseInt(value2));
+                    }
+                    i += 1;
+                } else if (arg_type.trim().equals("-remove")) {
+                    value1 = args[i + 1];
+                    if (verifyAllCharacters(value1)) {
+                        removeContinent.add(value1);
+                    }
+                } else {
+                    return false;
                 }
-                i += 1;
-            } else if (arg_type.trim().equals("-remove")) {
-                value1 = args[i + 1];
-                if (verifyAllCharacters(value1)) {
-                    removeContinent.add(value1);
-                }
-            } else {
-                return false;
             }
+        }catch (Exception e){
+            System.out.println("Some execption occured while parsing command.");
+            return false;
         }
         return true;
     }
@@ -227,23 +229,28 @@ public class CommandController {
         String arg_type;
         String value1;
         String value2;
-        for (int i = 1; i < args.length; i += 2) {
-            arg_type = args[i];
-            if (arg_type.trim().equals("-add")) {
-                value1 = args[i + 1];
-                value2 = args[i + 2];
-                if (verifyAllCharacters(value1) && verifyAllCharacters(value2)) {
-                    addCountry.put(value1, value2);
+        try {
+            for (int i = 1; i < args.length; i += 2) {
+                arg_type = args[i];
+                if (arg_type.trim().equals("-add")) {
+                    value1 = args[i + 1];
+                    value2 = args[i + 2];
+                    if (verifyAllCharacters(value1) && verifyAllCharacters(value2)) {
+                        addCountry.put(value1, value2);
+                    }
+                    i += 1;
+                } else if (arg_type.trim().equals("-remove")) {
+                    value1 = args[i + 1];
+                    if (verifyAllCharacters(value1)) {
+                        removeCountry.add(value1);
+                    }
+                } else {
+                    return false;
                 }
-                i += 1;
-            } else if (arg_type.trim().equals("-remove")) {
-                value1 = args[i + 1];
-                if (verifyAllCharacters(value1)) {
-                    removeCountry.add(value1);
-                }
-            } else {
-                return false;
             }
+        } catch (Exception e){
+            System.out.println("Some execption occured while parsing command.");
+            return false;
         }
         return true;
     }
@@ -283,19 +290,25 @@ public class CommandController {
         String arg_type;
         String value1;
         String value2;
-        for (int i = 1; i < args.length; i += 3) {
-            arg_type = args[i];
-            value1 = args[i + 1];
-            value2 = args[i + 2];
-            if (verifyAllCharacters(value1) && verifyAllCharacters(value2)) {
-                if (arg_type.trim().equals("-add")) {
-                    addNeighbour.put(value1, value2);
-                } else if (arg_type.trim().equals("-remove")) {
-                    removeNeighbour.put(value1, value2);
-                } else {
-                    return false;
+        try{
+            for (int i = 1; i < args.length; i += 3) {
+                arg_type = args[i];
+                value1 = args[i + 1];
+                value2 = args[i + 2];
+                if (verifyAllCharacters(value1) && verifyAllCharacters(value2)) {
+                    if (arg_type.trim().equals("-add")) {
+                        addNeighbour.put(value1, value2);
+                    } else if (arg_type.trim().equals("-remove")) {
+                        removeNeighbour.put(value1, value2);
+                    } else {
+                        return false;
+                    }
                 }
             }
+        }
+        catch (Exception e){
+            System.out.println("Some execption occured while parsing command.");
+            return false;
         }
         return true;
     }
@@ -309,17 +322,28 @@ public class CommandController {
      */
     public static void gamePlayer(String command) {
         if (validateGamePlayerCommand(command)) {
-            for (String playerName : addPlayer) {
-                System.out.println(Gameplay.getInstance().addPlayer(playerName));
-            }
-            for (String playerName : removePlayer) {
-                System.out.println(Gameplay.getInstance().removePlayer(playerName));
-            }
+            System.out.println("");
         } else {
             invalidCommandMessage();
         }
     }
 
+
+    /**
+     * This method add or remove player based on the type of operation user wants to perform.
+     *
+     * @param operation Type of Operation, either add or remove
+     * @param playername The name of the player to be added or removed.
+     */
+    public static void gamePlayerAddRemove(String operation, String playername){
+        if(operation.trim().equals("-add"))
+            System.out.println(Gameplay.getInstance().addPlayer(playername));
+        else if(operation.trim().equals("-remove"))
+            System.out.println(Gameplay.getInstance().removePlayer(playername));
+        else
+            System.out.println("Invalid Operation");
+
+    }
 
     /**
      * This method reads gamplayer command, validates the command and add player to add or remove to list.
@@ -328,27 +352,24 @@ public class CommandController {
      * @return True if the command is valid, else false.
      */
     public static boolean validateGamePlayerCommand(String command) {
-        addPlayer.clear();
-        removePlayer.clear();
-
         String[] args = command.split(" ");
         String arg_type;
         String value1;
-        for (int i = 1; i < args.length; i += 2) {
-            arg_type = args[i];
-            value1 = args[i + 1];
+        try {
+            for (int i = 1; i < args.length; i += 2) {
+                arg_type = args[i];
+                value1 = args[i + 1];
 
-            if (arg_type.trim().equals("-add")) {
-                if (verifyAllCharacters(value1)) {
-                    addPlayer.add(value1);
+                if (verifyAllCharacters(value1))
+                    gamePlayerAddRemove(arg_type, value1);
+                else {
+                    return false;
                 }
-            } else if (arg_type.trim().equals("-remove")) {
-                if (verifyAllCharacters(value1)) {
-                    removePlayer.add(value1);
-                }
-            } else {
-                return false;
             }
+        }
+        catch (Exception e){
+            System.out.println("Some execption occured while parsing command.");
+            return false;
         }
         return true;
     }
