@@ -23,10 +23,17 @@ public class CommandControllerTest {
      */
     @Test
     public void editContinent() {
-        String command = "editcontinent -add    asia 7 -remove   asa";
-        String invalidCommand = "editcontinent -add abcd -remove asd";
-        CommandController.parseCommand(command);
-        CommandController.parseCommand(invalidCommand);
+        System.out.println("========================EDIT CONTINENT TEST CASE START==============================\n");
+
+        System.out.println("===================editcontinent command positive test case===========================");
+        String validCommand = "editcontinent -add India Asia";
+        assertTrue(CommandController.validateEditCountryCommand(validCommand));
+
+        System.out.println("===================editcontinent command negative test case===========================");
+        String invalidCommand = "editcontinent -add India  ";
+        assertFalse(CommandController.validateEditCountryCommand(invalidCommand));
+
+        System.out.println("\n========================EDIT CONTINENT TEST CASE END==============================\n");
     }
 
     /**
@@ -34,6 +41,17 @@ public class CommandControllerTest {
      */
     @Test
     public void editCountry() {
+        System.out.println("========================EDIT COUNTRY TEST CASE START==============================\n");
+
+        System.out.println("===================editcountry command positive test case===========================");
+        String validCommand = "editcountry -add India Asia";
+        assertTrue(CommandController.validateEditCountryCommand(validCommand));
+
+        System.out.println("===================editcountry command negative test case===========================");
+        String invalidCommand = "editcountry -add India  ";
+        assertFalse(CommandController.validateEditCountryCommand(invalidCommand));
+
+        System.out.println("\n========================EDIT COUNTRY TEST CASE END==============================\n");
     }
 
     /**
@@ -41,6 +59,17 @@ public class CommandControllerTest {
      */
     @Test
     public void editNeighbour() {
+        System.out.println("========================EDIT NEIGHBOUR TEST CASE START==============================\n");
+
+        System.out.println("===================editneighbour command positive test case===========================");
+        String validCommand = "editneighbour -add India China";
+        assertTrue(CommandController.validateEditNeighbourCommand(validCommand));
+
+        System.out.println("===================editneighbour command negative test case===========================");
+        String invalidCommand = "editneighbour -add India";
+        assertFalse(CommandController.validateEditNeighbourCommand(invalidCommand));
+
+        System.out.println("\n========================EDIT NEIGHBOUR TEST CASE END==============================\n");
     }
 
     /**
@@ -48,9 +77,16 @@ public class CommandControllerTest {
      */
     @Test
     public void gamePlayer() {
-        String command = "gameplayer -add sanchit";
-        CommandController.parseCommand(command);
-        String invalidCommand = "gameplayer -add sanchit";
-        CommandController.parseCommand(invalidCommand);
+        System.out.println("========================GAMEPLAYER TEST CASE START==============================\n");
+
+        System.out.println("===================gameplayer command positive test case===========================");
+        String validCommand = "gameplayer -add sanchit";
+        assertTrue(CommandController.validateGamePlayerCommand(validCommand));
+
+        System.out.println("===================gameplayer command negative test case===========================");
+        String invalidCommand = "gameplayer -add";
+        assertFalse(CommandController.validateGamePlayerCommand(invalidCommand));
+
+        System.out.println("\n========================GAMEPLAYER TEST CASE END==============================\n");
     }
 }
