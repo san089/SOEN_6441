@@ -1,4 +1,11 @@
 package com.concordia.riskgame.utilities;
 
-public class Phases {
+/**
+ * Enum to print the name of different phases of the game
+ *
+ * @author sanchit
+ *
+ */
+public enum Phases {
+    MapEditor, Startup, Reinforcement, Attack, Fortification, GameWinner, GameDraw
 }
