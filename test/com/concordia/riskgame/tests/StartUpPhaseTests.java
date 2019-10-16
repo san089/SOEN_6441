@@ -21,7 +21,7 @@ import com.concordia.riskgame.view.StartUpPhaseView;
 // TODO: Auto-generated Javadoc
 public class StartUpPhaseTests {
 
-	private int numberofPlayers,numberofCountries;
+	private int numberofPlayers;
 	private Queue<Player> playerQueue;
 	private List<String> countries;
 	private ArrayList<Player> players;
@@ -60,12 +60,14 @@ public class StartUpPhaseTests {
 	 */
 	@Test
 	public void initialisePlayersTest() {
+		System.out.println("========================INITIALISE PLAYERS TEST CASE START==============================");
 		gameplay.initialisePlayers();
 		playerQueue=gameplay.getPlayerQueue();
 		while(!playerQueue.isEmpty()) {
 			currentPlayer=playerQueue.remove();
 			Assert.assertTrue(currentPlayer.getCountriesOwned().size()==floorCountryPerPlayer||currentPlayer.getCountriesOwned().size()==ceilingCountryperPlayer);
 			}
+		System.out.println("========================INITIALISE PLAYERS TEST CASE END==============================");
 		
 	}
 	
@@ -74,6 +76,8 @@ public class StartUpPhaseTests {
 	 */
 	@Test
 	public void assignArmiesTest() {
+		System.out.println("========================ASSIGN ARMIES TEST CASE START==============================");
+		
 		int initialPlayerArmyCount,countryArmyCount = 0,finalPlayerArmyCount = 0;
 		gameplay.assignStartupArmies();
 		initialPlayerArmyCount=(gameplay.getPlayers().get(0).getArmyCount())*(gameplay.getPlayers().size());
@@ -90,6 +94,7 @@ public class StartUpPhaseTests {
 		for(Continent continent:gameplay.getSelectedMap().getContinents())
 			for(Country country:continent.getCountriesPresent())
 				Assert.assertTrue(country.getNoOfArmiesPresent()>0);	
+		System.out.println("========================ASSIGN ARMIES PLAYERS TEST CASE END==============================");
 		
 	}
 	

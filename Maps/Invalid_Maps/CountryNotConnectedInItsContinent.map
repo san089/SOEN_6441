@@ -1,0 +1,11 @@
+[Map]
+author=Anonymous
+[Continents]
+ASIA=4
+AFRICA=7
+[Territories]
+India,0.0,0.0,ASIA,China
+China,0.0,0.0,ASIA,India
+Pak,0.0,0.0,ASIA,Uganda
+Uganda,0.0,0.0,AFRICA,Pak
+
