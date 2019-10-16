@@ -468,11 +468,12 @@ public class CommandController {
         	System.out.println("Please enter a number");
         }
         
-        if(gameplay.getAbandonedCountryCount()>gameplay.getCurrentPlayer().getArmyCount()-armyCount)
-        	System.out.println("There are not enough armies to be deploy "+armyCount+" in one country .Please place such that every country has at least one army");
-	    else if(!(gameplay.getCurrentPlayer().getArmyCount()>=armyCount) )
+        if(!(gameplay.getCurrentPlayer().getArmyCount()>=armyCount) )
         	System.out.println("Entered count more than the number of armies available for the current player.Please enter a different value.");      
-        else
+        
+        else if(gameplay.getAbandonedCountryCount()>gameplay.getCurrentPlayer().getArmyCount()-armyCount)
+        	System.out.println("There are not enough armies to be deploy "+armyCount+" in one country .Please place such that every country has at least one army");
+	    else
         	loop=false;
         
         }   	
