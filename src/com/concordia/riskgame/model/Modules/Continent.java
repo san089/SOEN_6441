@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  *
- *  This class holds continent related data
+ *  Instantiates a new continent
  */
 public class Continent {
 

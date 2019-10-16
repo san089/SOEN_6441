@@ -17,6 +17,7 @@ import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.StartUpPhaseView;
+import com.concordia.riskgame.controller.ReinforcementController;
 
 // TODO: Auto-generated Javadoc
 public class Gameplay extends Observable{
@@ -381,5 +382,6 @@ public class Gameplay extends Observable{
 		
 		
 	}
+
 	
 }
