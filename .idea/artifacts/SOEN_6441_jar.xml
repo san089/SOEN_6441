@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SOEN_6441:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SOEN_6441_jar</output-path>
+    <root id="archive" name="SOEN_6441.jar">
+      <element id="module-output" name="SOEN_6441" />
+    </root>
+  </artifact>
+</component>
