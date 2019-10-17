@@ -242,7 +242,7 @@ public class MapEditorController implements ActionListener {
         Country newCountry = new Country();
         newCountry.setCountryName(countryName);
         tempContinent.addCountry(newCountry);
-        System.out.println("Country "+countryName+" added to "+tempContinent);
+        System.out.println("Country "+countryName+" added to "+tempContinent.getContinentName());
         
       }
     
