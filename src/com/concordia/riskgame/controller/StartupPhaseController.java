@@ -57,7 +57,7 @@ public class StartupPhaseController implements ActionListener  {
 
 	/**
 	 * Setter method to set countries.
-	 * @param countries
+	 * @param countries Countries
 	 */
 	public void setCountries(ArrayList<String> countries) {
 		this.countries = countries;

@@ -39,7 +39,7 @@ public class Player {
 
 	/**
 	 * Setter for setting player Index
-	 * @param playerIndex
+	 * @param playerIndex Index of player
 	 */
 	public void setPlayerIndex(int playerIndex) {
 		this.playerIndex = playerIndex;
@@ -48,7 +48,7 @@ public class Player {
 
 	/**
 	 * Setter for setting Player Name
-	 * @param playerName
+	 * @param playerName Name of player
 	 */
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
@@ -57,7 +57,7 @@ public class Player {
 
 	/**
 	 * Setter for setting countries owned by player
-	 * @param country
+	 * @param country Country Name
 	 */
 	public void setCountriesOwned(String country) {
 		this.countriesOwned.add(country); 
@@ -65,7 +65,7 @@ public class Player {
 
 	/**
 	 * Setter for cards owned by player
-	 * @param cardsOwned
+	 * @param cardsOwned Cards Owned By
 	 */
 	public void setCardsOwned(ArrayList<Card> cardsOwned) {
 		this.cardsOwned = cardsOwned;
@@ -73,7 +73,7 @@ public class Player {
 
 	/**
 	 * Setter for army count
-	 * @param armyCount
+	 * @param armyCount Count of army
 	 */
 	public void setArmyCount(int armyCount) {
 		this.armyCount = armyCount;
@@ -82,7 +82,7 @@ public class Player {
 
 	/**
 	 * Getter for playerindex
-	 * @return playerIndex
+	 * @return playerIndex Index of player
 	 */
 	public int getPlayerIndex() {
 		return playerIndex;
@@ -90,7 +90,7 @@ public class Player {
 
 	/**
 	 * Getter for playerName
-	 * @return playerName
+	 * @return playerName Name of player
 	 */
 	public String getPlayerName() {
 		return playerName;
@@ -99,7 +99,7 @@ public class Player {
 
 	/**
 	 * Getter for countries owned
-	 * @return countriesOwned
+	 * @return countriesOwned Coutries owned by
 	 */
 	public ArrayList<String> getCountriesOwned() {
 		return countriesOwned;
@@ -107,7 +107,7 @@ public class Player {
 
 	/**
 	 * Getter for getting cards owned
-	 * @return cardsOwned
+	 * @return cardsOwned Cards owned by
 	 */
 	public ArrayList<Card> getCardsOwned() {
 		return cardsOwned;
@@ -116,7 +116,7 @@ public class Player {
 
 	/**
 	 * Getter for getting army count
-	 * @return armyCount
+	 * @return armyCount Count of Army
 	 */
 	public int getArmyCount() {
 		return armyCount;

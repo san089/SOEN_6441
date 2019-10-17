@@ -300,7 +300,8 @@ public class Gameplay extends Observable{
 	 *
 	 * @param countryName the country name
 	 * @param count the count
-	 * @return true, if successful
+	 * @param displayArmy display army
+	 * @return true  true, if successful
 	 */
 	public boolean placeArmy(String countryName,int count,boolean displayArmy) {
 		if(!getSelectedMap().listOfCountryNames().contains(countryName)) {
@@ -333,7 +334,8 @@ public class Gameplay extends Observable{
 	
 	
 	/**
-	 * 
+	 *  Get Abandoned Country count
+	 * @return count count of countries abondoned.
 	 */
 	
 	public int getAbandonedCountryCount() {

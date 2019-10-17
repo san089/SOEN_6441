@@ -37,7 +37,7 @@ public class MapEditorController implements ActionListener {
 
     /**
      * Setter method to setup GameMap
-     * @param gameMap
+     * @param gameMap game Map
      */
     public void setGameMap(Map gameMap) {
 		this.gameMap = gameMap;
