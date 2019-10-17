@@ -464,7 +464,7 @@ public class MapTools  {
 		for (int i = 0; i < noOfVertices; i++) {
 			for (Continent c : gameMap.getContinents()) {
 				for (Country country : c.getCountriesPresent()) {
-					if (country.getCountryName().equals(gameMap.listOfCountryNames().get(i))) {
+					if (country.getCountryName().equalsIgnoreCase(gameMap.listOfCountryNames().get(i))) {
 						List<String> neighbours = country.getListOfNeighbours();
 						for (String current : neighbours) {
 							int index = listOfCountries.indexOf(current.toLowerCase());

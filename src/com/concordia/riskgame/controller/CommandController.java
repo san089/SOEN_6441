@@ -451,6 +451,8 @@ public class CommandController {
         Map gameMap=new Map();
         if(mapTools.pickMapFileService(gameMap,fileName))
         	mapEditor.setGameMap(gameMap);
+        else
+        	System.out.println(gameMap.getErrorMessage());
     }
 
 

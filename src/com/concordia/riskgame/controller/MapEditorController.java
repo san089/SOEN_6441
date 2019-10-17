@@ -49,7 +49,7 @@ public class MapEditorController implements ActionListener {
      * @return gameMap
      */
     public Map getGameMap() {
-		return this.gameMap;
+		return gameMap;
 				
     }
     
@@ -101,9 +101,9 @@ public class MapEditorController implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Please specify the name!");
                 } else if (continentName.trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Name cannot be empty!");
-                } else if (gameMap.searchContinent(continentName).equalsIgnoreCase(continentName)) {
+                } else if (gameMap.searchContinent(continentName).equals(continentName)) {
                     JOptionPane.showMessageDialog(null, "Continent name already exists!");
-                } else if (gameMap.searchContinent(continentName.trim()).equalsIgnoreCase(continentName.trim())) {
+                } else if (gameMap.searchContinent(continentName.trim()).equals(continentName.trim())) {
                     JOptionPane.showMessageDialog(null, "Continent name already exists!");
                 } else if ((continentName != null) && (gameMap.searchContinent(continentName) == "")) {
                 	addContinentService(continentName,controlValue,true);
@@ -131,9 +131,9 @@ public class MapEditorController implements ActionListener {
                 System.out.println("Please specify the name!");return;
             } else if (continentName.trim().isEmpty()) {
                 System.out.println("Name cannot be empty!");return;
-            } else if (gameMap.searchContinent(continentName).equalsIgnoreCase(continentName)) {
+            } else if (gameMap.searchContinent(continentName).equals(continentName)) {
                 System.out.println("Continent name already exists!");return;
-            } else if (gameMap.searchContinent(continentName.trim()).equalsIgnoreCase(continentName.trim())) {
+            } else if (gameMap.searchContinent(continentName.trim()).equals(continentName.trim())) {
                 System.out.println("Continent name already exists!");return;
             }
     	}
@@ -172,7 +172,7 @@ public class MapEditorController implements ActionListener {
                 if (countryName == JOptionPane.OK_OPTION) {
                     for (Continent continentName : gameMap.getContinents()) {
                         for (Country name : continentName.getCountriesPresent()) {
-                            if (name.getCountryName().equalsIgnoreCase(inputCountry.getText())) {
+                            if (name.getCountryName().equals(inputCountry.getText())) {
                                 flag = 1;
                                 break;
                             }
@@ -230,7 +230,7 @@ public class MapEditorController implements ActionListener {
     	 Continent tempContinent = null;
     	 boolean flag=false;
          for (Continent name : gameMap.getContinents()) {
-             if (name.getContinentName().equalsIgnoreCase(continentName)) {
+             if (name.getContinentName().equals(continentName)) {
                  tempContinent = name;flag=true;
              }
          } 
@@ -289,7 +289,7 @@ public class MapEditorController implements ActionListener {
     	if(!calledfromUI) {
     		boolean flag=false;
     		for(Continent continent:gameMap.getContinents())
-    			if(continent.getContinentName().contentEquals(continentName))
+    			if(continent.getContinentName().equals(continentName))
     				flag=true;
     		if(!flag) {
     			System.out.println("Continent not present in Map");
@@ -300,7 +300,7 @@ public class MapEditorController implements ActionListener {
     	List<String> countriesToBeRemoved = new ArrayList<String>();
         Continent tempContinent = null;
         for (Continent name : gameMap.getContinents()) {
-            if (name.getContinentName().equalsIgnoreCase(continentName)) {
+            if (name.getContinentName().equals(continentName)) {
                 tempContinent = name;
                 for (Country c : tempContinent.getCountriesPresent()) {
                     countriesToBeRemoved.add(c.getCountryName());
@@ -352,7 +352,7 @@ public class MapEditorController implements ActionListener {
                     String continentNameString = (String) continentBox.getSelectedItem();
                     Continent continentName = null;
                     for (Continent name : gameMap.getContinents()) {
-                        if (name.getContinentName().equalsIgnoreCase(continentNameString)) {
+                        if (name.getContinentName().equals(continentNameString)) {
                             continentName = name;
                         }
                     }

@@ -46,7 +46,9 @@ public class StartupPhaseControllerTest {
         for(int i=0;i<numberofPlayers;i++) {
             players.add(new Player(i+1,"Player"+(i+1)));
         }
-        maptools.pickMapFileService(gameMap, System.getProperty("user.dir") + "\\Maps\\Valid_Maps\\AtlanticCity.map");gameplay.setSelectedMap(gameMap);
+
+        maptools.pickMapFileService(gameMap, System.getProperty("user.dir") + "\\Maps\\Valid_Maps\\AtlanticCity.map");
+        gameplay.setSelectedMap(gameMap);
         countries=gameplay.getSelectedMap().listOfCountryNames();
         gameplay.setPlayers(players);
         floorCountryPerPlayer=Math.floorDiv(countries.size(),numberofPlayers);

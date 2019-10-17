@@ -160,7 +160,7 @@ public class Gameplay extends Observable{
 	public boolean existDuplicatePlayer(String playerName)
 	{
 		for(Player player:players)
-			if(player.getPlayerName().equals(playerName))
+			if(player.getPlayerName().equalsIgnoreCase(playerName))
 				return true;
 		
 		return false;
@@ -180,7 +180,7 @@ public class Gameplay extends Observable{
 		for(Iterator<Player> playerIt=players.iterator();playerIt.hasNext();)
 			{
 			currentPlayer=playerIt.next();
-			if(currentPlayer.getPlayerName().equals(playerName)) {
+			if(currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
 				playerFound = true;
 				playerIt.remove();
 				setChanged();
