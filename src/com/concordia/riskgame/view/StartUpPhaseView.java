@@ -313,7 +313,7 @@ public class StartUpPhaseView extends JFrame implements Observer {
 
 	/**
 	 * Setter method for mappath TextField
-	 * @param mapPath
+	 * @param mapPath mapPath
 	 */
 	public void setMapPath(JTextField mapPath) {
 		this.mapPath = mapPath;

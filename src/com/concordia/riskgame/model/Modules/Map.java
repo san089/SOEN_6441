@@ -42,7 +42,7 @@ public class Map {
 
     /**
      * Setter for path
-     * @param path
+     * @param path path value
      */
     public void setPath(String path) {
         this.path = path;
@@ -58,7 +58,7 @@ public class Map {
 
     /**
      * Setter for Name
-     * @param name
+     * @param name Name
      */
     public void setName(String name) {
         this.name = name;
@@ -93,7 +93,7 @@ public class Map {
 
     /**
      * Setter of Author Name
-     * @param authorName
+     * @param authorName Author Name value
      */
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
@@ -111,7 +111,7 @@ public class Map {
 
     /**
      * Setter of errors
-     * @param errorOccurred
+     * @param errorOccurred Error occured
      */
     public void setErrorOccurred(boolean errorOccurred) {
         this.errorOccurred = errorOccurred;
@@ -120,7 +120,7 @@ public class Map {
 
     /**
      * Getter for Error Message
-     * @return errorMessage
+     * @return errorMessage Error message
      */
     public String getErrorMessage() {
         return errorMessage;
@@ -128,7 +128,7 @@ public class Map {
 
     /**
      * Setter for Error message
-     * @param errorMessage
+     * @param errorMessage Error Message
      */
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;

@@ -7,13 +7,6 @@ import java.util.List;
 /**
  * Instantiates a new country.
  *
- * @param countryName the country name
- * @param continentName the continent name
- * @param coordinateX the coordinate X
- * @param coordinateY the coordinate Y
- * @param ownerIndex the owner index
- * @param adjacentCountries the adjacent countries
- * @param armyCount the army count
  */
 
 public class Country {
@@ -56,7 +49,7 @@ public class Country {
 
     /**
      * Setter for countryName attribute.
-     * @param countryName
+     * @param countryName Country Name
      */
     public void setCountryName(String countryName) {
         this.countryName = countryName;
@@ -72,7 +65,7 @@ public class Country {
 
     /**
      * Setter for ownedBy attribute.
-     * @param ownedBy
+     * @param ownedBy Owned By
      */
     public void setOwnedBy(Player ownedBy) {
         this.ownedBy = ownedBy;
@@ -88,7 +81,7 @@ public class Country {
 
     /**
      * Setter for setting armies into country.
-     * @param noOfArmiesPresent
+     * @param noOfArmiesPresent number of armies
      */
     public void setNoOfArmiesPresent(int noOfArmiesPresent) {
         this.noOfArmiesPresent = noOfArmiesPresent;
@@ -104,7 +97,7 @@ public class Country {
 
     /**
      * Setter for setting neighbours attribute.
-     * @param listOfNeighbours
+     * @param listOfNeighbours list of neighbours
      */
     public void setListOfNeighbours(List<String> listOfNeighbours) {
         this.listOfNeighbours = listOfNeighbours;
@@ -120,7 +113,7 @@ public class Country {
 
     /**
      * Setter for longitude attribute.
-     * @param longitude
+     * @param longitude longitude value
      */
     public void setLongitude(double longitude) {
         longitude = longitude;
@@ -136,7 +129,7 @@ public class Country {
 
     /**
      * Setter for latitude attribute.
-     * @param latitude
+     * @param latitude latitude value
      */
     public void setLatitude(double latitude) {
         latitude = latitude;

@@ -46,6 +46,9 @@ public class CommandController {
         commandType = command.split(" ")[0];
 
         switch (commandType) {
+            case "showphase":
+                System.out.println("Current Phase : " + gameplay.getCurrentPhase());
+                break;
             case "editcontinent":
                 editContinent(command);
                 break;
@@ -86,7 +89,7 @@ public class CommandController {
                 reinforce(command);
                 break;
             case "fortify":
-                System.out.println("Yet to configure");
+                System.out.println("Yet to configure. Will be implemented after attack Phase.");
                 break;
             case "help":
                 showHelpOptions();
@@ -331,7 +334,8 @@ public class CommandController {
      * This method reads gameplayer command, validates the command and add or remove player.
      *
      * @param command Command to validate
-     * @return True if the command is valid, else false.
+     *
+     *
      */
     public static void gamePlayer(String command) {
         if(gameplay.getCurrentPhase() != Phases.Startup){

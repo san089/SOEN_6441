@@ -35,7 +35,7 @@ public class Continent {
 
     /**
      * Setter method for continent name
-     * @param continentName
+     * @param continentName Continent name
      */
     public void setContinentName(String continentName) {
         this.continentName = continentName;
@@ -52,7 +52,7 @@ public class Continent {
 
     /**
      * Setter method for the list of countries in the contient
-     * @return countriesPresent (list of type Country)
+     * @param countriesPresent Countries Present
      */
     public void setCountriesPresent(List<Country> countriesPresent) {
         this.countriesPresent = countriesPresent;
