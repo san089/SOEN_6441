@@ -1,6 +1,5 @@
 package com.concordia.riskgame.view;
 
-//import com.concordia.riskgame.controller.ReinforcementView;
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.controller.StartupPhaseController;
 import com.concordia.riskgame.model.Modules.Map;

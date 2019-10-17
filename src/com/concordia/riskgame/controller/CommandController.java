@@ -503,12 +503,15 @@ public class CommandController {
         System.out.println("Enter the number armies to be placed ");
         boolean loop=true;
         while(loop) {
-        try {
-        	armyCount=in.nextInt();
+        String input=in.nextLine();
+        if(validateArmyCount(input))
+        	armyCount=Integer.parseInt(input);
+        else
+        {
+        	System.out.println("Please enter a proper number as army count");
+        	continue;
         }
-        catch(InputMismatchException ex) {
-        	System.out.println("Please enter a number");
-        }
+        
         
         if(!(gameplay.getCurrentPlayer().getArmyCount()>=armyCount) )
         	System.out.println("Entered count more than the number of armies available for the current player.Please enter a different value.");      
@@ -527,6 +530,21 @@ public class CommandController {
         	System.out.println("PLAYER TURN : Place army for "+gameplay.getCurrentPlayer().getPlayerName()+". Number of remaining armies "+gameplay.getCurrentPlayer().getArmyCount());
     		
         }
+    }
+    
+    
+    /*
+     * 
+     * */
+    public static boolean validateArmyCount(String count) {
+    	try {
+    	int integerCount=(Integer.parseInt(count));
+    	}
+    	catch(NumberFormatException | NullPointerException nfe) {
+    		return false;
+    	}
+    	return true;
+    	
     }
 
 
