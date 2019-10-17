@@ -55,7 +55,7 @@ public class CommandController {
             case "editcountry":
                 editCountry(command);
                 break;
-            case "editneighbor":
+            case "editneighbour":
                 editNeighbour(command);
                 break;
             case "showmap":
