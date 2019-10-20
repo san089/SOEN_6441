@@ -25,7 +25,7 @@ public class ReinforcementController {
         int armyCount = Integer.parseInt(commands[2]);
         int currentReinforce = gameplay.getCurrentPlayer().getArmyCount();
         if(currentReinforce < armyCount) {
-            System.out.println("Entered count more than the number of armies available for the current player.Please enter a different value.");
+            System.out.println("Entered count more than the number of armies available for the current player.Please enter a smaller value.");
             return;
         }
 
