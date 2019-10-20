@@ -19,7 +19,6 @@ public enum Card {
      *
      * @param cardType the card type
      */
-    //Constructor
     Card(String cardType){
         this.cardType = cardType;
     }

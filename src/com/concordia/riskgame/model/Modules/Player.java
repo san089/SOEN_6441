@@ -22,9 +22,14 @@ public class Player {
 	private ArrayList<Card> cardsOwned;
 	
 	private int armyCount;
-	
-	
-	
+
+	private boolean cardFlag;
+
+	private int cardExchangeNum;
+
+
+
+
 	/**
 	 * Instantiates a new player.
 	 *
@@ -37,9 +42,11 @@ public class Player {
 		this.countriesOwned = new ArrayList<String>();
 		this.cardsOwned = new ArrayList<Card>();
 		this.armyCount = 0;
+		this.cardFlag = false;
+		this.cardExchangeNum = 0;
 	}
 
-	
+
 	
 	public void setPlayerIndex(int playerIndex) {
 		this.playerIndex = playerIndex;
@@ -64,6 +71,7 @@ public class Player {
 	}
 
 
+
 	public int getPlayerIndex() {
 		return playerIndex;
 	}
@@ -80,10 +88,32 @@ public class Player {
 	public ArrayList<Card> getCardsOwned() {
 		return cardsOwned;
 	}
+	public void addNewCard(Card card) {
+		cardsOwned.add(card);
+	}
 
 	
 	public int getArmyCount() {
 		return armyCount;
+	}
+
+
+	public boolean getCardFlag() {
+		return cardFlag;
+	}
+	public void setCardFlag() {
+		cardFlag = true;
+	}
+	public void resetCardFlag() {
+		cardFlag = false;
+	}
+
+	public int getCardExchangeNum() {
+		return cardExchangeNum;
+	}
+
+	public void addCardExchangeNum() {
+		cardExchangeNum++;
 	}
 	
 		
