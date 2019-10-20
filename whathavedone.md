@@ -21,3 +21,8 @@
 
 - add data filed "cardExchangeIndex", according to game rules, this index is used to calculate how many armies will get from card exchanging.
 
+
+#### Need to be done:
+1. Exception handling. : for example, if command is short than expected, there will be index outbound.
+2. Card exchange strategy (before each turn, add exchanged army to reinforcement)
+3. Add comments for each class and method
