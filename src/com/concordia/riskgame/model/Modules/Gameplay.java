@@ -33,14 +33,6 @@ public class Gameplay extends Observable{
 	private static Gameplay gameplayObj = null;
     private ArrayList<Player> removedPlayer;    //add a list of removed player
 
-
-    public ArrayList<Player> getRemovedPlayer() {
-        return removedPlayer;
-    }
-
-    public void addRemovedPlayer(Player player) {
-        removedPlayer.add(player);
-    }
 	
 	
 	public static Gameplay getInstance(){
@@ -83,6 +75,13 @@ public class Gameplay extends Observable{
 		return currentPlayer;
 	}
 
+	public ArrayList<Player> getRemovedPlayer() {
+		return removedPlayer;
+	}
+
+	public void addRemovedPlayer(Player player) {
+		removedPlayer.add(player);
+	}
 	
 	
 	public void setPlayerCount(int playerCount) {
