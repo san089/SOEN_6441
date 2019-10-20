@@ -1,5 +1,6 @@
 package com.concordia.riskgame.controller;
 
+import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Phases;
@@ -9,7 +10,7 @@ import java.util.InputMismatchException;
 public class ReinforcementController {
 
 	
-	public static void reinforceArmy(String command, Player currentPlayer, Map gameMap) {
+	public static void reinforceArmy(String command, Gameplay gameplay) {
 //		System.out.println("\nReinforcement Functionality is currently abstract.\n==============================================================\n");
 //		System.out.println(" Rules for Reinforcement Phase: \nThe player is given a number of armies that depends on the number of countries he owns (# of countries owned divided by 3, rounded down). " +
 //				"If the player owns all the countries of an\n" +
@@ -22,22 +23,14 @@ public class ReinforcementController {
         String[] commands = command.split(" ");
         String countryName = commands[1];
         int armyCount = Integer.parseInt(commands[2]);
-        int currentReinforce = currentPlayer.getArmyCount();
+        int currentReinforce = gameplay.getCurrentPlayer().getArmyCount();
         if(currentReinforce < armyCount) {
             System.out.println("Entered count more than the number of armies available for the current player.Please enter a different value.");
+            return;
         }
 
-		currentPlayer.setArmyCount(currentReinforce - armyCount);
-		int n = gameMap.searchCountry(countryName).getNoOfArmiesPresent();
-		gameMap.searchCountry(countryName).setNoOfArmiesPresent(n + armyCount);
+		gameplay.getCurrentPlayer().setArmyCount(currentReinforce - armyCount);
+		int n = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
+		gameplay.getSelectedMap().searchCountry(countryName).setNoOfArmiesPresent(n + armyCount);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

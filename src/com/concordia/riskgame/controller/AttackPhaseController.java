@@ -3,7 +3,6 @@ package com.concordia.riskgame.controller;
 import com.concordia.riskgame.model.Modules.*;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class AttackPhaseController {
     private static Dice dice = new Dice();
@@ -14,14 +13,20 @@ public class AttackPhaseController {
     private static String[] commands;
     private static Gameplay gameplay;
     private static Map gameMap;
+    private static Player defensivePlayer;
 
 
     public static void attack(String command, Gameplay gamePlay) {
         gameMap = gamePlay.getSelectedMap();
         gameplay = gamePlay;
         commands = command.split(" ");
-        fromCountry = gameplay.getSelectedMap().searchCountry(commands[1]);
-        toCountry = gameplay.getSelectedMap().searchCountry(commands[2]);
+        fromCountry = gameMap.searchCountry(commands[1]);
+        toCountry = gameMap.searchCountry(commands[2]);
+        defensivePlayer = toCountry.getOwnedBy();
+        if (fromCountry == null || toCountry == null) {
+            System.out.println("Cannot find the country");
+            return;
+        }
         switch (commands[3]) {
             case "auto":
                 autoAttack();
@@ -29,6 +34,7 @@ public class AttackPhaseController {
             default:
                 numOfAttackDice = Integer.parseInt(commands[3]);
                 numOfDefensiveDice = Integer.parseInt(commands[4]);
+                checkCommand();
                 attackOnce();
         }
         isPlayerOut();
@@ -36,7 +42,7 @@ public class AttackPhaseController {
 
     }
 
-    private static void attackOnce() {
+    private static boolean attackOnce() {
         ArrayList<Integer> attackDice = dice.rollNDice(numOfAttackDice);
         ArrayList<Integer> defensiveDice = dice.rollNDice(numOfDefensiveDice);
 
@@ -60,10 +66,14 @@ public class AttackPhaseController {
 
         if (fromCountry.getNoOfArmiesPresent() == 1) {
             System.out.println("Offensive country left only one army, cannot do any more attack");
+            return true;
         }
 
         if (toCountry.getNoOfArmiesPresent() == 0) {
+
             System.out.println("You've conquered " + commands[2]);
+            //remove country from enemy Player
+            defensivePlayer.getCountriesOwned().remove(commands[2]);
             //Change owner
             gameplay.getCurrentPlayer().setCountriesOwned(commands[2]);
             toCountry.setOwnedBy(gameplay.getCurrentPlayer());
@@ -73,7 +83,10 @@ public class AttackPhaseController {
             toCountry.setNoOfArmiesPresent(numOfAttackDice - offensiveCountryLose);
             //subtract attacking armies from offensive country
             fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - numOfAttackDice);
+
+            return true;
         }
+        return false;
     }
 
     public static boolean checkCommand() {
@@ -116,18 +129,17 @@ public class AttackPhaseController {
 
 
     public static void isPlayerOut() {
-        Player conqueredPlayer = gameMap.searchCountry(commands[2]).getOwnedBy();
-        if (conqueredPlayer.getCountriesOwned().size() != 0) {
-            return;
+        if (defensivePlayer.getCountriesOwned().size() != 0) {
+
         } else {
             int n = 0;
-            for (Card card : conqueredPlayer.getCardsOwned()){
+            for (Card card : defensivePlayer.getCardsOwned()){
                 gameplay.getCurrentPlayer().addNewCard(card);
                 n++;
             }
-            gameplay.setRemovedPlayer(conqueredPlayer);
-            gameplay.getPlayers().remove(conqueredPlayer);
-            System.out.println(conqueredPlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
+            gameplay.addRemovedPlayer(defensivePlayer);
+            gameplay.getPlayers().remove(defensivePlayer);
+            System.out.println(defensivePlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
         }
     }
 
@@ -149,7 +161,10 @@ public class AttackPhaseController {
             } else {
                 numOfDefensiveDice = toCountry.getNoOfArmiesPresent();
             }
-            attackOnce();
+
+            if (attackOnce()){
+                break;
+            }
         }
     }
 }

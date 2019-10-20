@@ -31,16 +31,16 @@ public class Gameplay extends Observable{
 	private static final int MAX_PLAYER_LIMIT=6;
 	private Phases currentPhase;
 	private static Gameplay gameplayObj = null;
+    private ArrayList<Player> removedPlayer;    //add a list of removed player
 
-    public Player getRemovedPlayer() {
+
+    public ArrayList<Player> getRemovedPlayer() {
         return removedPlayer;
     }
 
-    public void setRemovedPlayer(Player removedPlayer) {
-        this.removedPlayer = removedPlayer;
+    public void addRemovedPlayer(Player player) {
+        removedPlayer.add(player);
     }
-
-    private Player removedPlayer = null;
 	
 	
 	public static Gameplay getInstance(){
@@ -51,6 +51,7 @@ public class Gameplay extends Observable{
 			gameplayObj.currentPhase =Phases.MapEditor;
 			gameplayObj.playerCount=0;
 			gameplayObj.playerQueue=new LinkedList<Player>();
+			gameplayObj.removedPlayer = new ArrayList<>();
 		}
 		return gameplayObj;
 	}
@@ -99,7 +100,7 @@ public class Gameplay extends Observable{
 
     /**
      *after first reinforcement start, round player strictly.
-     * @param count
+     * @param
      */
     public void roundRobinPlayer() {
         currentPlayer = playerQueue.remove();
@@ -279,7 +280,7 @@ public class Gameplay extends Observable{
 	public void assignStartupArmies() {
 		switch(players.size()) {
 		
-		case 2:setArmyCount(40);
+		case 2:setArmyCount(4);
 				break;		
 		case 3:setArmyCount(35);
 				break;		

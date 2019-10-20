@@ -1,9 +1,6 @@
 package com.concordia.riskgame.controller;
 
-import com.concordia.riskgame.model.Modules.Continent;
-import com.concordia.riskgame.model.Modules.Gameplay;
-import com.concordia.riskgame.model.Modules.Map;
-import com.concordia.riskgame.model.Modules.Player;
+import com.concordia.riskgame.model.Modules.*;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.MapEditorView;
@@ -115,6 +112,9 @@ public class CommandController {
         }
         if (command.split(" ")[1].equals("none")) {
             System.out.println("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
+            System.out.println("Current player is " + gameplay.getCurrentPlayer().getPlayerName());
+            gameplay.setCurrentPhase(Phases.Fortification);
+            return;
         }
 
         if (!command.split(" ")[3].equals("auto")) {
@@ -581,12 +581,16 @@ public class CommandController {
     	gameplay.placeAllArmies();
 
         ArrayList<Player> players = gameplay.getPlayers();
+        //after placeall, game play starts, initialize player queue
         gameplay.getPlayerQueue().clear();
         gameplay.getPlayerQueue().addAll(players);
         gameplay.assignReinforcementArmies();
+
         System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
         gameplay.setCurrentPhase(Phases.Reinforcement);
+        //start round robin play
         gameplay.roundRobinPlayer();
+
         System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
                 gameplay.getCurrentPlayer().getArmyCount() + " armies to place");
     }
@@ -612,7 +616,7 @@ public class CommandController {
                 }
                 System.out.println("Reinforce " + num + " armies in " + countryName);
 
-                ReinforcementController.reinforceArmy(command, gameplay.getCurrentPlayer(), gameplay.getSelectedMap());
+                ReinforcementController.reinforceArmy(command, gameplay);
                 System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies");
                 if (gameplay.getCurrentPlayer().getArmyCount() <= 0) {
                     gameplay.setCurrentPhase(Phases.Attack);
@@ -635,15 +639,33 @@ public class CommandController {
      */
     public static void fortify(String command)
     {
+        if (gameplay.getCurrentPhase() != Phases.Fortification) {
+            System.out.println("Now is " + gameplay.getCurrentPhase() + " phase, cannot do fortification");
+            return;
+        }
         try {
             String[] commands = command.split(" ");
-            if (commands[1].equals("none")) {
-                System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
-                gameplay.setCurrentPhase(Phases.Reinforcement);
-                return;
+            if (!commands[1].equals("none")) {
+                if (!FortificationController.fortifyArmy(command, gameplay)) {
+                    return;
+                };
             }
-            gameplay.setCurrentPhase(Phases.Fortification);
-            FortificationController.fortifyArmy(command, gameplay.getCurrentPlayer(), gameplay.getSelectedMap());
+            if (gameplay.getCurrentPlayer().getCardFlag()) {
+                Card newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                gameplay.getCurrentPlayer().resetCardFlag();
+                System.out.println("You have got a card: " + newCard);
+            }
+            //check if the top of player is out, if it is, remove it
+            while (gameplay.getRemovedPlayer().contains(gameplay.getPlayerQueue().peek())) {
+                gameplay.getPlayerQueue().remove();
+            }
+            gameplay.roundRobinPlayer();
+            System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+            System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
+            gameplay.assignReinforcementArmies();
+            System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies!" );
+            gameplay.setCurrentPhase(Phases.Reinforcement);
         }catch (Exception e){
             System.out.println("Some exception occurred");
         }
