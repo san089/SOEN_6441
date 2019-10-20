@@ -112,7 +112,6 @@ public class CommandController {
         }
         if (command.split(" ")[1].equals("none")) {
             System.out.println("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
-            System.out.println("Current player is " + gameplay.getCurrentPlayer().getPlayerName());
             gameplay.setCurrentPhase(Phases.Fortification);
             return;
         }

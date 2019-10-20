@@ -280,7 +280,7 @@ public class Gameplay extends Observable{
 	public void assignStartupArmies() {
 		switch(players.size()) {
 		
-		case 2:setArmyCount(4);
+		case 2:setArmyCount(40);
 				break;		
 		case 3:setArmyCount(35);
 				break;		
