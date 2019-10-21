@@ -25,7 +25,7 @@ public class Player {
 
 	private boolean cardFlag;
 
-	private int cardExchangeNum;
+	private int cardExchangeIndex;
 
 
 
@@ -43,7 +43,7 @@ public class Player {
 		this.cardsOwned = new ArrayList<Card>();
 		this.armyCount = 0;
 		this.cardFlag = false;
-		this.cardExchangeNum = 0;
+		this.cardExchangeIndex = 0;
 	}
 
 
@@ -109,11 +109,11 @@ public class Player {
 	}
 
 	public int getCardExchangeNum() {
-		return cardExchangeNum;
+		return cardExchangeIndex;
 	}
 
 	public void addCardExchangeNum() {
-		cardExchangeNum++;
+		cardExchangeIndex++;
 	}
 	
 		
