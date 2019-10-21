@@ -1,4 +1,5 @@
-package com.concordia.riskgame.tests;
+package com.concordia.riskgame.model.Modules;
+
 
 import com.concordia.riskgame.model.Modules.Dice;
 import org.junit.Assert;

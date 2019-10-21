@@ -1,13 +1,13 @@
-/*
- * 
- */
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO: Auto-generated Javadoc
+/**
+ *
+ *  Instantiates a new continent
+ */
 public class Continent {
 
     private String continentName;
@@ -24,25 +24,44 @@ public class Continent {
     }
 
 
+    /**
+     * Getter for continent name
+     * @return continentName
+     */
     public String getContinentName() {
         return continentName;
     }
 
 
+    /**
+     * Setter method for continent name
+     * @param continentName Continent name
+     */
     public void setContinentName(String continentName) {
         this.continentName = continentName;
     }
 
 
+    /**
+     * Getter method for the list of countries in the contient
+     * @return countriesPresent (list of type Country)
+     */
     public List<Country> getCountriesPresent() {
         return countriesPresent;
     }
 
-
+    /**
+     * Setter method for the list of countries in the contient
+     * @param countriesPresent Countries Present
+     */
     public void setCountriesPresent(List<Country> countriesPresent) {
         this.countriesPresent = countriesPresent;
     }
 
+    /**
+     * Getter method for the control value of continent
+     * @return controlValue
+     */
     public int getControlValue() {
         return controlValue;
     }
@@ -52,18 +71,18 @@ public class Continent {
     }
 
     /**
-     * Adds the country.
+     * Adds the country to the list of countries in the continent.
      *
-     * @param name the name
+     * @param name the name of country to add
      */
     public void addCountry(Country name) {
         countriesPresent.add(name);
     }
 
     /**
-     * Removes the country.
+     * Removes the country from list of countries in the continent.
      *
-     * @param name the name
+     * @param name the name of country to remove
      */
     public void removeCountry(Country name) {
         countriesPresent.remove(name);
@@ -71,10 +90,10 @@ public class Continent {
     
     
     /**
-     * Search country.
+     * Search country in the list of conuntries.
      *
-     * @param countryName the country name
-     * @return the country
+     * @param countryName the country name to be searched
+     * @return the country object, null if country not found.
      */
     public Country searchCountry(String countryName) {
     	for(Country country:getCountriesPresent())

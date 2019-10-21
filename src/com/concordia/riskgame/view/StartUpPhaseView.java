@@ -35,10 +35,10 @@ import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Phases;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class ReinforcementView.
 
+/**
+ * The Class Initiates the Startup View in the Project after the MapEditor View.
+ *
  */
 public class StartUpPhaseView extends JFrame implements Observer {
 
@@ -255,56 +255,106 @@ public class StartUpPhaseView extends JFrame implements Observer {
 		
 	}
 
+	/**
+	 * Getter to the element shopMapButton
+	 * @return shopMapButton
+	 */
 	public JButton getShowMapButton() {
 		return showMapButton;
 	}
 
-
-
+	/**
+	 * Getter method for the Playername text field
+	 * @return playerName
+	 */
 	public JTextField getPlayerName() {
 		return playerName;
 	}
 
+	/**
+	 * Getter method for the populate countries Button
+	 * @return populateCountriesButton
+	 */
 	public JButton getPopulateCountriesButton() {
 		return populateCountriesButton;
 	}
 
+	/**
+	 * Getter method for removeplayer Button
+	 * @return removePlayerButton
+	 */
 	public JButton getRemovePlayerButton() {
 		return removePlayerButton;
 	}
 
+	/**
+	 * Getter method for the getRemovePlayerName text field
+	 * @return removePlayerName
+	 */
 	public JTextField getRemovePlayerName() {
 		return removePlayerName;
 	}
 
+	/**
+	 * Getter method for the addplayerbutton
+	 * @return addPlayerButton
+	 */
 	public JButton getAddPlayerButton() {
 		return addPlayerButton;
 	}
 
+	/**
+	 * Getter method for the mapPath text field
+	 * @return mapPath
+	 */
 	public JTextField getMapPath() {
 		return mapPath;
 	}
 
+	/**
+	 * Setter method for mappath TextField
+	 * @param mapPath mapPath
+	 */
 	public void setMapPath(JTextField mapPath) {
 		this.mapPath = mapPath;
 	}
 
+	/**
+	 * Getter method for the Map selection button
+	 * @return mapSelectorButton
+	 */
 	public JButton getMapSelectorButton() {
 		return mapSelectorButton;
 	}
-	
+
+	/**
+	 * Getter method for the playercount drop down
+	 * @return playerCount
+	 */
 	public JComboBox<String> getPlayerCount() {
 		return playerCount;
 	}
 
+	/**
+	 * Getter method for the cardLayout
+	 * @return cardLayout
+	 */
 	public CardLayout getCardLayout() {
 		return cardLayout;
 	}
 
+	/**
+	 * Getter method for the Model
+	 * @return model
+	 */
 	public DefaultListModel<String> getModel() {
 		return model;
 	}
 
+	/**
+	 * Getter method for the currentplayerlist
+	 * @return currentPlayerList
+	 */
 	public JList<String> getCurrentPlayerList() {
 		return currentPlayerList;
 	}

@@ -3,17 +3,10 @@ package com.concordia.riskgame.model.Modules;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Instantiates a new country.
  *
- * @param countryName the country name
- * @param continentName the continent name
- * @param coordinateX the coordinate X
- * @param coordinateY the coordinate Y
- * @param ownerIndex the owner index
- * @param adjacentCountries the adjacent countries
- * @param armyCount the army count
  */
 
 public class Country {
@@ -45,61 +38,99 @@ public class Country {
     }
 
 
+    /**
+     * Getter for countryName
+     * @return countryName
+     */
     public String getCountryName() {
         return countryName;
     }
 
 
+    /**
+     * Setter for countryName attribute.
+     * @param countryName Country Name
+     */
     public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
-
+    /**
+     * Getter for owner name
+     * @return ownedBy
+     */
     public Player getOwnedBy() {
         return ownedBy;
     }
 
-
+    /**
+     * Setter for ownedBy attribute.
+     * @param ownedBy Owned By
+     */
     public void setOwnedBy(Player ownedBy) {
         this.ownedBy = ownedBy;
     }
 
-
+    /**
+     * Getter for number of armies in the country
+     * @return noOfArmiesPresent
+     */
     public int getNoOfArmiesPresent() {
         return this.noOfArmiesPresent;
     }
 
-
+    /**
+     * Setter for setting armies into country.
+     * @param noOfArmiesPresent number of armies
+     */
     public void setNoOfArmiesPresent(int noOfArmiesPresent) {
         this.noOfArmiesPresent = noOfArmiesPresent;
     }
 
-
+    /**
+     * Getter for list of neighbours for the country
+     * @return listOfNeighbours
+     */
     public List<String> getListOfNeighbours() {
         return listOfNeighbours;
     }
 
-
+    /**
+     * Setter for setting neighbours attribute.
+     * @param listOfNeighbours list of neighbours
+     */
     public void setListOfNeighbours(List<String> listOfNeighbours) {
         this.listOfNeighbours = listOfNeighbours;
     }
 
-
+    /**
+     * Getter for longitude
+     * @return longitude
+     */
     public double getLongitude() {
         return longitude;
     }
 
-
+    /**
+     * Setter for longitude attribute.
+     * @param longitude longitude value
+     */
     public void setLongitude(double longitude) {
         longitude = longitude;
     }
 
-
+    /**
+     * Getter for latitude
+     * @return latitude
+     */
     public double getLatitude() {
         return latitude;
     }
 
-
+    /**
+     * Setter for latitude attribute.
+     * @param latitude latitude value
+     */
     public void setLatitude(double latitude) {
         latitude = latitude;
     }
@@ -119,14 +150,4 @@ public class Country {
         this.noOfArmiesPresent--;
     }
 
-	/*
-	 * <<<<<<< HEAD ======= private final String countryName; private final String
-	 * continentName; private String coordinateX; private String coordinateY;
-	 * private String ownerName; private ArrayList<Country> adjacentCountries;
-	 * private int armyCount;
-	 */
-	
-	
-
-	
 }

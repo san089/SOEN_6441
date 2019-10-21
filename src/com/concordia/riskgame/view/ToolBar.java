@@ -9,6 +9,9 @@ import java.awt.*;
 import java.io.Serializable;
 
 
+/**
+ * ToolBar with map editor view
+ */
 public class ToolBar extends JPanel implements Serializable {
 
     private JButton addContinent;

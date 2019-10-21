@@ -1,6 +1,5 @@
 package com.concordia.riskgame.view;
 
-//import com.concordia.riskgame.controller.ReinforcementView;
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.controller.StartupPhaseController;
 import com.concordia.riskgame.model.Modules.Map;
@@ -16,12 +15,14 @@ import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
-// TODO: Auto-generated Javadoc
+/**
+ * ===============================================
+ * THIS IS THE DRIVER CLASS FOR PROJECT
+ * ================================================
+ * THIS CLASS IS THE INITAL VIEW OF THE GAME.
+ */
 public class GameLauncherView extends JFrame implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JFrame gameWindow;
 	final static String GAMELAUNCHERPANEL = "Card with Game Launching View";
@@ -72,6 +73,9 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	}
 
 
+	/**
+	 * Method to initialise card layout variables.
+	 */
 	public void initaliseCardLayoutUI() {
 
 		cardsContainerPanel=new JPanel(new CardLayout());

@@ -13,8 +13,9 @@
  import java.util.List;
 
 
-
-// TODO: Auto-generated Javadoc
+ /**
+  * Class containing Map manipulation related functionalities
+  */
 public class MapTools  {
 	
 	/**
@@ -341,8 +342,11 @@ public class MapTools  {
 		}
 		return true;
 	}
-	
 
+
+	 /**
+	  * Class to create a graph of Map.
+	  */
 	class Graph {
 		private int Value; 
 		private ArrayList<Integer> adj[]; 
@@ -390,8 +394,12 @@ public class MapTools  {
 				}
 			}
 		}
-		
 
+
+		 /**
+		  * Get the graph transpose
+		  * @return graph
+		  */
 		Graph getTranspose() {
 			Graph graph = new Graph(Value);
 			for (int v = 0; v < Value; v++) {
@@ -456,7 +464,7 @@ public class MapTools  {
 		for (int i = 0; i < noOfVertices; i++) {
 			for (Continent c : gameMap.getContinents()) {
 				for (Country country : c.getCountriesPresent()) {
-					if (country.getCountryName().equals(gameMap.listOfCountryNames().get(i))) {
+					if (country.getCountryName().equalsIgnoreCase(gameMap.listOfCountryNames().get(i))) {
 						List<String> neighbours = country.getListOfNeighbours();
 						for (String current : neighbours) {
 							int index = listOfCountries.indexOf(current.toLowerCase());

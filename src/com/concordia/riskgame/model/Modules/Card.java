@@ -6,7 +6,10 @@ package com.concordia.riskgame.model.Modules;
 
 import java.util.Random;
 
-// TODO: Auto-generated Javadoc
+/**
+ * Enum for cards.
+ */
+
 public enum Card {
     INFANTRY("Infantry"),
     CAVALRY("Cavalry"),

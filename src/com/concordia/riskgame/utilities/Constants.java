@@ -3,6 +3,9 @@
  */
 package com.concordia.riskgame.utilities;
 
+/**
+ * Class containing all the constants used in project
+ */
 public class Constants {
 
     public static final int WIDTH = 640;

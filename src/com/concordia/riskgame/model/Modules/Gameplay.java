@@ -17,6 +17,7 @@ import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.StartUpPhaseView;
+import com.concordia.riskgame.controller.ReinforcementController;
 
 import javax.print.attribute.standard.QueuedJobCount;
 
@@ -181,7 +182,7 @@ public class Gameplay extends Observable{
 	public boolean existDuplicatePlayer(String playerName)
 	{
 		for(Player player:players)
-			if(player.getPlayerName().equals(playerName))
+			if(player.getPlayerName().equalsIgnoreCase(playerName))
 				return true;
 		
 		return false;
@@ -201,7 +202,7 @@ public class Gameplay extends Observable{
 		for(Iterator<Player> playerIt=players.iterator();playerIt.hasNext();)
 			{
 			currentPlayer=playerIt.next();
-			if(currentPlayer.getPlayerName().equals(playerName)) {
+			if(currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
 				playerFound = true;
 				playerIt.remove();
 				setChanged();
@@ -328,7 +329,8 @@ public class Gameplay extends Observable{
 	 *
 	 * @param countryName the country name
 	 * @param count the count
-	 * @return true, if successful
+	 * @param displayArmy display army
+	 * @return true  true, if successful
 	 */
 	public boolean placeArmy(String countryName,int count,boolean displayArmy) {
 		if(!getSelectedMap().listOfCountryNames().contains(countryName)) {
@@ -361,7 +363,8 @@ public class Gameplay extends Observable{
 	
 	
 	/**
-	 * 
+	 *  Get Abandoned Country count
+	 * @return count count of countries abondoned.
 	 */
 	
 	public int getAbandonedCountryCount() {
@@ -412,5 +415,6 @@ public class Gameplay extends Observable{
 		
 		
 	}
+
 	
 }

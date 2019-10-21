@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO: Auto-generated Javadoc
+/**
+ * Model class for Map
+ */
 public class Map {
     private String name;
     private String authorName;
@@ -29,58 +31,105 @@ public class Map {
     }
 
 
+    /**
+     * Getter for path
+     * @return path
+     */
     public String getPath() {
         return path;
     }
 
 
+    /**
+     * Setter for path
+     * @param path path value
+     */
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Getter for name
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
-
+    /**
+     * Setter for Name
+     * @param name Name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
 
+    /**
+     * Getter for continent list
+     * @return continents - list type
+     */
     public List<Continent> getContinents() {
         return continents;
     }
 
 
+    /**
+     * Setter for continet list
+     * @param continents continents list
+     */
     public void setContinents(List<Continent> continents) {
         this.continents = continents;
     }
 
 
+    /**
+     * Getter for Author name
+     * @return autorName
+     */
     public String getAuthorName() {
         return authorName;
     }
 
+    /**
+     * Setter of Author Name
+     * @param authorName Author Name value
+     */
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
 
 
+    /**
+     * Getter for errors
+     * @return errorOccured
+     */
     public boolean getErrorOccurred() {
         return errorOccurred;
     }
 
 
+    /**
+     * Setter of errors
+     * @param errorOccurred Error occured
+     */
     public void setErrorOccurred(boolean errorOccurred) {
         this.errorOccurred = errorOccurred;
     }
 
 
+    /**
+     * Getter for Error Message
+     * @return errorMessage Error message
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * Setter for Error message
+     * @param errorMessage Error Message
+     */
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }

@@ -9,6 +9,9 @@ import java.io.PrintStream;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test class for testing GamePlayer class
+ */
 public class GameplayTest {
     Gameplay gamePlay;
     PrintStream console = null;
@@ -16,6 +19,7 @@ public class GameplayTest {
     @Before
     public void setUp() throws Exception {
         gamePlay = Gameplay.getInstance();
+        gamePlay.addPlayer("player1");
         bytes = new ByteArrayOutputStream();
         console = System.out;
         System.setOut(new PrintStream(bytes));
@@ -27,12 +31,19 @@ public class GameplayTest {
     }
 
     @Test
-    public void removePlayer() {
+    public void removeNonexistantPlayer() {
         String player = "test";
-
         String expected = "Player not found.";
         assertEquals(expected, gamePlay.removePlayer(player));
     }
+    
+    @Test
+    public void removeExistantPlayer() {
+        String player = "player1";
+        String expected = "Player player1 removed from the game.";
+        assertEquals(expected, gamePlay.removePlayer(player));
+    }
+
 
 
     @Test

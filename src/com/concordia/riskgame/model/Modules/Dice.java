@@ -1,13 +1,10 @@
-/*
- * 
- */
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Dice class is used to roll, provide the result of attack
  * @since Build I
