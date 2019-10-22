@@ -11,14 +11,12 @@ public class AttackPhaseController {
     private static Country fromCountry;
     private static Country toCountry;
     private static String[] commands;
-    private static Gameplay gameplay;
-    private static Map gameMap;
+    private static Gameplay gameplay = Gameplay.getInstance();;
+    private static Map gameMap = gameplay.getSelectedMap();
     private static Player defensivePlayer;
 
 
-    public static void attack(String command, Gameplay gamePlay) {
-        gameMap = gamePlay.getSelectedMap();
-        gameplay = gamePlay;
+    public static void attack(String command) {
         commands = command.split(" ");
         fromCountry = gameMap.searchCountry(commands[1]);
         toCountry = gameMap.searchCountry(commands[2]);
@@ -27,18 +25,18 @@ public class AttackPhaseController {
             System.out.println("Cannot find the country");
             return;
         }
-        switch (commands[3]) {
-            case "auto":
-                autoAttack();
-                break;
-            default:
-                numOfAttackDice = Integer.parseInt(commands[3]);
-                numOfDefensiveDice = Integer.parseInt(commands[4]);
-                checkCommand();
-                attackOnce();
+
+        if (!checkCommand()) {
+            return;
         }
-        isPlayerOut();
-        isWinner();
+
+        if ("auto".equals(commands[3])) {
+            autoAttack();
+        } else {
+            numOfAttackDice = Integer.parseInt(commands[3]);
+            numOfDefensiveDice = Integer.parseInt(commands[4]);
+            attackOnce();
+        }
 
     }
 
@@ -60,8 +58,8 @@ public class AttackPhaseController {
                 offensiveCountryLose++;
             }
         }
-        System.out.println(fromCountry.getCountryName() + " lose " + offensiveCountryLose + "armies");
-        System.out.println(toCountry.getCountryName() + " lose " + defensiveCountryLose + "armies");
+        System.out.println(fromCountry.getCountryName() + " lose " + offensiveCountryLose + " armies");
+        System.out.println(toCountry.getCountryName() + " lose " + defensiveCountryLose + " armies");
 
 
         if (fromCountry.getNoOfArmiesPresent() == 1) {
@@ -84,12 +82,14 @@ public class AttackPhaseController {
             //subtract attacking armies from offensive country
             fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - numOfAttackDice);
 
+            isPlayerOut();
+
             return true;
         }
         return false;
     }
 
-    public static boolean checkCommand() {
+    private static boolean checkCommand() {
         if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(commands[1])) {
             System.out.println("Offensive Country is not your country! Re-input:");
             return false;
@@ -106,32 +106,32 @@ public class AttackPhaseController {
             System.out.println("Offensive country doesn't have army to attack!");
             return false;
         }
-        if (numOfAttackDice > 3 || numOfAttackDice <= 0) {
-            System.out.println("Attack dice invalid, should be 0 < num <= 3!");
-            return false;
-        }
+        if (!commands[3].equals("auto")) {
+            if (numOfAttackDice > 3 || numOfAttackDice <= 0) {
+                System.out.println("Attack dice invalid, should be 0 < num <= 3!");
+                return false;
+            }
 
-        if (numOfAttackDice > fromCountry.getNoOfArmiesPresent() - 1) {
-            System.out.println("Offensive country only has " + (fromCountry.getNoOfArmiesPresent() - 1) + " armies to do attack!");
-            return false;
-        }
+            if (numOfAttackDice > fromCountry.getNoOfArmiesPresent() - 1) {
+                System.out.println("Offensive country only has " + (fromCountry.getNoOfArmiesPresent() - 1) + " armies to do attack!");
+                return false;
+            }
 
-        if (numOfDefensiveDice > toCountry.getNoOfArmiesPresent()) {
-            System.out.println("Defensive country doesn't have enough armies to do defence!");
-            return false;
-        }
-        if (numOfDefensiveDice > 2 || numOfDefensiveDice <=0) {
-            System.out.println("Number of defensive dice invalid! It should be 0 < num <=2");
-            return false;
+            if (numOfDefensiveDice > toCountry.getNoOfArmiesPresent()) {
+                System.out.println("Defensive country doesn't have enough armies to do defence!");
+                return false;
+            }
+            if (numOfDefensiveDice > 2 || numOfDefensiveDice <= 0) {
+                System.out.println("Number of defensive dice invalid! It should be 0 < num <=2");
+                return false;
+            }
         }
         return true;
     }
 
 
-    public static void isPlayerOut() {
-        if (defensivePlayer.getCountriesOwned().size() != 0) {
-
-        } else {
+    private static void isPlayerOut() {
+        if (defensivePlayer.getCountriesOwned().size() == 0) {
             int n = 0;
             for (Card card : defensivePlayer.getCardsOwned()){
                 gameplay.getCurrentPlayer().addNewCard(card);
@@ -140,16 +140,17 @@ public class AttackPhaseController {
             gameplay.addRemovedPlayer(defensivePlayer);
             gameplay.getPlayers().remove(defensivePlayer);
             System.out.println(defensivePlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
+            isWinner();
         }
     }
 
-    public static void isWinner() {
+    private static void isWinner() {
         if (gameplay.getPlayers().size() == 1) {
             System.out.println("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
         }
     }
 
-    public static void autoAttack() {
+    private static void autoAttack() {
         while (fromCountry.getNoOfArmiesPresent() != 1 && toCountry.getNoOfArmiesPresent() != 0) {
             if (fromCountry.getNoOfArmiesPresent() > 3) {
                 numOfAttackDice = 3;

@@ -21,7 +21,7 @@ public class Dice {
      */
     public int rollOneDice(){
         int r = new Random().nextInt(NUMBER_CEIL);
-        return r;
+        return r + 1;
     }
 
     /**

@@ -110,21 +110,24 @@ public class CommandController {
             System.out.println("Now it's not attack phase, you cannot attack");
             return;
         }
+
+        if (command.split(" ").length != 4 && command.split(" ").length != 5 && command.split(" ").length != 2) {
+            System.out.println("Incorrect command!");
+            return;
+        }
+
         if (command.split(" ")[1].equals("none")) {
             System.out.println("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
             gameplay.setCurrentPhase(Phases.Fortification);
             return;
         }
-
         if (!command.split(" ")[3].equals("auto")) {
-            try {
-                int i = Integer.parseInt(command.split(" ")[3]);
-                int j = Integer.parseInt(command.split(" ")[4]);
-            } catch (NumberFormatException ex) {
-                System.out.println("Not a integer");
+            if (!verifyNumber(command.split(" ")[3]) || !verifyNumber(command.split(" ")[3])) {
+                System.out.println("Not an integer");
+                return;
             }
         }
-        AttackPhaseController.attack(command, gameplay);
+        AttackPhaseController.attack(command);
     }
 
 
@@ -604,22 +607,23 @@ public class CommandController {
     {
         try {
             if(gameplay.getCurrentPhase() == Phases.Reinforcement){
+                if (command.split(" ").length != 3) {
+                    System.out.println("Incorrect command!");
+                    return;
+                }
                 String countryName = command.split(" ")[1];
                 String num = command.split(" ")[2];
-                try {
-                    int i = Integer.parseInt(num);
-                }
-                catch(InputMismatchException ex) {
-                    System.out.println("Please enter a number");
+                if (!verifyNumber(num)) {
+                    System.out.println("Not an integer!");
                     return;
                 }
                 System.out.println("Reinforce " + num + " armies in " + countryName);
 
-                ReinforcementController.reinforceArmy(command, gameplay);
+                ReinforcementController.reinforceArmy(command);
                 System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies");
                 if (gameplay.getCurrentPlayer().getArmyCount() <= 0) {
-                    gameplay.setCurrentPhase(Phases.Attack);
                     System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Attack Phase.");
+                    gameplay.setCurrentPhase(Phases.Attack);
                 }
             }else{
                 System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot move to " + Phases.Reinforcement + " phase.");
