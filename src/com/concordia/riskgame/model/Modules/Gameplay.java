@@ -19,6 +19,8 @@ import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.StartUpPhaseView;
 import com.concordia.riskgame.controller.ReinforcementController;
 
+import javax.print.attribute.standard.QueuedJobCount;
+
 // TODO: Auto-generated Javadoc
 public class Gameplay extends Observable{
 
@@ -30,6 +32,8 @@ public class Gameplay extends Observable{
 	private static final int MAX_PLAYER_LIMIT=6;
 	private Phases currentPhase;
 	private static Gameplay gameplayObj = null;
+    private ArrayList<Player> removedPlayer;    //add a list of removed player
+
 	
 	
 	public static Gameplay getInstance(){
@@ -40,6 +44,7 @@ public class Gameplay extends Observable{
 			gameplayObj.currentPhase =Phases.MapEditor;
 			gameplayObj.playerCount=0;
 			gameplayObj.playerQueue=new LinkedList<Player>();
+			gameplayObj.removedPlayer = new ArrayList<>();
 		}
 		return gameplayObj;
 	}
@@ -71,6 +76,13 @@ public class Gameplay extends Observable{
 		return currentPlayer;
 	}
 
+	public ArrayList<Player> getRemovedPlayer() {
+		return removedPlayer;
+	}
+
+	public void addRemovedPlayer(Player player) {
+		removedPlayer.add(player);
+	}
 	
 	
 	public void setPlayerCount(int playerCount) {
@@ -85,7 +97,17 @@ public class Gameplay extends Observable{
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
-	
+
+    /**
+     *after first reinforcement start, round player strictly.
+     * @param
+     */
+    public void roundRobinPlayer() {
+        currentPlayer = playerQueue.remove();
+        playerQueue.add(currentPlayer);
+    }
+
+
 	
 	
 	public void setArmyCount(int count) {
@@ -283,19 +305,26 @@ public class Gameplay extends Observable{
 	 * Assign reinforcement armies.
 	 */
 	public void assignReinforcementArmies() {
-		
-		for(Player player:getPlayers()) {
-			int reinforcementArmyCount=((player.getCountriesOwned().size())/3);
-			for(Continent continent:getSelectedMap().getOwnedContinents(player.getPlayerName())) {
-				reinforcementArmyCount=reinforcementArmyCount+continent.getControlValue();
-			}
-			reinforcementArmyCount=(reinforcementArmyCount<3)?(3):reinforcementArmyCount;
-			player.setArmyCount(reinforcementArmyCount+player.getArmyCount());			
-	}		
+
+
+            int reinforcementArmyCount = ((currentPlayer.getCountriesOwned().size())/3);
+            for(Continent continent:getSelectedMap().getOwnedContinents(currentPlayer.getPlayerName())) {
+                reinforcementArmyCount = reinforcementArmyCount + continent.getControlValue();
+            }
+            reinforcementArmyCount = (reinforcementArmyCount<3)?(3) : reinforcementArmyCount;
+            currentPlayer.setArmyCount(reinforcementArmyCount + currentPlayer.getArmyCount());
+
+//            for(Player player:getPlayers()) {
+//			int reinforcementArmyCount=((player.getCountriesOwned().size())/3);
+//			for(Continent continent:getSelectedMap().getOwnedContinents(player.getPlayerName())) {
+//				reinforcementArmyCount=reinforcementArmyCount+continent.getControlValue();
+//			}
+//			reinforcementArmyCount=(reinforcementArmyCount<3)?(3):reinforcementArmyCount;
+//			player.setArmyCount(reinforcementArmyCount+player.getArmyCount());
+//        }
 	}
-	
-	
-	/**
+
+    /**
 	 * Place army.
 	 *
 	 * @param countryName the country name
@@ -368,19 +397,21 @@ public class Gameplay extends Observable{
 	 */
 	public void placeAllArmies() {
 		Queue<Player> tempQueue=getPlayerQueue();
-		while(tempQueue.size()!=0) {
-    		setCurrentPlayer(tempQueue.remove());
-    		ArrayList<String> countries=getCurrentPlayer().getCountriesOwned();
-			System.out.println("Placing army for "+getCurrentPlayer().getPlayerName());
-			int countryindex=0;
-			while(getCurrentPlayer().getArmyCount()!=0) 
-			{
-			int armycount=1;
-			placeArmy(countries.get(countryindex), armycount,false);
-			countryindex=(countryindex==countries.size()-1)?0:++countryindex;		
+		Random random = new Random();
+
+		do {
+			Player tempPlayer = tempQueue.remove();
+			int n = tempPlayer.getArmyCount();
+			while (n != 0) {
+				int index = random.nextInt(tempPlayer.getCountriesOwned().size());
+				selectedMap.searchCountry(tempPlayer.getCountriesOwned().get(index)).addNoOfArmiesCountry();
+				n--;
 			}
+			tempPlayer.setArmyCount(0);
 			displayArmyDistribution();
-    	}
+		}while (tempQueue.size() != 0);
+
+
 		
 		
 	}

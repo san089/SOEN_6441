@@ -1,19 +1,17 @@
 package com.concordia.riskgame.controller;
 
-import com.concordia.riskgame.model.Modules.Continent;
-import com.concordia.riskgame.model.Modules.Gameplay;
-import com.concordia.riskgame.model.Modules.Map;
+import com.concordia.riskgame.model.Modules.*;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.MapEditorView;
-import com.concordia.riskgame.controller.ReinforcementController;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-
+// TODO: Auto-generated Javadoc
 /**
  * Class to parse the commands entered by user and perform actions based on commands
  */
@@ -46,9 +44,6 @@ public class CommandController {
         commandType = command.split(" ")[0];
 
         switch (commandType) {
-            case "showphase":
-                System.out.println("Current Phase : " + gameplay.getCurrentPhase());
-                break;
             case "editcontinent":
                 editContinent(command);
                 break;
@@ -88,8 +83,11 @@ public class CommandController {
             case "reinforce":
                 reinforce(command);
                 break;
+            case "attack":
+                attack(command);
+                break;
             case "fortify":
-                System.out.println("Yet to configure. Will be implemented after attack Phase.");
+                fortify(command);
                 break;
             case "help":
                 showHelpOptions();
@@ -101,6 +99,32 @@ public class CommandController {
                 invalidCommandMessage();
                 break;
         }
+    }
+
+    /**
+     *
+     * @param command
+     */
+    private static void attack(String command) {
+        if (gameplay.getCurrentPhase() != Phases.Attack) {
+            System.out.println("Now it's not attack phase, you cannot attack");
+            return;
+        }
+        if (command.split(" ")[1].equals("none")) {
+            System.out.println("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
+            gameplay.setCurrentPhase(Phases.Fortification);
+            return;
+        }
+
+        if (!command.split(" ")[3].equals("auto")) {
+            try {
+                int i = Integer.parseInt(command.split(" ")[3]);
+                int j = Integer.parseInt(command.split(" ")[4]);
+            } catch (NumberFormatException ex) {
+                System.out.println("Not a integer");
+            }
+        }
+        AttackPhaseController.attack(command, gameplay);
     }
 
 
@@ -334,8 +358,7 @@ public class CommandController {
      * This method reads gameplayer command, validates the command and add or remove player.
      *
      * @param command Command to validate
-     *
-     *
+     * @return True if the command is valid, else false.
      */
     public static void gamePlayer(String command) {
         if(gameplay.getCurrentPhase() != Phases.Startup){
@@ -451,8 +474,6 @@ public class CommandController {
         Map gameMap=new Map();
         if(mapTools.pickMapFileService(gameMap,fileName))
         	mapEditor.setGameMap(gameMap);
-        else
-        	System.out.println(gameMap.getErrorMessage());
     }
 
 
@@ -505,15 +526,12 @@ public class CommandController {
         System.out.println("Enter the number armies to be placed ");
         boolean loop=true;
         while(loop) {
-        String input=in.nextLine();
-        if(validateArmyCount(input))
-        	armyCount=Integer.parseInt(input);
-        else
-        {
-        	System.out.println("Please enter a proper number as army count");
-        	continue;
+        try {
+        	armyCount=in.nextInt();
         }
-        
+        catch(InputMismatchException ex) {
+        	System.out.println("Please enter a number");
+        }
         
         if(!(gameplay.getCurrentPlayer().getArmyCount()>=armyCount) )
         	System.out.println("Entered count more than the number of armies available for the current player.Please enter a different value.");      
@@ -532,21 +550,25 @@ public class CommandController {
         	System.out.println("PLAYER TURN : Place army for "+gameplay.getCurrentPlayer().getPlayerName()+". Number of remaining armies "+gameplay.getCurrentPlayer().getArmyCount());
     		
         }
-    }
-    
-    
-    /*
-     * 
-     * */
-    public static boolean validateArmyCount(String count) {
-    	try {
-    	int integerCount=(Integer.parseInt(count));
-    	}
-    	catch(NumberFormatException | NullPointerException nfe) {
-    		return false;
-    	}
-    	return true;
-    	
+
+        // after every place army, check if all the reinforcement are 0, if so, change to reinforcement phase.
+        ArrayList<Player> players = gameplay.getPlayers();
+        int totalNumOfReinforce = 0;
+        for (Player player : players) {
+            totalNumOfReinforce = totalNumOfReinforce +player.getArmyCount();
+        }
+
+        if (totalNumOfReinforce == 0) {
+            gameplay.getPlayerQueue().clear();
+            gameplay.getPlayerQueue().addAll(players);
+            gameplay.assignReinforcementArmies();
+            System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+            gameplay.setCurrentPhase(Phases.Reinforcement);
+            gameplay.roundRobinPlayer();
+            System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
+                    gameplay.getCurrentPlayer().getArmyCount() + " armies to place");
+        }
+
     }
 
 
@@ -556,6 +578,20 @@ public class CommandController {
     public static void placeAll()
     {
     	gameplay.placeAllArmies();
+
+        ArrayList<Player> players = gameplay.getPlayers();
+        //after placeall, game play starts, initialize player queue
+        gameplay.getPlayerQueue().clear();
+        gameplay.getPlayerQueue().addAll(players);
+        gameplay.assignReinforcementArmies();
+
+        System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+        gameplay.setCurrentPhase(Phases.Reinforcement);
+        //start round robin play
+        gameplay.roundRobinPlayer();
+
+        System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
+                gameplay.getCurrentPlayer().getArmyCount() + " armies to place");
     }
 
 
@@ -567,18 +603,29 @@ public class CommandController {
     public static void reinforce(String command)
     {
         try {
-            if(gameplay.getCurrentPhase() == Phases.Startup){
+            if(gameplay.getCurrentPhase() == Phases.Reinforcement){
                 String countryName = command.split(" ")[1];
                 String num = command.split(" ")[2];
+                try {
+                    int i = Integer.parseInt(num);
+                }
+                catch(InputMismatchException ex) {
+                    System.out.println("Please enter a number");
+                    return;
+                }
                 System.out.println("Reinforce " + num + " armies in " + countryName);
-                System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
-                gameplay.setCurrentPhase(Phases.Reinforcement);
-                ReinforcementController.reinforceArmy();
+
+                ReinforcementController.reinforceArmy(command, gameplay);
+                System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies");
+                if (gameplay.getCurrentPlayer().getArmyCount() <= 0) {
+                    gameplay.setCurrentPhase(Phases.Attack);
+                    System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Attack Phase.");
+                }
             }else{
                 System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot move to " + Phases.Reinforcement + " phase.");
             }
         }catch (Exception e){
-            System.out.println("Some exception occured.");
+            System.out.println("Some exception occurred.");
             showHelpOptions();
         }
     }
@@ -591,6 +638,36 @@ public class CommandController {
      */
     public static void fortify(String command)
     {
+        if (gameplay.getCurrentPhase() != Phases.Fortification) {
+            System.out.println("Now is " + gameplay.getCurrentPhase() + " phase, cannot do fortification");
+            return;
+        }
+        try {
+            String[] commands = command.split(" ");
+            if (!commands[1].equals("none")) {
+                if (!FortificationController.fortifyArmy(command, gameplay)) {
+                    return;
+                };
+            }
+            if (gameplay.getCurrentPlayer().getCardFlag()) {
+                Card newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                gameplay.getCurrentPlayer().resetCardFlag();
+                System.out.println("You have got a card: " + newCard);
+            }
+            //check if the top of player is out, if it is, remove it
+            while (gameplay.getRemovedPlayer().contains(gameplay.getPlayerQueue().peek())) {
+                gameplay.getPlayerQueue().remove();
+            }
+            gameplay.roundRobinPlayer();
+            System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+            System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
+            gameplay.assignReinforcementArmies();
+            System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies!" );
+            gameplay.setCurrentPhase(Phases.Reinforcement);
+        }catch (Exception e){
+            System.out.println("Some exception occurred");
+        }
 
     }
 
