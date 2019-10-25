@@ -5,12 +5,13 @@ import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Phases;
 
+import javax.swing.*;
 import java.util.InputMismatchException;
 
 public class ReinforcementController {
 
 	
-	public static void reinforceArmy(String command, Gameplay gameplay) {
+	public static void reinforceArmy(String command) {
 //		System.out.println("\nReinforcement Functionality is currently abstract.\n==============================================================\n");
 //		System.out.println(" Rules for Reinforcement Phase: \nThe player is given a number of armies that depends on the number of countries he owns (# of countries owned divided by 3, rounded down). " +
 //				"If the player owns all the countries of an\n" +
@@ -22,8 +23,14 @@ public class ReinforcementController {
 //				"Once all the reinforcement armies have been placed by the player, the attacks phase begins");
         String[] commands = command.split(" ");
         String countryName = commands[1];
+        Gameplay gameplay = Gameplay.getInstance();
         int armyCount = Integer.parseInt(commands[2]);
         int currentReinforce = gameplay.getCurrentPlayer().getArmyCount();
+        Player currentPlayer = gameplay.getCurrentPlayer();
+        if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(commands[1])) {
+            System.out.println("Not your country!");
+            return;
+        }
         if(currentReinforce < armyCount) {
             System.out.println("Entered count more than the number of armies available for the current player.Please enter a smaller value.");
             return;
