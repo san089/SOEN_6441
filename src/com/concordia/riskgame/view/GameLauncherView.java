@@ -66,7 +66,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 			while (true)
 			{
 				user_input = sc.nextLine();
-				CommandController.parseCommand(user_input);
+				CommandController.parseCommand(user_input, sc);
 			}
 		}
 

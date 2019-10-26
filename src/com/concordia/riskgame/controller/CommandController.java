@@ -39,7 +39,7 @@ public class CommandController {
      *
      * @param command takes command input from user
      */
-    public static void parseCommand(String command) {
+    public static void parseCommand(String command, Scanner sc) {
         command = command.trim().replaceAll(" +", " "); //replace multiple whitespaces with one.
         commandType = command.split(" ")[0];
 
@@ -84,7 +84,7 @@ public class CommandController {
                 reinforce(command);
                 break;
             case "attack":
-                attack(command);
+                attack(command, sc);
                 break;
             case "fortify":
                 fortify(command);
@@ -105,7 +105,7 @@ public class CommandController {
      *
      * @param command
      */
-    private static void attack(String command) {
+    private static void attack(String command, Scanner sc) {
         if (gameplay.getCurrentPhase() != Phases.Attack) {
             System.out.println("Now it's not attack phase, you cannot attack");
             return;
@@ -127,7 +127,7 @@ public class CommandController {
                 return;
             }
         }
-        AttackPhaseController.attack(command);
+        gameplay.getCurrentPlayer().attack(command);
     }
 
 
@@ -619,7 +619,7 @@ public class CommandController {
                 }
                 System.out.println("Reinforce " + num + " armies in " + countryName);
 
-                ReinforcementController.reinforceArmy(command);
+                gameplay.getCurrentPlayer().reinforceArmy(command);
                 System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies");
                 if (gameplay.getCurrentPlayer().getArmyCount() <= 0) {
                     System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Attack Phase.");
@@ -649,7 +649,7 @@ public class CommandController {
         try {
             String[] commands = command.split(" ");
             if (!commands[1].equals("none")) {
-                if (!FortificationController.fortifyArmy(command, gameplay)) {
+                if (!gameplay.getCurrentPlayer().fortifyArmy(command)) {
                     return;
                 };
             }
