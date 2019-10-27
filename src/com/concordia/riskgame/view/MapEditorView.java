@@ -2,14 +2,18 @@ package com.concordia.riskgame.view;
 import com.concordia.riskgame.controller.MapEditorController;
 import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Country;
+import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Map;
+import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Constants;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
@@ -19,6 +23,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,8 +33,10 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.border.Border;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
@@ -260,7 +267,82 @@ public class MapEditorView extends JFrame implements Serializable {
         }
         mapTree = new JTree(top);
         treeScrollPane.getViewport().add(mapTree);
-    	        
+                
+    }
+    
+    
+    
+    public void addPlayerViewComponents() {
+    	Border blackline = BorderFactory.createLineBorder(Color.black);        	
+    	JPanel playerLabelViewPanel = new JPanel();
+        JLabel playerLabel = new JLabel("Player View");
+        playerLabel.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        playerLabel.setBounds(140, 450, playerLabel.getPreferredSize().width + 500, playerLabel.getPreferredSize().height);
+        playerLabelViewPanel.setBounds(10, 470, this.getSize().width - 40, 35);
+        add(playerLabelViewPanel);
+        playerLabelViewPanel.setBackground(Color.lightGray);
+        playerLabelViewPanel.setLayout(new FlowLayout());
+        playerLabel.setFont(new Font("dialog", 1, 15));
+        playerLabelViewPanel.setBorder(blackline);
+        playerLabelViewPanel.add(playerLabel);
+        
+            	
+    	JScrollPane playerScrollPane=createTable();
+    	playerScrollPane.setBounds(10, 520, this.getSize().width - 40, 350);
+    	add(playerScrollPane);
+    	
+    	new WorldDominationView();
+    	  
+     }
+    
+    public JScrollPane createTable() {
+    	
+		String[] columnNames = { "Player Name ", "Countries Owned", "Number of Armies", "Continents Owned"};
+		Gameplay gameInstance=Gameplay.getInstance();
+		int rowCount=gameInstance.getSelectedMap().listOfCountryNames().size();
+		List<Player> playerList= gameInstance.getPlayers();
+		Object[][] data = new Object[rowCount][4];
+		int row=0;
+		for(Player player:playerList) {
+			System.out.println("RowCount "+rowCount);
+			String playerName=player.getPlayerName();
+			List<Country> playerOwnedCountryList=gameInstance.getSelectedMap().getOwnedCountries(playerName);
+			List<Continent> continentList=gameInstance.getSelectedMap().getOwnedContinents(playerName);
+			String continentsOwned="";
+			for(Continent continent:continentList)
+				continentsOwned+=", "+continent.getContinentName();
+			continentsOwned=(continentsOwned.contentEquals(""))?("None"):(continentsOwned.substring(1));
+			for(Country country:playerOwnedCountryList)
+			{
+			if(playerOwnedCountryList.get(0).equals(country))	
+			{	Object[] rowData= {playerName,country.getCountryName(),country.getNoOfArmiesPresent(),continentsOwned};
+				data[row]=rowData;
+			}
+			else
+			{	Object[] rowData= {"",country.getCountryName(),country.getNoOfArmiesPresent(),""};
+				data[row]=rowData;
+			}
+			++row;
+			}
+			
+		}
+		
+		for(int i=0;i<data.length;i++)
+			{for(int j=0;j<data[i].length;j++)
+				System.out.print(data[i][j].toString()+" ");
+			System.out.println("\n");
+			}
+		final JTable table = new JTable(data, columnNames);
+		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		table.setFillsViewportHeight(true);
+		table.setEnabled(false);
+
+//Create the scroll pane and add the table to it.
+		JScrollPane scrollPane = new JScrollPane(table);
+
+//Add the scroll pane to this panel.
+		return (scrollPane);
+    	
     }
 
     

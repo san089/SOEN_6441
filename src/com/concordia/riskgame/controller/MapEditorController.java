@@ -590,6 +590,7 @@ public class MapEditorController implements ActionListener {
     	mapEditorView.setVisible(true);
     	mapEditorView.createTree(map);
         mapEditorView.countriesMatrix(map);
+        mapEditorView.addPlayerViewComponents();
     
     }
 }

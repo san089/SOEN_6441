@@ -97,7 +97,10 @@ public class StartupPhaseController implements ActionListener  {
 			Map existingMap=new Map();
 			String sFinal=mapTool.pickMapFile(existingMap);
 			System.out.println(sFinal);
-			if(sFinal == null || (sFinal.isEmpty())) {}
+			if(sFinal == null || (sFinal.isEmpty())) {
+				
+				System.out.println("Map Path Empty");
+			}
 			else {
 				boolean isMapValid=mapTool.parseAndValidateMap(existingMap,3);
 				if(isMapValid) {
