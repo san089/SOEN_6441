@@ -3,7 +3,10 @@
  */
 package com.concordia.riskgame.model.Modules;
 
+import com.concordia.riskgame.utilities.Phases;
+
 import java.util.ArrayList;
+import java.util.Scanner;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -126,6 +129,7 @@ public class Player {
 	private Gameplay gameplay = Gameplay.getInstance();;
 	private Map gameMap = gameplay.getSelectedMap();
 	private Player defensivePlayer;
+	private Scanner scanner;
 
 
 	public void reinforceArmy(String command) {
@@ -147,7 +151,8 @@ public class Player {
 	}
 
 
-	public void attack(String command) {
+	public void attack(String command, Scanner sc) {
+		scanner = sc;
 		commands = command.split(" ");
 		fromCountry = gameMap.searchCountry(commands[1]);
 		toCountry = gameMap.searchCountry(commands[2]);
@@ -157,20 +162,73 @@ public class Player {
 			return;
 		}
 
-		if (!checkCommand()) {
+		if (!checkAttackCommand()) {
 			return;
 		}
 
-		if ("auto".equals(commands[3])) {
+		if ("-allout".equals(commands[3])) {
 			autoAttack();
 		} else {
-			numOfAttackDice = Integer.parseInt(commands[3]);
-			numOfDefensiveDice = Integer.parseInt(commands[4]);
+			boolean commandDone = false;
+			String[] command2;
+			System.out.println("Input defend command!");
+			while (!commandDone) {
+				command2 = scanner.nextLine().split(" ");
+				if (!checkDefendCommand(command2)) {
+					System.out.println("Incorrect defend command!");
+					continue;
+				}
+				commandDone = true;
+			}
 			attackOnce();
+		}
+
+		if (!checkAvailableAttack()) {
+			System.out.println("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
+			gameplay.setCurrentPhase(Phases.Fortification);
 		}
 
 	}
 
+	private boolean checkAvailableAttack() {
+		System.out.println("Next available attacks are:");
+		for (String countryName : gameplay.getCurrentPlayer().getCountriesOwned()) {
+			Country country = gameplay.getSelectedMap().searchCountry(countryName);
+			if (country.getNoOfArmiesPresent() != 1) {
+				for (String neighbor : country.getListOfNeighbours()) {
+					if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
+						Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor);
+						System.out.println(countryName + country.getNoOfArmiesPresent() + " →" + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean checkDefendCommand(String[] commands){
+		if (commands.length != 2) {
+			return false;
+		}
+		if (!commands[0].equals("defend")) {
+			return false;
+		}
+		try {
+			numOfDefensiveDice = Integer.parseInt(commands[1]);
+		}catch (NumberFormatException ex) {
+			return false;
+		}
+		if (numOfDefensiveDice > toCountry.getNoOfArmiesPresent()) {
+			System.out.println("Defensive country doesn't have enough armies to do defence!");
+			return false;
+		}
+		if (numOfDefensiveDice > 2 || numOfDefensiveDice <= 0) {
+			System.out.println("Number of defensive dice invalid! It should be 0 < num <=2");
+			return false;
+		}
+		return true;
+	}
 
 
 	private boolean attackOnce() {
@@ -207,22 +265,58 @@ public class Player {
 			defensivePlayer.getCountriesOwned().remove(commands[2]);
 			//Change owner
 			gameplay.getCurrentPlayer().setCountriesOwned(commands[2]);
-			toCountry.setOwnedBy(gameplay.getCurrentPlayer());
-			//Set card flag, give a card at the end of this turn
-			gameplay.getCurrentPlayer().setCardFlag();
-			//move left attacking armies to conquered country
-			toCountry.setNoOfArmiesPresent(numOfAttackDice - offensiveCountryLose);
-			//subtract attacking armies from offensive country
-			fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - numOfAttackDice);
+			toCountry.setOwnedBy(this);
 
 			isPlayerOut();
+
+			//Set card flag, give a card at the end of this turn
+			setCardFlag();
+			System.out.println("Input your move command!");
+			System.out.println("Attack country has " + fromCountry.getNoOfArmiesPresent() + "armies");
+			boolean moveCommandDone = false;
+			int moveArmies = 0;
+			while (!moveCommandDone) {
+				String[] moveCommands = scanner.nextLine().split(" ");
+				if (!checkMoveCommands(moveCommands)) {
+					System.out.println("Incorrect move command!");
+					continue;
+				}
+				moveCommandDone = true;
+				moveArmies = Integer.parseInt(moveCommands[1]);
+			}
+			
+			fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - moveArmies);
+			toCountry.setNoOfArmiesPresent(moveArmies);
+
+
 
 			return true;
 		}
 		return false;
 	}
 
-	private boolean checkCommand() {
+	private boolean checkMoveCommands(String[] moveCommands) {
+		int moveNum;
+		if (moveCommands.length != 2) {
+			return false;
+		}
+		if (!moveCommands[0].equals("attackmove")) {
+			return false;
+		}
+		try {
+			moveNum = Integer.parseInt(moveCommands[1]);
+		}catch (NumberFormatException ex) {
+			System.out.println("Not an integer");
+			return false;
+		}
+		if (moveNum > fromCountry.getNoOfArmiesPresent() - 1) {
+			System.out.println("Not so many armies");
+			return false;
+		}
+		return true;
+	}
+
+	private boolean checkAttackCommand() {
 		if (!getCountriesOwned().contains(commands[1])) {
 			System.out.println("Offensive Country is not your country! Re-input:");
 			return false;
@@ -239,7 +333,14 @@ public class Player {
 			System.out.println("Offensive country doesn't have army to attack!");
 			return false;
 		}
-		if (!commands[3].equals("auto")) {
+		if (!commands[3].equals("-allout")) {
+			try {
+				numOfAttackDice = Integer.parseInt(commands[3]);
+			}catch (NumberFormatException ex) {
+				System.out.println("Attack dice is not an integer");
+				return false;
+			}
+
 			if (numOfAttackDice > 3 || numOfAttackDice <= 0) {
 				System.out.println("Attack dice invalid, should be 0 < num <= 3!");
 				return false;
@@ -250,14 +351,6 @@ public class Player {
 				return false;
 			}
 
-			if (numOfDefensiveDice > toCountry.getNoOfArmiesPresent()) {
-				System.out.println("Defensive country doesn't have enough armies to do defence!");
-				return false;
-			}
-			if (numOfDefensiveDice > 2 || numOfDefensiveDice <= 0) {
-				System.out.println("Number of defensive dice invalid! It should be 0 < num <=2");
-				return false;
-			}
 		}
 		return true;
 	}

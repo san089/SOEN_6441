@@ -111,24 +111,23 @@ public class CommandController {
             return;
         }
 
-        if (command.split(" ").length != 4 && command.split(" ").length != 5 && command.split(" ").length != 2) {
+        if (command.split(" ").length != 4 && command.split(" ").length != 2) {
             System.out.println("Incorrect command!");
             return;
         }
 
-        if (command.split(" ")[1].equals("none")) {
+        if (command.split(" ")[1].equals("-noattack")) {
             System.out.println("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
             gameplay.setCurrentPhase(Phases.Fortification);
             return;
         }
-        if (!command.split(" ")[3].equals("auto")) {
-            if (!verifyNumber(command.split(" ")[3]) || !verifyNumber(command.split(" ")[3])) {
-                System.out.println("Not an integer");
-                return;
-            }
-        }
-        gameplay.getCurrentPlayer().attack(command);
+
+        gameplay.getCurrentPlayer().attack(command, sc);
+
+
     }
+
+
 
 
     /**
