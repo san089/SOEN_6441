@@ -3,6 +3,7 @@ package com.concordia.riskgame.controller;
 import com.concordia.riskgame.model.Modules.*;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
+import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
 
 import java.util.ArrayList;
@@ -623,6 +624,7 @@ public class CommandController {
                 if (gameplay.getCurrentPlayer().getArmyCount() <= 0) {
                     System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Attack Phase.");
                     gameplay.setCurrentPhase(Phases.Attack);
+                    gameplay.getCurrentPlayer().checkAvailableAttack();
                 }
             }else{
                 System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot move to " + Phases.Reinforcement + " phase.");
@@ -647,7 +649,7 @@ public class CommandController {
         }
         try {
             String[] commands = command.split(" ");
-            if (!commands[1].equals("none")) {
+            if (!commands[1].equals("-none")) {
                 if (!gameplay.getCurrentPlayer().fortifyArmy(command)) {
                     return;
                 };
@@ -655,6 +657,24 @@ public class CommandController {
             if (gameplay.getCurrentPlayer().getCardFlag()) {
                 Card newCard = Card.getCard(Card.class);
                 gameplay.getCurrentPlayer().addNewCard(newCard);
+                newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+                newCard = Card.getCard(Card.class);
+                gameplay.getCurrentPlayer().addNewCard(newCard);
+
+
                 gameplay.getCurrentPlayer().resetCardFlag();
                 System.out.println("You have got a card: " + newCard);
             }
@@ -665,9 +685,7 @@ public class CommandController {
             gameplay.roundRobinPlayer();
             System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
             System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
-            gameplay.assignReinforcementArmies();
-            System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies!" );
-            gameplay.setCurrentPhase(Phases.Reinforcement);
+            new CardExchangeView();
         }catch (Exception e){
             System.out.println("Some exception occurred");
         }

@@ -49,7 +49,34 @@ public class Player {
 		this.cardExchangeIndex = 0;
 	}
 
+	public int getNumOfInfCard() {
+		int n = 0;
+		for (Card card : cardsOwned) {
+			if (card == Card.INFANTRY) {
+				n++;
+			}
+		}
+		return n;
+	}
 
+	public int getNumOfCavCard() {
+		int n = 0;
+		for (Card card : cardsOwned) {
+			if (card == Card.CAVALRY) {
+				n++;
+			}
+		}
+		return n;
+	}
+	public int getNumOfArtCard() {
+		int n = 0;
+		for (Card card : cardsOwned) {
+			if (card == Card.ARTILLERY) {
+				n++;
+			}
+		}
+		return n;
+	}
 	
 	public void setPlayerIndex(int playerIndex) {
 		this.playerIndex = playerIndex;
@@ -190,7 +217,8 @@ public class Player {
 
 	}
 
-	private boolean checkAvailableAttack() {
+	public boolean checkAvailableAttack() {
+		boolean attackAvailable = false;
 		System.out.println("Next available attacks are:");
 		for (String countryName : gameplay.getCurrentPlayer().getCountriesOwned()) {
 			Country country = gameplay.getSelectedMap().searchCountry(countryName);
@@ -199,12 +227,12 @@ public class Player {
 					if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
 						Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor);
 						System.out.println(countryName + country.getNoOfArmiesPresent() + " →" + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
-						return true;
+						attackAvailable = true;
 					}
 				}
 			}
 		}
-		return false;
+		return attackAvailable;
 	}
 
 	private boolean checkDefendCommand(String[] commands){
@@ -313,6 +341,10 @@ public class Player {
 			System.out.println("Not so many armies");
 			return false;
 		}
+		if (moveNum < 1) {
+			System.out.println("You must move at least 1 army to conquered country");
+			return false;
+		}
 		return true;
 	}
 
@@ -373,6 +405,7 @@ public class Player {
 	private void isWinner() {
 		if (gameplay.getPlayers().size() == 1) {
 			System.out.println("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
+			System.exit(0);
 		}
 	}
 
@@ -420,5 +453,4 @@ public class Player {
 		return true;
 	}
 
-		
 }

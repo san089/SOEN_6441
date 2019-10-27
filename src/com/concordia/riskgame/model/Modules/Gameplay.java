@@ -311,8 +311,9 @@ public class Gameplay extends Observable{
             for(Continent continent:getSelectedMap().getOwnedContinents(currentPlayer.getPlayerName())) {
                 reinforcementArmyCount = reinforcementArmyCount + continent.getControlValue();
             }
-            reinforcementArmyCount = (reinforcementArmyCount<3)?(3) : reinforcementArmyCount;
-            currentPlayer.setArmyCount(reinforcementArmyCount + currentPlayer.getArmyCount());
+            reinforcementArmyCount = reinforcementArmyCount + currentPlayer.getArmyCount();
+            reinforcementArmyCount = Math.max(reinforcementArmyCount, 3);
+            currentPlayer.setArmyCount(reinforcementArmyCount);
 
 //            for(Player player:getPlayers()) {
 //			int reinforcementArmyCount=((player.getCountriesOwned().size())/3);
