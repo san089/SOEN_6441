@@ -145,6 +145,7 @@ public class CardExchangeView extends JFrame implements ActionListener {
                 return;
             }
             controller.exchange();
+            cardWindow.setVisible(false);
             return;
         }
         if (actionEvent.getSource() == exitButton) {
