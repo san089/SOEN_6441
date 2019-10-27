@@ -29,6 +29,17 @@
 
 ##### Oct 27:
 How to check the phases game:
+
+commands:
+reinforce countryName num
+attack fromcountry tocountry numdice
+defend numdice
+attack fromcountry tocountry -allout
+attack -noattack
+attackmove num
+fortify fromCountry toCountry num
+fortify -none
+
 After populate all countries:
 - 'placeall' or initial reinforcement are used up
 - game goes into reinforce phase automatically, printing out phase change message and how many reinforcement current player can use
