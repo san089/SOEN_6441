@@ -10,6 +10,7 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -66,7 +67,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 			while (true)
 			{
 				user_input = sc.nextLine();
-				CommandController.parseCommand(user_input);
+				CommandController.parseCommand(user_input, sc);
 			}
 		}
 
@@ -168,8 +169,9 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	 *
 	 * @param args the arguments
 	 */
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IOException {
 		new GameLauncherView();
+
 
 	}
 
