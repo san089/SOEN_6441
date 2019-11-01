@@ -87,7 +87,16 @@ public class PlayerTest {
 
     @Test
     public void fortifyArmy() {
-
-
+        Scanner sc = new Scanner(System.in);
+        Gameplay gameplay = Gameplay.getInstance();
+        Player p=gameplay.getCurrentPlayer();
+        System.out.println(p.getCountriesOwned()+"@@@@@@@@");
+        Country source =  gameplay.getSelectedMap().searchCountry("Canada");
+        Country destination =  gameplay.getSelectedMap().searchCountry("China");
+        source.setNoOfArmiesPresent(4);
+        destination.setNoOfArmiesPresent(4);
+        p.fortifyArmy("fortify pak canada 2");
+        assertEquals(source.getNoOfArmiesPresent(),4);
+        assertNotEquals(destination.getNoOfArmiesPresent(),3);
     }
 }
