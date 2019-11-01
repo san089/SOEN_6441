@@ -72,7 +72,6 @@ public class PlayerTest {
         Gameplay gameplay = Gameplay.getInstance();
         Player p=gameplay.getCurrentPlayer();
         System.out.println(p.getCountriesOwned()+"@@@@@@@@");
-
         Country source =  gameplay.getSelectedMap().searchCountry( p.getCountriesOwned().get(0));
         Country destination =  gameplay.getSelectedMap().searchCountry( p.getCountriesOwned().get(1));
         source.setNoOfArmiesPresent(4);
