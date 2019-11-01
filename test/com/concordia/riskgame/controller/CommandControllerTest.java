@@ -1,5 +1,6 @@
 package com.concordia.riskgame.controller;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -10,6 +11,7 @@ public class CommandControllerTest {
     /**
      * Parses the command.
      */
+    /*
     @Test
     public void parseCommand() {
         String command = "help";
@@ -17,6 +19,9 @@ public class CommandControllerTest {
 
 
     }
+
+    */
+
 
     /**
      * Test case for testing commands for editing the continent.

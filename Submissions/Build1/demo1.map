@@ -1,0 +1,14 @@
+[Map]
+author=Anonymous
+[Continents]
+Asia=4
+Europe=3
+[Territories]
+India,0.0,0.0,Asia,China,England
+China,0.0,0.0,Asia,India,Japan
+Japan,0.0,0.0,Asia,China,Iran
+Iran,0.0,0.0,Asia,Japan,Germany
+England,0.0,0.0,Europe,India,Ireland
+Germany,0.0,0.0,Europe,Iran,Ireland
+Ireland,0.0,0.0,Europe,Germany,England
+
