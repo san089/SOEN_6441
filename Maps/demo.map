@@ -1,0 +1,11 @@
+[Map]
+author=Anonymous
+[Continents]
+Africa=7
+Asia=7
+[Territories]
+Nigeria,0.0,0.0,Africa,Uganda,India
+Uganda,0.0,0.0,Africa,Nigeria
+India,0.0,0.0,Asia,China,India,Nigeria
+China,0.0,0.0,Asia,India
+

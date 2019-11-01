@@ -26,3 +26,32 @@
 1. Exception handling. : for example, if command is short than expected, there will be index outbound.
 2. Card exchange strategy (before each turn, add exchanged army to reinforcement)
 3. Add comments for each class and method
+
+##### Oct 27:
+How to check the phases game:
+
+commands:
+reinforce countryName num
+attack fromcountry tocountry numdice
+defend numdice
+attack fromcountry tocountry -allout
+attack -noattack
+attackmove num
+fortify fromCountry toCountry num
+fortify -none
+
+After populate all countries:
+- 'placeall' or initial reinforcement are used up
+- game goes into reinforce phase automatically, printing out phase change message and how many reinforcement current player can use
+- 'reinforce countryName num'
+- after all reinforcement are used up, game goes into attack phase automatically, printing out all attacks player can do
+- 'attack fromCountry toCountry numDice' or 'attack fromCountry toCountry -allout'
+- if above is using 'attack fromCountry toCountry numDice' , then input 'defend numDice'.
+- printing out attack outcome
+- if conqured, input 'attackmove num', num must be at least 1, and less than attack country have.
+- all other available attacks. If no available attack, goes into fortification automatically.
+- 'attack -noattack' goes into fortification.
+- 'fortify fromCountry toCoutnry numArmy' or 'fortify -none'
+- popup card exchange view. Input the number of card you're going to use. If not suitable, click exit.
+- print how many reinforcement you have.
+- continue game...
