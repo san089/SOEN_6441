@@ -2,6 +2,7 @@ package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  *
  */
 
-public class Country {
+public class Country extends Observable {
     private String countryName;
     private Player ownedBy;
     private int noOfArmiesPresent;

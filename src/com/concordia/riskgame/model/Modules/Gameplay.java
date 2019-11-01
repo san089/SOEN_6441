@@ -160,14 +160,13 @@ public class Gameplay extends Observable{
 	public String addPlayer(String playerName) {
 		if((players.size()==playerCount && playerCount!=0) ||players.size()==MAX_PLAYER_LIMIT )
 		{
-			setChanged();
-			notifyObservers(playerCount);
 			return "PLAYER LIMIT REACHED.CANNOT ADD MORE PLAYERS";
 		}
 		if(existDuplicatePlayer(playerName))
 			return "Another player with the same name exists.Please enter a different name";
 		else{
 			players.add(new Player(players.size()+1, playerName));
+			combineObserverArgs();
 			return "Player "+playerName+" added to the game";
 		}
 
@@ -205,8 +204,7 @@ public class Gameplay extends Observable{
 			if(currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
 				playerFound = true;
 				playerIt.remove();
-				setChanged();
-				notifyObservers(players.size());
+				combineObserverArgs();
 				return ("Player " + playerName + " removed from the game.");
 				
 				}
@@ -232,6 +230,9 @@ public class Gameplay extends Observable{
 			return "No Players Added";
 		else if((getPlayerCount()!=0)&& !(getPlayers().size() == getPlayerCount()))
 				return "Number of players added is less than "+getPlayerCount()+".Please add more players.";
+		else if(getPlayers().size() <2)
+			return "Number of players less than 2.Please add atleast 2 players.";
+			
 		else if(getPlayers().size()>getSelectedMap().listOfCountryNames().size())
 				return "Number of countries less than the number of players.Please select another valid map";
 		return "Success";
@@ -261,9 +262,9 @@ public class Gameplay extends Observable{
 		
 		for(Player player:getPlayers()) {
 			System.out.println(player.getPlayerName()+" owns "+player.getCountriesOwned());
-			
 		}
 		assignStartupArmies();
+		combineObserverArgs();
 		System.out.println("*******Populate Countries Operation Succesful.Entering Army Placement Phase******** ");
 		playerQueue.clear();
 		playerQueue.addAll(getPlayers());
@@ -354,7 +355,7 @@ public class Gameplay extends Observable{
 			currentPlayer.setArmyCount(currentPlayer.getArmyCount()-count);
 			if(displayArmy)
 				displayArmyDistribution();
-			
+			combineObserverArgs();
 			return true;
 		}
 		
@@ -410,10 +411,18 @@ public class Gameplay extends Observable{
 			tempPlayer.setArmyCount(0);
 			displayArmyDistribution();
 		}while (tempQueue.size() != 0);
-
-
+		combineObserverArgs();
 		
 		
+	}
+	
+	
+	public void combineObserverArgs() {
+		System.out.println("Inside Observable");
+	//	Object[] observerArgs= {players,selectedMap};
+		setChanged();
+		notifyObservers();
+
 	}
 
 	

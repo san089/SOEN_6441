@@ -270,10 +270,12 @@ public class Map {
 		{
 			boolean isOwned=true;
 			for(Country country:continent.getCountriesPresent()) {
-				if(!country.getOwnedBy().getPlayerName().equals(playerName))
-					{isOwned=false;
-					break;
-					}
+				if(country.getOwnedBy()==null)
+					isOwned=false;
+				else if((!country.getOwnedBy().getPlayerName().equals(playerName)))
+					isOwned=false;
+					
+					
 			}
 			if(isOwned)
 				ownedContinents.add(continent);
@@ -294,7 +296,7 @@ public class Map {
 		for(Continent continent:continents)
 		{
 			for(Country country:continent.getCountriesPresent()) {
-				if(country.getOwnedBy().getPlayerName().equals(playerName))
+				if(country.getOwnedBy()!=null && country.getOwnedBy().getPlayerName().equals(playerName))
 					{
 					ownedCountries.add(country);
 					}

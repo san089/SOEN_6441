@@ -314,7 +314,7 @@ public class MapEditorView extends JFrame implements Serializable {
 			continentsOwned=(continentsOwned.contentEquals(""))?("None"):(continentsOwned.substring(1));
 			for(Country country:playerOwnedCountryList)
 			{
-			if(playerOwnedCountryList.get(0).equals(country))	
+			if(playerOwnedCountryList.get(0).equals(country) || playerOwnedCountryList.size()==0)	
 			{	Object[] rowData= {playerName,country.getCountryName(),country.getNoOfArmiesPresent(),continentsOwned};
 				data[row]=rowData;
 			}
@@ -327,12 +327,10 @@ public class MapEditorView extends JFrame implements Serializable {
 			
 		}
 		
-		for(int i=0;i<data.length;i++)
-			{for(int j=0;j<data[i].length;j++)
-				System.out.print(data[i][j].toString()+" ");
-			System.out.println("\n");
-			}
-		final JTable table = new JTable(data, columnNames);
+		/*
+		 * for(int i=0;i<data.length;i++) {for(int j=0;j<data[i].length;j++)
+		 * System.out.print(data[i][j].toString()+" "); System.out.println("\n"); }
+		 */	final JTable table = new JTable(data, columnNames);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
 		table.setEnabled(false);

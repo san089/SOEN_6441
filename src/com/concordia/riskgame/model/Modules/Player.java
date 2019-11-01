@@ -4,12 +4,13 @@
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Player.
  */
-public class Player {
+public class Player extends Observable {
 	
 	private static final int COUNTRY_DIVISION_FACTOR=9;
 	

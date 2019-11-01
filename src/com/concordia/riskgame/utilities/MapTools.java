@@ -190,6 +190,7 @@ public class MapTools  {
 			if (!checkDuplicateContinents(gameMap)) {
 				if (!checkDuplicateCountries(gameMap)) {
 					if (checkIfNeigbourExist(gameMap)) {
+						if(checkContientConnectivity(gameMap)) {
 						if (checkMapConnectivity(gameMap)) {
 							if (checkCountryCount(gameMap, size)) {
 								return true;
@@ -213,10 +214,13 @@ public class MapTools  {
 			else {
 				return false;
 			}
+			}
+	else {
+		return false;
+	}
 		}
-		else {
-			return false;
-		}
+		return false;
+				
 	}
 	
 	
@@ -485,6 +489,48 @@ public class MapTools  {
 		}
 	}
 	
+	/**
+	 * Check continent connectivity.
+	 *
+	 * @param gameMap the game map
+	 * @return true, if successful
+	 */
+	boolean checkContientConnectivity(Map gameMap) {
+		boolean isValid=true;
+		for(Continent continent:gameMap.getContinents()) {
+		List<Country> list =  continent.getCountriesPresent();
+		List<String> listOfCountries = new ArrayList<String>();
+		for(Country name : list) {
+			listOfCountries.add(name.getCountryName().toLowerCase());
+		}
+		int noOfVertices = listOfCountries.size();
+		Graph graph = new Graph(noOfVertices);
+		for (int i = 0; i < noOfVertices; i++) {
+				/*for (Country country : list) {
+					if (country.getCountryName().equalsIgnoreCase(gameMap.listOfCountryNames().get(i))) {
+				*/		List<String> neighbours = list.get(i).getListOfNeighbours();
+						for (String current : neighbours) {
+							int index = listOfCountries.indexOf(current.toLowerCase());
+							if(index!=-1)
+								graph.addEdge(i, index);
+						}
+					}
+			//	}
+		//	}
+		
+		if (graph.isStronglyConnected()) 
+			System.out.println(continent.getContinentName()+" is strongly connected");
+			
+		else {
+			System.out.println(continent.getContinentName()+" is not strongly connected");
+			gameMap.setErrorMessage("Map is not strongly connected");
+			isValid=false;
+		}
+		}
+		return isValid;
+	}
+	
+
 
 	/**
 	 * Save data into file.
