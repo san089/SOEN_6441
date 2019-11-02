@@ -2,6 +2,13 @@
 SOEN 6441 Risk Game 
 
 
+
+## Architecture Diagram
+![Architecture Diagram](https://github.com/san089/SOEN_6441/blob/master/Documents/ArchitectureDesign.JPG)
+
+
+
+
 # Game Commands
 
 ## Map Editor Command
