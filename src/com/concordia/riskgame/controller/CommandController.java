@@ -426,6 +426,7 @@ public class CommandController {
             }
         }
         catch (Exception e){
+        	e.printStackTrace();
             System.out.println("Some execption occured while parsing command.");
             return false;
         }

@@ -160,8 +160,6 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		mb.add(menu);
 		gameWindow.setJMenuBar(mb);
 		gameWindow.setVisible(true);
-
-
 	}
 
 	/**
