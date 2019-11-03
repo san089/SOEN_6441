@@ -5,6 +5,8 @@ import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
+import com.concordia.riskgame.view.PhaseView;
+import com.concordia.riskgame.view.WorldDominationView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +99,7 @@ public class CommandController {
                 System.exit(0);
                 break;
             case "showphases":
-                System.out.println("Current phase is : " + gameplay.getCurrentPhase());
+                gameplay.addToViewLogger("Current phase is : " + gameplay.getCurrentPhase());
                 break;
             default:
                 invalidCommandMessage();
@@ -111,17 +113,17 @@ public class CommandController {
      */
     private static void attack(String command, Scanner sc) {
         if (gameplay.getCurrentPhase() != Phases.Attack) {
-            System.out.println("Now it's not attack phase, you cannot attack");
+            gameplay.addToViewLogger("Now it's not attack phase, you cannot attack");
             return;
         }
 
         if (command.split(" ").length != 4 && command.split(" ").length != 2) {
-            System.out.println("Incorrect command!");
+            gameplay.addToViewLogger("Incorrect command!");
             return;
         }
 
         if (command.split(" ")[1].equals("-noattack")) {
-            System.out.println("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
+            gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
             gameplay.setCurrentPhase(Phases.Fortification);
             return;
         }
@@ -163,9 +165,9 @@ public class CommandController {
      * Invalid command message.
      */
     public static void invalidCommandMessage() {
-        System.out.println(ANSI_RED + "INVALID COMMAND !!, Check the command format below. ");
+        gameplay.addToViewLogger(ANSI_RED + "INVALID COMMAND !!, Check the command format below. ");
         showHelpOptions();
-        System.out.println(ANSI_RESET);
+        gameplay.addToViewLogger(ANSI_RESET);
     }
 
 
@@ -176,7 +178,7 @@ public class CommandController {
      */
     public static void editContinent(String command) {
         if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
             return;
         }
         if (validateEditContinentCommand(command)) {
@@ -229,7 +231,7 @@ public class CommandController {
                 }
             }
         }catch (Exception e){
-            System.out.println("Some execption occured while parsing command.");
+            gameplay.addToViewLogger("Some execption occured while parsing command.");
             return false;
         }
         return true;
@@ -242,7 +244,7 @@ public class CommandController {
      */
     public static void editCountry(String command) {
         if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
             return;
         }
         if (validateEditCountryCommand(command)) {
@@ -295,7 +297,7 @@ public class CommandController {
                 }
             }
         } catch (Exception e){
-            System.out.println("Some execption occured while parsing command.");
+            gameplay.addToViewLogger("Some execption occured while parsing command.");
             return false;
         }
         return true;
@@ -308,7 +310,7 @@ public class CommandController {
      */
     public static void editNeighbour(String command) {
         if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
             return;
         }
         if (validateEditNeighbourCommand(command)) {
@@ -359,7 +361,7 @@ public class CommandController {
             }
         }
         catch (Exception e){
-            System.out.println("Some execption occured while parsing command.");
+            gameplay.addToViewLogger("Some execption occured while parsing command.");
             return false;
         }
         return true;
@@ -374,11 +376,11 @@ public class CommandController {
      */
     public static void gamePlayer(String command) {
         if(gameplay.getCurrentPhase() != Phases.Startup){
-            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
             return;
         }
         if (validateGamePlayerCommand(command)) {
-            System.out.println("");
+            gameplay.addToViewLogger("");
         } else {
             invalidCommandMessage();
         }
@@ -393,11 +395,11 @@ public class CommandController {
      */
     public static void gamePlayerAddRemove(String operation, String playername){
         if(operation.trim().equals("-add"))
-            System.out.println(Gameplay.getInstance().addPlayer(playername));
+            Gameplay.getInstance().addPlayer(playername);
         else if(operation.trim().equals("-remove"))
-            System.out.println(Gameplay.getInstance().removePlayer(playername));
+           Gameplay.getInstance().removePlayer(playername);
         else
-            System.out.println("Invalid Operation");
+            gameplay.addToViewLogger("Invalid Operation");
 
     }
 
@@ -427,7 +429,7 @@ public class CommandController {
         }
         catch (Exception e){
         	e.printStackTrace();
-            System.out.println("Some execption occured while parsing command.");
+            gameplay.addToViewLogger("Some execption occured while parsing command.");
             return false;
         }
         return true;
@@ -439,7 +441,7 @@ public class CommandController {
      */
     public static void validateMap() {
         if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
             return;
         }
     	mapTools.validateMap(mapEditor.getGameMap(), 2);
@@ -464,7 +466,7 @@ public class CommandController {
     public static void saveMap(String command)
     {
         if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
             return;
         }
         String fileName = command.split(" ")[1];
@@ -482,7 +484,7 @@ public class CommandController {
     public static void editMap(String command)
     {
         if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
             return;
         }
         String fileName = command.split(" ")[1]; 
@@ -502,10 +504,12 @@ public class CommandController {
         Map selectedMap = new Map();
         if (mapTools.pickMapFileService(selectedMap, fileName)) {
             gameplay.setSelectedMap(selectedMap);
-            System.out.println("Switched to " + Phases.Startup + " Phase.");
             gameplay.setCurrentPhase(Phases.Startup);
+            gameplay.addToViewLogger("Switched to " + Phases.Startup + " Phase.");
+            new PhaseView();
+        	
         } else {
-            System.out.println("The selected Map is invalid.Please select another map.Reason for Invalidity :" + selectedMap.getErrorMessage());
+            gameplay.addToViewLogger("The selected Map is invalid.Please select another map.Reason for Invalidity :" + selectedMap.getErrorMessage());
         }
     }
 
@@ -515,12 +519,12 @@ public class CommandController {
     public static void populateCountries()
     {
         if(gameplay.getCurrentPhase() != Phases.Startup){
-            System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
             return;
         }
     	String message=gameplay.validateStartupInputs();
 		if(!message.contentEquals("Success"))
-			System.out.println(message);
+			gameplay.addToViewLogger(message);
 		else
 			{
 			gameplay.initialisePlayers();
@@ -540,21 +544,21 @@ public class CommandController {
     	Scanner in=new Scanner(System.in);   
     	int armyCount = 0;
         String countryName = command.split(" ")[1];   
-        System.out.println("Enter the number armies to be placed ");
+        gameplay.addToViewLogger("Enter the number armies to be placed ");
         boolean loop=true;
         while(loop) {
         try {
         	armyCount=in.nextInt();
         }
         catch(InputMismatchException ex) {
-        	System.out.println("Please enter a number");
+        	gameplay.addToViewLogger("Please enter a number");
         }
         
         if(!(gameplay.getCurrentPlayer().getArmyCount()>=armyCount) )
-        	System.out.println("Entered count more than the number of armies available for the current player.Please enter a different value.");      
+        	gameplay.addToViewLogger("Entered count more than the number of armies available for the current player.Please enter a different value.");      
         
         else if(gameplay.getAbandonedCountryCount()>gameplay.getCurrentPlayer().getArmyCount()-armyCount)
-        	System.out.println("There are not enough armies to be deploy "+armyCount+" in one country .Please place such that every country has at least one army");
+        	gameplay.addToViewLogger("There are not enough armies to be deploy "+armyCount+" in one country .Please place such that every country has at least one army");
 	    else
         	loop=false;
         
@@ -564,7 +568,7 @@ public class CommandController {
         	if(gameplay.getCurrentPlayer().getArmyCount()>0)
         		gameplay.getPlayerQueue().add(gameplay.getPlayerQueue().remove());
         	gameplay.setCurrentPlayer(gameplay.getPlayerQueue().element());
-        	System.out.println("PLAYER TURN : Place army for "+gameplay.getCurrentPlayer().getPlayerName()+". Number of remaining armies "+gameplay.getCurrentPlayer().getArmyCount());
+        	gameplay.addToViewLogger("PLAYER TURN : Place army for "+gameplay.getCurrentPlayer().getPlayerName()+". Number of remaining armies "+gameplay.getCurrentPlayer().getArmyCount());
     		
         }
 
@@ -579,10 +583,10 @@ public class CommandController {
             gameplay.getPlayerQueue().clear();
             gameplay.getPlayerQueue().addAll(players);
             gameplay.assignReinforcementArmies();
-            System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+            gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
             gameplay.setCurrentPhase(Phases.Reinforcement);
             gameplay.roundRobinPlayer();
-            System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
+            gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
                     gameplay.getCurrentPlayer().getArmyCount() + " armies to place");
         }
 
@@ -602,12 +606,14 @@ public class CommandController {
         gameplay.getPlayerQueue().addAll(players);
         gameplay.assignReinforcementArmies();
 
-        System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+        gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
         gameplay.setCurrentPhase(Phases.Reinforcement);
+        gameplay.displayArmyDistribution();
         //start round robin play
         gameplay.roundRobinPlayer();
 
-        System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
+        gameplay.triggerObserver("domination");
+        gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
                 gameplay.getCurrentPlayer().getArmyCount() + " armies to place");
     }
 
@@ -624,29 +630,30 @@ public class CommandController {
         try {
             if(gameplay.getCurrentPhase() == Phases.Reinforcement){
                 if (command.split(" ").length != 3) {
-                    System.out.println("Incorrect command!");
+                    gameplay.addToViewLogger("Incorrect command!");
                     return;
                 }
                 String countryName = command.split(" ")[1];
                 String num = command.split(" ")[2];
                 if (!verifyNumber(num)) {
-                    System.out.println("Not an integer!");
+                    gameplay.addToViewLogger("Not an integer!");
                     return;
                 }
-                System.out.println("Reinforce " + num + " armies in " + countryName);
+                gameplay.addToViewLogger("Reinforce " + num + " armies in " + countryName);
 
                 gameplay.getCurrentPlayer().reinforceArmy(command);
-                System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies");
+                gameplay.addToViewLogger("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies");
                 if (gameplay.getCurrentPlayer().getArmyCount() <= 0) {
-                    System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Attack Phase.");
+                    gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Attack Phase.");
                     gameplay.setCurrentPhase(Phases.Attack);
                     gameplay.getCurrentPlayer().checkAvailableAttack();
                 }
             }else{
-                System.out.println("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot move to " + Phases.Reinforcement + " phase.");
+                gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot move to " + Phases.Reinforcement + " phase.");
             }
+            gameplay.triggerObserver("domination");
         }catch (Exception e){
-            System.out.println("Some exception occurred.");
+            gameplay.addToViewLogger("Some exception occurred.");
             showHelpOptions();
         }
     }
@@ -661,7 +668,7 @@ public class CommandController {
     public static void fortify(String command)
     {
         if (gameplay.getCurrentPhase() != Phases.Fortification) {
-            System.out.println("Now is " + gameplay.getCurrentPhase() + " phase, cannot do fortification");
+            gameplay.addToViewLogger("Now is " + gameplay.getCurrentPhase() + " phase, cannot do fortification");
             return;
         }
         try {
@@ -693,18 +700,18 @@ public class CommandController {
 
 
                 gameplay.getCurrentPlayer().resetCardFlag();
-                System.out.println("You have got a card: " + newCard);
+                gameplay.addToViewLogger("You have got a card: " + newCard);
             }
             //check if the top of player is out, if it is, remove it
             while (gameplay.getRemovedPlayer().contains(gameplay.getPlayerQueue().peek())) {
                 gameplay.getPlayerQueue().remove();
             }
             gameplay.roundRobinPlayer();
-            System.out.println("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
-            System.out.println("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
+            gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+            gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
             new CardExchangeView();
         }catch (Exception e){
-            System.out.println("Some exception occurred");
+            gameplay.addToViewLogger("Some exception occurred");
         }
 
     }
@@ -714,7 +721,7 @@ public class CommandController {
      */
     public static void showHelpOptions()
     {
-        System.out.println("For getting help menu, type help.\n");
+        gameplay.addToViewLogger("For getting help menu, type help.\n");
         System.out.format("%-20s%-50s%-50s\n","editcontinent", "[-add] <continentname> <continentvalue>", " command to add continent to a map." );
         System.out.format("%-20s%-50s%-50s\n","editcontinent", "[-remove] <continentname> ", " command to remove continent from a map." );
         System.out.format("%-20s%-50s%-50s\n", "editcountry", "[-add] <countryname> <continentname>", " command to add country to a map.");

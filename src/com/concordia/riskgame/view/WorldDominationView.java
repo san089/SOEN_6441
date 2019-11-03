@@ -30,27 +30,50 @@ import com.concordia.riskgame.utilities.Constants;
 
 public class WorldDominationView extends JFrame implements Observer {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
+	private JFrame commonViewFrame;
 	private Gameplay gameInstance;
 	private int rowCount;
 	private List<Player> playerList;
 	private Map gameMap;
 	private JScrollPane playerScrollPane;
+	private JLabel dominationViewLabel;
+
 	
 
-	public WorldDominationView() {
-		super("World Domination View");
-		setSize(Constants.MAP_EDITOR_WIDTH, Constants.MAP_EDITOR_HEIGHT);
-        setMinimumSize(new Dimension(Constants.MAP_EDITOR_WIDTH, Constants.MAP_EDITOR_HEIGHT));
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setVisible(true);
+	public WorldDominationView(JFrame frame) {
+		commonViewFrame=frame;
+		
+		
+		JPanel viewLabelPanel = new JPanel();
+		viewLabelPanel.setBounds(10, ((commonViewFrame.getHeight())/2)-20, commonViewFrame.getSize().width - 40, 25);
+		viewLabelPanel.setBackground(Color.lightGray);
+		viewLabelPanel.setBorder(Constants.blackline);
+		commonViewFrame.add(viewLabelPanel);
+
 
 		gameInstance=Gameplay.getInstance();
 		gameInstance.addObserver(this);
 		rowCount=gameInstance.getPlayers().size();
 		gameMap=gameInstance.getSelectedMap();
 		playerList= gameInstance.getPlayers();
+		
+		
+		dominationViewLabel=new JLabel("World Domination View");
+		dominationViewLabel.setFont(new Font("dialog", 1, 15));
+//		dominationViewLabel.setBounds((commonViewFrame.getSize().width-200)/2,((commonViewFrame.getHeight())/2)-10,dominationViewLabel.getPreferredSize().width+500, dominationViewLabel.getPreferredSize().height);
+		dominationViewLabel.setSize(dominationViewLabel.getPreferredSize());
+		dominationViewLabel.setLocation((viewLabelPanel.getSize().width-200)/2,((viewLabelPanel.getHeight())/4)-2);
+		dominationViewLabel.setVisible(true);
+		viewLabelPanel.add(dominationViewLabel);
+//		commonViewFrame.add(dominationViewLabel);
+//		viewLabelPanel.setOpaque(false);
+		viewLabelPanel.repaint();
+		
+		
 		
         initUI();
        		
@@ -61,8 +84,11 @@ public class WorldDominationView extends JFrame implements Observer {
 	{
 	    	
 	playerScrollPane=createTable();
-	playerScrollPane.setBounds(10, 20, this.getSize().width - 40, 350);
-	add(playerScrollPane);
+	playerScrollPane.setBounds(10, ((commonViewFrame.getHeight())/2)+5, commonViewFrame.getSize().width - 40, 250);
+	commonViewFrame.add(playerScrollPane);
+	
+	//playerScrollPane.setBounds(10, 30, commonViewFrame.getSize().width - 40, 350);
+	
 
 	}
 	
@@ -88,10 +114,7 @@ public class WorldDominationView extends JFrame implements Observer {
 				++row;
 				}
 						
-		/*
-		 * for(int i=0;i<data.length;i++) {for(int j=0;j<data[i].length;j++)
-		 * System.out.print(data[i][j].toString()+" "); System.out.println("\n"); }
-		 */	final JTable table = new JTable(data, columnNames);
+			final JTable table = new JTable(data, columnNames);
 			table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 			table.setFillsViewportHeight(true);
 			table.setEnabled(false);
@@ -108,28 +131,24 @@ public class WorldDominationView extends JFrame implements Observer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Inside observer");
+//		System.out.println("Observer triggered by " + o.getClass().getName());
+		if(arg.toString().contains("domination")) {
 		try {
-			Field playerField=o.getClass().getDeclaredField("players");
+			Field playerField = o.getClass().getDeclaredField("players");
 			playerField.setAccessible(true);
-			System.out.println("SIZE "+((ArrayList<Player>)(playerField.get(o))).size());
-			//String playerName=((ArrayList<Player>)(playerField.get(o))).get(1).getPlayerName();
-			//System.out.println(playerName);
-			Field mapField=o.getClass().getDeclaredField("selectedMap");
+			Field mapField = o.getClass().getDeclaredField("selectedMap");
 			mapField.setAccessible(true);
-			System.out.println("SIZE "+((ArrayList<Player>)(playerField.get(o))).size());
-			
-		this.gameMap=(Map)(mapField.get(o));
-		this.playerList=((ArrayList<Player>)(playerField.get(o)));
-		this.rowCount=playerList.size();
-		remove(playerScrollPane);
-		initUI();
-		}
-		catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			this.gameMap = (Map) (mapField.get(o));
+			this.playerList = ((ArrayList<Player>) (playerField.get(o)));
+			this.rowCount = playerList.size();
+			commonViewFrame.remove(playerScrollPane);
+			initUI();
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		}
+	
 	}
 
 }

@@ -43,7 +43,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * This class is the view of the MapEditor Functionalities
  */
-public class MapEditorView extends JFrame implements Serializable {
+public class MapEditorView extends JFrame implements Serializable,Observer {
     private JLabel countriesLabel;
     private JLabel continentLabel;
     private ToolBar toolBar;
@@ -58,6 +58,7 @@ public class MapEditorView extends JFrame implements Serializable {
     private String countryColumn[];
     private JTable tableMatrix;
     private JScrollPane scrollPane;
+    private JScrollPane playerScrollPane;
     private static final long serialVersionUID = 45443434343L;
 
 
@@ -67,7 +68,7 @@ public class MapEditorView extends JFrame implements Serializable {
      * @param gameMap object of Map class
      */
     public MapEditorView(Map gameMap) {
-        super("Map Editor Window");
+    	super("Map Editor Window");
         this.gameMap = gameMap;
         setSize(Constants.MAP_EDITOR_WIDTH, Constants.MAP_EDITOR_HEIGHT);
         setMinimumSize(new Dimension(Constants.MAP_EDITOR_WIDTH, Constants.MAP_EDITOR_HEIGHT));
@@ -82,6 +83,8 @@ public class MapEditorView extends JFrame implements Serializable {
             
             }
         });
+        Gameplay.getInstance().addObserver(this);
+        
     }
 
     /**
@@ -287,11 +290,10 @@ public class MapEditorView extends JFrame implements Serializable {
         playerLabelViewPanel.add(playerLabel);
         
             	
-    	JScrollPane playerScrollPane=createTable();
-    	playerScrollPane.setBounds(10, 520, this.getSize().width - 40, 350);
+    	playerScrollPane=createTable();
+    	playerScrollPane.setBounds(10, 500, this.getSize().width - 40, 350);
     	add(playerScrollPane);
     	
-    	new WorldDominationView();
     	  
      }
     
@@ -304,14 +306,22 @@ public class MapEditorView extends JFrame implements Serializable {
 		Object[][] data = new Object[rowCount][4];
 		int row=0;
 		for(Player player:playerList) {
-			System.out.println("RowCount "+rowCount);
+			//System.out.println("RowCount "+rowCount);
 			String playerName=player.getPlayerName();
+			System.out.println("PlayerName "+player.getPlayerName());
 			List<Country> playerOwnedCountryList=gameInstance.getSelectedMap().getOwnedCountries(playerName);
 			List<Continent> continentList=gameInstance.getSelectedMap().getOwnedContinents(playerName);
 			String continentsOwned="";
 			for(Continent continent:continentList)
 				continentsOwned+=", "+continent.getContinentName();
 			continentsOwned=(continentsOwned.contentEquals(""))?("None"):(continentsOwned.substring(1));
+			if(playerOwnedCountryList.size()==0) {
+				Object[] rowData= {playerName,"","",continentsOwned};
+				data[row]=rowData;
+				++row;
+		
+			}
+			else {	
 			for(Country country:playerOwnedCountryList)
 			{
 			if(playerOwnedCountryList.get(0).equals(country) || playerOwnedCountryList.size()==0)	
@@ -324,13 +334,16 @@ public class MapEditorView extends JFrame implements Serializable {
 			}
 			++row;
 			}
+			}
 			
 		}
 		
 		/*
-		 * for(int i=0;i<data.length;i++) {for(int j=0;j<data[i].length;j++)
-		 * System.out.print(data[i][j].toString()+" "); System.out.println("\n"); }
-		 */	final JTable table = new JTable(data, columnNames);
+		 * for (int i = 0; i < data.length; i++) { for (int j = 0; j < data[i].length;
+		 * j++) { if(data[i][j]!=null) System.out.print(data[i][j].toString() + " "); }
+		 * System.out.println("\n"); }
+		 */
+		final JTable table = new JTable(data, columnNames);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
 		table.setEnabled(false);
@@ -342,6 +355,20 @@ public class MapEditorView extends JFrame implements Serializable {
 		return (scrollPane);
     	
     }
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		//System.out.println(arg1.toString());
+		if(arg1.toString().contains("showmap")) {
+		if(playerScrollPane!=null) {
+		remove(playerScrollPane);
+		playerScrollPane=createTable();
+    	playerScrollPane.setBounds(10, 500, this.getSize().width - 40, 350);
+    	add(playerScrollPane);
+		}
+		}
+    	
+	}
 
     
 }

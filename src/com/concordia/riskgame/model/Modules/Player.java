@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 
 // TODO: Auto-generated Javadoc
@@ -102,6 +103,8 @@ public class Player extends Observable {
 
 	public void setArmyCount(int armyCount) {
 		this.armyCount = armyCount;
+		gameplay.triggerObserver("domination");
+		gameplay.triggerObserver("showmap");
 	}
 
 
@@ -168,17 +171,18 @@ public class Player extends Observable {
 		String countryName = commands[1];
 		int reinforcement = Integer.parseInt(commands[2]);
 		if (!getCountriesOwned().contains(commands[1])) {
-			System.out.println("Not your country!");
+			gameplay.addToViewLogger("Not your country!");
 			return;
 		}
 		if(armyCount < reinforcement) {
-			System.out.println("Entered count more than the number of armies available for the current player.Please enter a smaller value.");
+			gameplay.addToViewLogger("Entered count more than the number of armies available for the current player.Please enter a smaller value.");
 			return;
 		}
 
 		setArmyCount(armyCount - reinforcement);
 		int n = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
 		gameplay.getSelectedMap().searchCountry(countryName).setNoOfArmiesPresent(n + reinforcement);
+	//	gameplay.triggerObserver("domination");
 	}
 
 
@@ -189,7 +193,7 @@ public class Player extends Observable {
 		toCountry = gameMap.searchCountry(commands[2]);
 		defensivePlayer = toCountry.getOwnedBy();
 		if (fromCountry == null || toCountry == null) {
-			System.out.println("Cannot find the country");
+			gameplay.addToViewLogger("Cannot find the country");
 			return;
 		}
 
@@ -199,38 +203,43 @@ public class Player extends Observable {
 
 		if ("-allout".equals(commands[3])) {
 			autoAttack();
+			gameplay.triggerObserver("domination");
+			gameplay.triggerObserver("showmap");
 		} else {
 			boolean commandDone = false;
 			String[] command2;
-			System.out.println("Input defend command!");
+			gameplay.addToViewLogger("Input defend command!");
 			while (!commandDone) {
 				command2 = scanner.nextLine().split(" ");
 				if (!checkDefendCommand(command2)) {
-					System.out.println("Incorrect defend command!");
+					gameplay.addToViewLogger("Incorrect defend command!");
 					continue;
 				}
 				commandDone = true;
 			}
 			attackOnce();
+			gameplay.triggerObserver("domination");
+			gameplay.triggerObserver("showmap");
 		}
 
 		if (!checkAvailableAttack()) {
-			System.out.println("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
+			gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
 			gameplay.setCurrentPhase(Phases.Fortification);
 		}
-
+		
 	}
+
 
 	public boolean checkAvailableAttack() {
 		boolean attackAvailable = false;
-		System.out.println("Next available attacks are:");
+		gameplay.addToViewLogger("Next available attacks are:");
 		for (String countryName : gameplay.getCurrentPlayer().getCountriesOwned()) {
 			Country country = gameplay.getSelectedMap().searchCountry(countryName);
 			if (country.getNoOfArmiesPresent() != 1) {
 				for (String neighbor : country.getListOfNeighbours()) {
 					if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
 						Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor);
-						System.out.println(countryName + country.getNoOfArmiesPresent() + " →" + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
+						gameplay.addToViewLogger(countryName + country.getNoOfArmiesPresent() + " →" + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
 						attackAvailable = true;
 					}
 				}
@@ -252,11 +261,11 @@ public class Player extends Observable {
 			return false;
 		}
 		if (numOfDefensiveDice > toCountry.getNoOfArmiesPresent()) {
-			System.out.println("Defensive country doesn't have enough armies to do defence!");
+			gameplay.addToViewLogger("Defensive country doesn't have enough armies to do defence!");
 			return false;
 		}
 		if (numOfDefensiveDice > 2 || numOfDefensiveDice <= 0) {
-			System.out.println("Number of defensive dice invalid! It should be 0 < num <=2");
+			gameplay.addToViewLogger("Number of defensive dice invalid! It should be 0 < num <=2");
 			return false;
 		}
 		return true;
@@ -281,18 +290,18 @@ public class Player extends Observable {
 				offensiveCountryLose++;
 			}
 		}
-		System.out.println(fromCountry.getCountryName() + " lose " + offensiveCountryLose + " armies");
-		System.out.println(toCountry.getCountryName() + " lose " + defensiveCountryLose + " armies");
+		gameplay.addToViewLogger(fromCountry.getCountryName() + " lose " + offensiveCountryLose + " armies");
+		gameplay.addToViewLogger(toCountry.getCountryName() + " lose " + defensiveCountryLose + " armies");
 
 
 		if (fromCountry.getNoOfArmiesPresent() == 1) {
-			System.out.println("Offensive country left only one army, cannot do any more attack");
+			gameplay.addToViewLogger("Offensive country left only one army, cannot do any more attack");
 			return true;
 		}
 
 		if (toCountry.getNoOfArmiesPresent() == 0) {
 
-			System.out.println("You've conquered " + commands[2]);
+			gameplay.addToViewLogger("You've conquered " + commands[2]);
 			//remove country from enemy Player
 			defensivePlayer.getCountriesOwned().remove(commands[2]);
 			//Change owner
@@ -303,14 +312,14 @@ public class Player extends Observable {
 
 			//Set card flag, give a card at the end of this turn
 			setCardFlag();
-			System.out.println("Input your move command!");
-			System.out.println("Attack country has " + fromCountry.getNoOfArmiesPresent() + "armies");
+			gameplay.addToViewLogger("Input your move command!");
+			gameplay.addToViewLogger("Attack country has " + fromCountry.getNoOfArmiesPresent() + "armies");
 			boolean moveCommandDone = false;
 			int moveArmies = 0;
 			while (!moveCommandDone) {
 				String[] moveCommands = scanner.nextLine().split(" ");
 				if (!checkMoveCommands(moveCommands)) {
-					System.out.println("Incorrect move command!");
+					gameplay.addToViewLogger("Incorrect move command!");
 					continue;
 				}
 				moveCommandDone = true;
@@ -319,8 +328,6 @@ public class Player extends Observable {
 			
 			fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - moveArmies);
 			toCountry.setNoOfArmiesPresent(moveArmies);
-
-
 
 			return true;
 		}
@@ -338,15 +345,15 @@ public class Player extends Observable {
 		try {
 			moveNum = Integer.parseInt(moveCommands[1]);
 		}catch (NumberFormatException ex) {
-			System.out.println("Not an integer");
+			gameplay.addToViewLogger("Not an integer");
 			return false;
 		}
 		if (moveNum > fromCountry.getNoOfArmiesPresent() - 1) {
-			System.out.println("Not so many armies");
+			gameplay.addToViewLogger("Not so many armies");
 			return false;
 		}
 		if (moveNum < 1) {
-			System.out.println("You must move at least 1 army to conquered country");
+			gameplay.addToViewLogger("You must move at least 1 army to conquered country");
 			return false;
 		}
 		return true;
@@ -354,36 +361,36 @@ public class Player extends Observable {
 
 	private boolean checkAttackCommand() {
 		if (!getCountriesOwned().contains(commands[1])) {
-			System.out.println("Offensive Country is not your country! Re-input:");
+			gameplay.addToViewLogger("Offensive Country is not your country! Re-input:");
 			return false;
 		}
 		if (getCountriesOwned().contains(commands[2])) {
-			System.out.println("You cannot attack yourself! Re-input:");
+			gameplay.addToViewLogger("You cannot attack yourself! Re-input:");
 			return false;
 		}
 		if (!fromCountry.getListOfNeighbours().contains(commands[2])) {
-			System.out.println("Target country is not offensive country's neighbor! Re-input:");
+			gameplay.addToViewLogger("Target country is not offensive country's neighbor! Re-input:");
 			return false;
 		}
 		if (fromCountry.getNoOfArmiesPresent() == 1) {
-			System.out.println("Offensive country doesn't have army to attack!");
+			gameplay.addToViewLogger("Offensive country doesn't have army to attack!");
 			return false;
 		}
 		if (!commands[3].equals("-allout")) {
 			try {
 				numOfAttackDice = Integer.parseInt(commands[3]);
 			}catch (NumberFormatException ex) {
-				System.out.println("Attack dice is not an integer");
+				gameplay.addToViewLogger("Attack dice is not an integer");
 				return false;
 			}
 
 			if (numOfAttackDice > 3 || numOfAttackDice <= 0) {
-				System.out.println("Attack dice invalid, should be 0 < num <= 3!");
+				gameplay.addToViewLogger("Attack dice invalid, should be 0 < num <= 3!");
 				return false;
 			}
 
 			if (numOfAttackDice > fromCountry.getNoOfArmiesPresent() - 1) {
-				System.out.println("Offensive country only has " + (fromCountry.getNoOfArmiesPresent() - 1) + " armies to do attack!");
+				gameplay.addToViewLogger("Offensive country only has " + (fromCountry.getNoOfArmiesPresent() - 1) + " armies to do attack!");
 				return false;
 			}
 
@@ -401,14 +408,15 @@ public class Player extends Observable {
 			}
 			gameplay.addRemovedPlayer(defensivePlayer);
 			gameplay.getPlayers().remove(defensivePlayer);
-			System.out.println(defensivePlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
+			gameplay.addToViewLogger(defensivePlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
 			isWinner();
-		}
+			
+			}
 	}
 
 	private void isWinner() {
 		if (gameplay.getPlayers().size() == 1) {
-			System.out.println("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
+			gameplay.addToViewLogger("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
 			System.exit(0);
 		}
 	}
@@ -425,11 +433,13 @@ public class Player extends Observable {
 			} else {
 				numOfDefensiveDice = toCountry.getNoOfArmiesPresent();
 			}
-
+			
 			if (attackOnce()){
 				break;
 			}
 		}
+	
+		
 	}
 
 	public boolean fortifyArmy(String command) {
@@ -439,22 +449,26 @@ public class Player extends Observable {
 		int num = Integer.parseInt(commands[3]);
 
 		if (!getCountriesOwned().contains(commands[1]) || !getCountriesOwned().contains(commands[2])) {
-			System.out.println("Not your country!");
+			gameplay.addToViewLogger("Not your country!");
 			return false;
 		}
 		if (!fromCountry.getListOfNeighbours().contains(commands[2])) {
-			System.out.println("Target country is not neighbor");
+			gameplay.addToViewLogger("Target country is not neighbor");
 			return false;
 		}
 		if (num >= gameMap.searchCountry(commands[1]).getNoOfArmiesPresent()) {
-			System.out.println("You don't have so many armies");
+			gameplay.addToViewLogger("You don't have so many armies");
 			return false;
 		}
 		int n = gameMap.searchCountry(commands[1]).getNoOfArmiesPresent() - num;
 		gameMap.searchCountry(commands[1]).setNoOfArmiesPresent(n);
 		int m = gameMap.searchCountry(commands[2]).getNoOfArmiesPresent() + num;
 		gameMap.searchCountry(commands[2]).setNoOfArmiesPresent(m);
+		gameplay.triggerObserver("domination");
+		
 		return true;
 	}
+	
+	
 
 }

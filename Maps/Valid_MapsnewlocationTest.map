@@ -1,0 +1,14 @@
+[Map]
+author=Anonymous
+[Continents]
+africa=9
+asia=9
+[Territories]
+jamaica,0.0,0.0,africa,uruguay
+uganda,0.0,0.0,africa,pak,uruguay
+uruguay,0.0,0.0,africa,jamaica,russia,uganda
+china,0.0,0.0,asia,pak,india
+pak,0.0,0.0,asia,china,uganda
+india,0.0,0.0,asia,china,russia
+russia,0.0,0.0,asia,india,uruguay
+
