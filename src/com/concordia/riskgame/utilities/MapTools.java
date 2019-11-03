@@ -557,7 +557,7 @@ public class MapTools  {
 				}
 				PrintWriter writeData = null;
 				try {
-					writeData = new PrintWriter(name+".map");
+					writeData = new PrintWriter(Constants.mapLocation+name+".map");
 					writeData.println(data);
 					return true;
 				} 

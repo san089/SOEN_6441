@@ -70,6 +70,8 @@ public class Country extends Observable {
      */
     public void setOwnedBy(Player ownedBy) {
         this.ownedBy = ownedBy;
+        Gameplay.getInstance().triggerObserver("domination");
+        Gameplay.getInstance().triggerObserver("showmap");
     }
 
     /**
@@ -141,7 +143,7 @@ public class Country extends Observable {
      * Adds the no of armies country.
      */
     public void addNoOfArmiesCountry() {
-        this.noOfArmiesPresent++;
+        ++this.noOfArmiesPresent;
     }
 
     /**

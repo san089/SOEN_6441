@@ -2,8 +2,10 @@ package com.concordia.riskgame.controller;
 
 import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Country;
+import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.MapEditorView;
 
 import javax.swing.*;
@@ -590,7 +592,8 @@ public class MapEditorController implements ActionListener {
     	mapEditorView.setVisible(true);
     	mapEditorView.createTree(map);
         mapEditorView.countriesMatrix(map);
-        mapEditorView.addPlayerViewComponents();
+        if(!Gameplay.getInstance().getCurrentPhase().equals(Phases.MapEditor))
+        	mapEditorView.addPlayerViewComponents();
     
     }
 }
