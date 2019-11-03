@@ -14,15 +14,16 @@ public class PlayerTest {
     @Before
     public void setup(){
         Scanner sc = new Scanner(System.in);
-        CommandController.parseCommand("loadmap D:\\SOEN_6441\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
+        CommandController.parseCommand("loadmap H:\\SOEN_6441\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
         CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
         CommandController.parseCommand("populatecountries", sc);
         CommandController.parseCommand("showphases", sc);
+
+
     }
 
     @Test
     public void getNumOfInfCard() {
-
 
     }
 
@@ -67,6 +68,17 @@ public class PlayerTest {
 
     @Test
     public void attack() {
+        Scanner sc = new Scanner(System.in);
+        Gameplay gameplay = Gameplay.getInstance();
+        Player p=gameplay.getCurrentPlayer();
+        System.out.println(p.getCountriesOwned()+"@@@@@@@@");
+        Country source =  gameplay.getSelectedMap().searchCountry( p.getCountriesOwned().get(0));
+        Country destination =  gameplay.getSelectedMap().searchCountry( p.getCountriesOwned().get(1));
+        source.setNoOfArmiesPresent(4);
+        destination.setNoOfArmiesPresent(4);
+        p.attack("attack "+ p.getCountriesOwned().get(0)+" "+ p.getCountriesOwned().get(1)+" 1",sc);
+        assertEquals(source.getNoOfArmiesPresent(),4);
+        assertEquals(destination.getNoOfArmiesPresent(),4);
     }
 
     @Test
@@ -75,5 +87,16 @@ public class PlayerTest {
 
     @Test
     public void fortifyArmy() {
+        Scanner sc = new Scanner(System.in);
+        Gameplay gameplay = Gameplay.getInstance();
+        Player p=gameplay.getCurrentPlayer();
+        System.out.println(p.getCountriesOwned()+"@@@@@@@@");
+        Country source =  gameplay.getSelectedMap().searchCountry("Canada");
+        Country destination =  gameplay.getSelectedMap().searchCountry("China");
+        source.setNoOfArmiesPresent(4);
+        destination.setNoOfArmiesPresent(4);
+        p.fortifyArmy("fortify pak canada 2");
+        assertEquals(source.getNoOfArmiesPresent(),4);
+        assertNotEquals(destination.getNoOfArmiesPresent(),3);
     }
 }

@@ -6,10 +6,7 @@ package com.concordia.riskgame.model.Modules;
 
 import java.util.Random;
 
-/**
- * Enum for cards.
- */
-
+// TODO: Auto-generated Javadoc
 public enum Card {
     INFANTRY("Infantry"),
     CAVALRY("Cavalry"),
@@ -22,6 +19,7 @@ public enum Card {
      *
      * @param cardType the card type
      */
+    //Constructor
     Card(String cardType){
         this.cardType = cardType;
     }
