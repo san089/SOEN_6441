@@ -246,12 +246,12 @@ public class StartUpPhaseView extends JFrame implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("<--------------------------OBSERVER TRIGGERED--------------------->");
-//		if(Integer.parseInt(arg.toString())==gamePlay.getPlayerCount()) {
-//
-//			JOptionPane.showMessageDialog(gameWindow,
-//					"Player limit reached.Cannot add anymore players", "Error Message",
-//					JOptionPane.ERROR_MESSAGE);
-//		}
+		if(Integer.parseInt(arg.toString())==gamePlay.getPlayerCount()) {
+
+			JOptionPane.showMessageDialog(gameWindow,
+					"Player limit reached.Cannot add anymore players", "Error Message",
+					JOptionPane.ERROR_MESSAGE);
+		}
 		
 	}
 
