@@ -62,3 +62,12 @@ assignReinforcementArmies() method: this method only revoke when one player star
 2, After reinforce army to countries, cannot see the army number change in player view.
 3, Everytime obersers are triggered, there are many message in command prompt.
 4, StartUpPhaseView, update method, after Gameplay notify obersers, this update method occur error.
+
+#code
+ int reinforcementArmyCount = ((currentPlayer.getCountriesOwned().size())/3);
+            for(Continent continent:getSelectedMap().getOwnedContinents(currentPlayer.getPlayerName())) {
+                reinforcementArmyCount = reinforcementArmyCount + continent.getControlValue();
+            }
+            reinforcementArmyCount = reinforcementArmyCount + currentPlayer.getArmyCount();
+            reinforcementArmyCount = Math.max(reinforcementArmyCount, 3);
+            currentPlayer.setArmyCount(reinforcementArmyCount);
