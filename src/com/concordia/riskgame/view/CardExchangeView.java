@@ -1,21 +1,26 @@
 package com.concordia.riskgame.view;
 
-import com.concordia.riskgame.controller.CardExchangeController;
 import com.concordia.riskgame.model.Modules.Gameplay;
-import com.concordia.riskgame.utilities.Phases;
+import com.concordia.riskgame.model.Modules.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
-public class CardExchangeView extends JFrame implements ActionListener {
+/**
+ * This class is the card exchange view.
+ */
+
+public class CardExchangeView extends JFrame implements Observer {
 
     private static final long serialVersionUID = 1L;
+    private static CardExchangeView cardExchangeView;
     private JFrame cardWindow;
     private JPanel cardPanel;
     private JButton exchangerButton;
@@ -34,13 +39,32 @@ public class CardExchangeView extends JFrame implements ActionListener {
     private JTextField use2;
     private JTextField use3;
     private Gameplay gameplay = Gameplay.getInstance();
+    String currentPlayer;
+    String text1;
+    String text2;
+    String text3;
 
+    /**
+     * Card exchange view is singleton model.
+     * @return The only one instance of card exchange view.
+     * @throws IOException
+     */
+    public static CardExchangeView getInstance() throws IOException {
+        if (cardExchangeView == null){
+            cardExchangeView = new CardExchangeView();
+        }
+        return cardExchangeView;
+    }
 
-    public CardExchangeView() throws IOException {
-        String text1 = String.valueOf(gameplay.getCurrentPlayer().getNumOfInfCard());
-        String text2 = String.valueOf(gameplay.getCurrentPlayer().getNumOfCavCard());
-        String text3 = String.valueOf(gameplay.getCurrentPlayer().getNumOfArtCard());
-        String currentPlayer = "Current Player: " + gameplay.getCurrentPlayer().getPlayerName();
+    /**
+     * Constructor
+     * @throws IOException
+     */
+    private CardExchangeView() throws IOException {
+        text1 = String.valueOf(gameplay.getCurrentPlayer().getNumOfInfCard());
+        text2 = String.valueOf(gameplay.getCurrentPlayer().getNumOfCavCard());
+        text3 = String.valueOf(gameplay.getCurrentPlayer().getNumOfArtCard());
+        currentPlayer = "Current Player: " + gameplay.getCurrentPlayer().getPlayerName();
 
 
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -109,15 +133,15 @@ public class CardExchangeView extends JFrame implements ActionListener {
         exchangerButton =new JButton("Exchange");
         exchangerButton.setVisible(true);
         exchangerButton.setBounds(200, 410, 121, 21);
-        cardPanel.add(exchangerButton);
+        //cardPanel.add(exchangerButton);
 
         exitButton =new JButton("Exit");
         exitButton.setVisible(true);
         exitButton.setBounds(350, 410, 121, 21);
-        cardPanel.add(exitButton);
+        //cardPanel.add(exitButton);
 
-        exchangerButton.addActionListener(this);
-        exitButton.addActionListener(this);
+        // exchangerButton.addActionListener(this);
+        //exitButton.addActionListener(this);
         cardWindow.getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         cardWindow.pack();
@@ -126,57 +150,22 @@ public class CardExchangeView extends JFrame implements ActionListener {
         cardWindow.setLocationRelativeTo(null);
         cardWindow.setVisible(true);
     }
-
-
-
+    /**
+     * Observer update method
+     * @param observable
+     * @param o
+     */
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        CardExchangeController controller = new CardExchangeController();
-
-        String n1 = use1.getText();
-        String n2 = use2.getText();
-        String n3 = use3.getText();
-
-        if (actionEvent.getSource() == exchangerButton) {
-            if (!controller.checkInput(n1, n2, n3)) {
-                JOptionPane.showMessageDialog(cardWindow,
-                        "Incorrect number!", "Error Message",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            controller.exchange();
-            cardWindow.setVisible(false);
-            return;
-        }
-        if (actionEvent.getSource() == exitButton) {
-            if (!controller.verifyNumber(n1, n2, n3)) {
-                JOptionPane.showMessageDialog(cardWindow,
-                        "Incorrect number!", "Error Message",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            int num1 = 0, num2 = 0, num3 = 0;
-            if (!n1.equals("")) {
-                num1 = Integer.parseInt(n1);
-            }
-            if (!n2.equals("")) {
-                num2 = Integer.parseInt(n2);
-            }
-            if (!n3.equals("")) {
-                num3 = Integer.parseInt(n3);
-            }
-            if (num1 + num2 + num3 >= 5) {
-                JOptionPane.showMessageDialog(cardWindow,
-                        "You must exchange your card!", "Error Message",
-                        JOptionPane.ERROR_MESSAGE);
-            }else {
-                cardWindow.setVisible(false);
-                gameplay.assignReinforcementArmies();
-                System.out.println("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies!" );
-                gameplay.setCurrentPhase(Phases.Reinforcement);
-            }
-
-        }
+    public void update(Observable observable, Object o) {
+        System.out.println("Card Exchange view observer triggered");
+        currentPlayer = "Current Player: " + gameplay.getCurrentPlayer().getPlayerName();
+        player.setText(currentPlayer);
+        text1 = Integer.toString(gameplay.getCurrentPlayer().getNumOfInfCard());
+        text2 = Integer.toString(gameplay.getCurrentPlayer().getNumOfCavCard());
+        text3 = Integer.toString(gameplay.getCurrentPlayer().getNumOfArtCard());
+        num1.setText(text1);
+        num2.setText(text2);
+        num3.setText(text3);
 
     }
 }

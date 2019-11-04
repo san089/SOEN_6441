@@ -105,6 +105,7 @@ public class Gameplay extends Observable {
 	 */
 	public void roundRobinPlayer() {
 		setCurrentPlayer(playerQueue.remove());
+		setCurrentPlayer(currentPlayer);
 		playerQueue.add(currentPlayer);
 	}
 

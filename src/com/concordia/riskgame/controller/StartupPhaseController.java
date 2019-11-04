@@ -123,6 +123,13 @@ public class StartupPhaseController implements ActionListener  {
 				JOptionPane.showMessageDialog(null,
 						"Please enter a player name", "Error Message",
 						JOptionPane.ERROR_MESSAGE);
+			if(gameplay.getPlayers().size()>=gameplay.getPlayerCount()) {
+				
+				JOptionPane.showMessageDialog(null,
+						"Player limit reached.Cannot add anymore players", "Error Message",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			
 			else
 			{
 				String message=gameplay.addPlayer(sView.getPlayerName().getText());

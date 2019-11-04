@@ -3,34 +3,16 @@ package com.concordia.riskgame.view;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.concordia.riskgame.controller.StartupPhaseController;
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Phases;
@@ -40,7 +22,7 @@ import com.concordia.riskgame.utilities.Phases;
  * The Class Initiates the Startup View in the Project after the MapEditor View.
  *
  */
-public class StartUpPhaseView extends JFrame implements Observer {
+public class StartUpPhaseView extends JFrame  {
 
 	private static final long serialVersionUID = 1L;
 	public static JPanel cardsContainerPanel;
@@ -91,7 +73,6 @@ public class StartUpPhaseView extends JFrame implements Observer {
 		StartUpPhaseView.cardsContainerPanel=panel;
 		this.gamePlay = Gameplay.getInstance();
 		gamePlay.setCurrentPhase(Phases.Startup);
-		gamePlay.addObserver(this);
 		initaliseUI();
 
 	}
@@ -236,25 +217,7 @@ public class StartUpPhaseView extends JFrame implements Observer {
 
 
 	}
-
-
 	
-
-	/* (non-Javadoc)
-	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		System.out.println("<--------------------------OBSERVER TRIGGERED--------------------->");
-		if(Integer.parseInt(arg.toString())==gamePlay.getPlayerCount()) {
-			
-			JOptionPane.showMessageDialog(gameWindow,
-					"Player limit reached.Cannot add anymore players", "Error Message",
-					JOptionPane.ERROR_MESSAGE);
-		}
-		
-	}
-
 	/**
 	 * Getter to the element shopMapButton
 	 * @return shopMapButton

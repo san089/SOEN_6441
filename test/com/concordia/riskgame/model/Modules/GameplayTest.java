@@ -1,7 +1,11 @@
 package com.concordia.riskgame.model.Modules;
 
 import com.concordia.riskgame.controller.CommandController;
+import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.Phases;
+
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,7 +13,9 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -18,22 +24,51 @@ import static org.junit.Assert.*;
  * Test class for testing GamePlayer class
  */
 public class GameplayTest {
-    Gameplay gamePlay;
-    PrintStream console = null;
-    ByteArrayOutputStream bytes = null;
+    private Gameplay gamePlay;
+    private PrintStream console = null;
+    private ByteArrayOutputStream bytes = null;
+    private int numberofPlayers;
+    private Queue<Player> playerQueue;
+    private List<String> countries;
+    private ArrayList<Player> players;
+    private Player currentPlayer;
+    private int floorCountryPerPlayer,ceilingCountryperPlayer;
+    private Map gameMap;
+    private MapTools maptools;
     Scanner sc = new Scanner(System.in);
 
     @BeforeClass
     public static void classSetup() throws Exception{
         Scanner sc = new Scanner(System.in);
-        CommandController.parseCommand("loadmap D:\\SOEN_6441\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
+        String userDir=System.getProperty("user.dir");
+        CommandController.parseCommand("loadmap "+userDir+"\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
         CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
+        
     }
 
 
     @Before
     public void setUp() throws Exception {
         gamePlay = Gameplay.getInstance();
+        gameMap=new Map();
+        maptools=new MapTools();
+        countries=new ArrayList<String>();
+        players=new ArrayList<Player>();
+        playerQueue=new LinkedList<Player>();
+        numberofPlayers=5;
+        for(int i=0;i<numberofPlayers;i++) {
+            players.add(new Player(i+1,"Player"+(i+1)));
+        }
+        gamePlay.setPlayers(players);
+        maptools.pickMapFileService(gameMap, System.getProperty("user.dir") + "\\Maps\\Valid_Maps\\AtlanticCity.map");
+        gamePlay.setSelectedMap(gameMap);
+        countries=gamePlay.getSelectedMap().listOfCountryNames();
+        gamePlay.setPlayers(players);
+        floorCountryPerPlayer=Math.floorDiv(countries.size(),numberofPlayers);
+        ceilingCountryperPlayer=(int) Math.ceil((double)(countries.size()/(double)numberofPlayers));
+
+
+    
     }
 
     @After
@@ -41,9 +76,11 @@ public class GameplayTest {
     }
 
 
+    
     @Test
     public void validateStartupInputs() {
-       String expected =  "Please select a valid map for current game.";
+    	gamePlay.setSelectedMap(null);
+    	String expected =  "Please select a valid map for current game.";
         Map map = new Map();
         assertEquals(expected, gamePlay.validateStartupInputs());
         gamePlay.setSelectedMap(map);
@@ -57,11 +94,18 @@ public class GameplayTest {
 
     @Test
     public void assignReinforcementArmies() {
+    	try {
         CommandController.parseCommand("populatecountries", sc);
         CommandController.parseCommand("showphases", sc);
         CommandController.parseCommand("placeall", sc);
+        gamePlay.assignReinforcementArmies();
+    	}
+    	catch(Exception ex)
+    	{
+    		System.out.println("Exception while parsing commands");
+    	}
         int value  = gamePlay.getCurrentPlayer().getArmyCount();
-        assertEquals(3, value);
+        assertTrue(3<=value);
     }
 
     /**
@@ -69,15 +113,24 @@ public class GameplayTest {
      */
     @Test
     public void addPlayer() {
+    	
+    	gamePlay.setCurrentPhase(Phases.Startup);
         String playerRemoveCommand = "gameplayer -add Haifeng";
+        try {
         CommandController.parseCommand(playerRemoveCommand, (new Scanner(System.in)));
+        }
+        catch(Exception ex)
+    	{
+    		System.out.println("Exception while parsing commands");
+    	}
         List<String> playerNames = new ArrayList<String>();
 
         for(Player P : gamePlay.getPlayers()){
             playerNames.add(P.getPlayerName());
         }
         assertTrue(playerNames.contains("Haifeng"));
-    }
+    	}
+    
 
     /**
      * Test method to test that duplicate players should not be added into the system.
@@ -86,7 +139,13 @@ public class GameplayTest {
     public void existDuplicatePlayer() {
         String playerRemoveCommand = "gameplayer -add Sanchit";
         int numPlayersBefore = gamePlay.getPlayerCount();
+        try {
         CommandController.parseCommand(playerRemoveCommand, (new Scanner(System.in)));
+        }
+        catch(Exception ex)
+    	{
+    		System.out.println("Exception while parsing commands");
+    	}
         int numPlayersAfter = gamePlay.getPlayerCount();
         assertEquals(numPlayersAfter, numPlayersBefore);
     }
@@ -97,28 +156,80 @@ public class GameplayTest {
     @Test
     public void removePlayer() {
         String playerRemoveCommand = "gameplayer -remove Sanchit";
+        try {
         CommandController.parseCommand(playerRemoveCommand, (new Scanner(System.in)));
+        }catch(Exception ex)
+    	{
+    		System.out.println("Exception while parsing commands");
+    	}
         for(Player P : gamePlay.getPlayers()){
             assertFalse(P.getPlayerName().equalsIgnoreCase("Sanchit"));
         }
     }
 
+    /**
+     * Initialise players test.
+     */
     @Test
-    public void initialisePlayers() {
+    public void initialisePlayersTest() {
+        System.out.println("========================INITIALISE PLAYERS TEST CASE START==============================");
+        gamePlay.initialisePlayers();
+        playerQueue=gamePlay.getPlayerQueue();
+        while(!playerQueue.isEmpty()) {
+            currentPlayer=playerQueue.remove();
+            Assert.assertTrue(currentPlayer.getCountriesOwned().size()==floorCountryPerPlayer||currentPlayer.getCountriesOwned().size()==ceilingCountryperPlayer);
+        }
+        System.out.println("========================INITIALISE PLAYERS TEST CASE END==============================");
+
     }
 
+    /**
+     * Assign armies test.
+     */
     @Test
-    public void assignStartupArmies() {
+    public void assignArmiesTest() {
+        System.out.println("========================ASSIGN ARMIES TEST CASE START==============================");
+
+        int initialPlayerArmyCount,countryArmyCount = 0,finalPlayerArmyCount = 0;
+        gamePlay.assignStartupArmies();
+        initialPlayerArmyCount=(gamePlay.getPlayers().get(0).getArmyCount())*(gamePlay.getPlayers().size());
+        System.out.println(initialPlayerArmyCount);
+        gamePlay.initialisePlayers();
+        gamePlay.placeAllArmies();
+        for(Player player:gamePlay.getPlayers())
+            finalPlayerArmyCount+=player.getArmyCount();
+        for(Continent continent:gamePlay.getSelectedMap().getContinents())
+            for(Country country:continent.getCountriesPresent()) {
+                countryArmyCount+=country.getNoOfArmiesPresent();
+                Assert.assertTrue(country.getNoOfArmiesPresent()>0);
+            }
+        Assert.assertTrue(countryArmyCount==initialPlayerArmyCount);
+        Assert.assertTrue(finalPlayerArmyCount==0);
+        for(Continent continent:gamePlay.getSelectedMap().getContinents())
+            for(Country country:continent.getCountriesPresent())
+                Assert.assertTrue(country.getNoOfArmiesPresent()>0);
+        System.out.println("========================ASSIGN ARMIES PLAYERS TEST CASE END==============================");
+
     }
+
+
 
     /**
      * Method to test if the reinforce functionality works as expected.
      */
     @Test
     public void placeArmy() {
+    	gamePlay.setCurrentPhase(Phases.Startup);
+    	try {
         CommandController.parseCommand("populatecountries", sc);
         CommandController.parseCommand("showphases", sc);
         CommandController.parseCommand("placeall", sc);
+    	}
+    	catch(Exception ex)
+    	{
+    		System.out.println("Exception while parsing commands");
+    	}
+    	gamePlay.assignReinforcementArmies();
         int armyAvailable = gamePlay.getCurrentPlayer().getArmyCount();
         ArrayList<Country> ownedCountries = gamePlay.getSelectedMap().getOwnedCountries(gamePlay.getCurrentPlayer().getPlayerName());
         String countryName = ownedCountries.get(0).getCountryName(); //Get the first country from list to place army in that country
@@ -126,18 +237,22 @@ public class GameplayTest {
 
         //Checking army count before and after reinforce command run
         int armyBeforeReinforce = ownedCountries.get(0).getNoOfArmiesPresent();
+        try {
         CommandController.parseCommand(command, sc);
+        }
+        catch(Exception ex)
+    	{
+    		System.out.println("Exception while parsing commands");
+    	}
         int armyAfterReinforce = ownedCountries.get(0).getNoOfArmiesPresent();
-        assertEquals(armyAfterReinforce, armyBeforeReinforce + 3);
+        assertEquals(armyAfterReinforce, armyBeforeReinforce + armyAvailable);
     }
 
     @Test
     public void getAbandonedCountryCount() {
     }
 
-    @Test
-    public void displayArmyDistribution() {
-    }
+    
 
     @Test
     public void placeAllArmies() {

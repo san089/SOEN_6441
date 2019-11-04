@@ -55,3 +55,10 @@ After populate all countries:
 - popup card exchange view. Input the number of card you're going to use. If not suitable, click exit.
 - print how many reinforcement you have.
 - continue game...
+#### Nov 3
+Issues:
+1, Gameplay.java
+assignReinforcementArmies() method: this method only revoke when one player start his turn start, depend on how many countries, continent he has, so we cannot assgin armies to all player in this method.
+2, After reinforce army to countries, cannot see the army number change in player view.
+3, Everytime obersers are triggered, there are many message in command prompt.
+4, StartUpPhaseView, update method, after Gameplay notify obersers, this update method occur error.
