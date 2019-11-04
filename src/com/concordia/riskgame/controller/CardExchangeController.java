@@ -4,11 +4,20 @@ import com.concordia.riskgame.model.Modules.Card;
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Player;
 
-public class CardExchangeController {
+import java.util.Observable;
+
+/**
+ * Class perform card exchange command and notify card exchange view update
+ */
+
+
+public class CardExchangeController extends Observable {
     Gameplay gameplay;
     Player currentPlayer;
     int num1, num2, num3;
-
+    /**
+     * This method is the constructor of CardExchangeController.
+     */
     public CardExchangeController() {
         gameplay = Gameplay.getInstance();
         currentPlayer = gameplay.getCurrentPlayer();
@@ -16,7 +25,10 @@ public class CardExchangeController {
         num2 = 0;
         num3 = 0;
     }
-
+    /**
+     * This method perform the card exchange, all the exchange numbers have been verified and stored into
+     * member variables. After exchanging, notify card view update.
+     */
     public void exchange() {
 
         currentPlayer.addCardExchangeNum();
@@ -33,10 +45,22 @@ public class CardExchangeController {
         for (int i = 0; i < num3; i++) {
             currentPlayer.getCardsOwned().remove(Card.ARTILLERY);
         }
+        setChanged();
+        notifyObservers();
     }
-
+    /**
+     * This method check the card whether exchanging number input are valid. Only valid number return true.
+     * @param n1 Number of Infantry card
+     * @param n2 Number of Carvery card
+     * @param n3 Number of Artillery card
+     * @return valid true, invalid false
+     */
     public boolean checkInput(String n1, String n2, String n3) {
-        if(!verifyNumber(n1, n2, n3)) {
+        try {
+            num1 = Integer.parseInt(n1);
+            num2 = Integer.parseInt(n2);
+            num3 = Integer.parseInt(n3);
+        } catch (NumberFormatException ex) {
             return false;
         }
         if (num1 > gameplay.getCurrentPlayer().getNumOfInfCard() ||
@@ -58,31 +82,6 @@ public class CardExchangeController {
             return true;
         }
         return false;
-    }
-
-    public boolean verifyNumber(String n1, String n2, String n3) {
-        if (!n1.equals("")) {
-            try {
-                num1 = Integer.parseInt(n1);
-            }catch (NumberFormatException ex) {
-                return false;
-            }
-        }
-        if (!n2.equals("")) {
-            try {
-                num2 = Integer.parseInt(n2);
-            }catch (NumberFormatException ex) {
-                return false;
-            }
-        }
-        if (!n3.equals("")) {
-            try {
-                num3 = Integer.parseInt(n3);
-            }catch (NumberFormatException ex) {
-                return false;
-            }
-        }
-        return true;
     }
 
 

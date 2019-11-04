@@ -235,7 +235,6 @@ public class StartUpPhaseView extends JFrame  {
 
 
 	}
-
 	
 	/**
 	 * Getter to the element shopMapButton
