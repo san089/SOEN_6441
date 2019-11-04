@@ -40,7 +40,7 @@ import com.concordia.riskgame.utilities.Phases;
  * The Class Initiates the Startup View in the Project after the MapEditor View.
  *
  */
-public class StartUpPhaseView extends JFrame implements Observer {
+public class StartUpPhaseView extends JFrame  {
 
 	private static final long serialVersionUID = 1L;
 	public static JPanel cardsContainerPanel;
@@ -91,7 +91,6 @@ public class StartUpPhaseView extends JFrame implements Observer {
 		StartUpPhaseView.cardsContainerPanel=panel;
 		this.gamePlay = Gameplay.getInstance();
 		gamePlay.setCurrentPhase(Phases.Startup);
-		gamePlay.addObserver(this);
 		initaliseUI();
 
 	}
@@ -237,24 +236,7 @@ public class StartUpPhaseView extends JFrame implements Observer {
 
 	}
 
-
 	
-
-	/* (non-Javadoc)
-	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		System.out.println("<--------------------------OBSERVER TRIGGERED--------------------->");
-		if(Integer.parseInt(arg.toString())==gamePlay.getPlayerCount()) {
-			
-			JOptionPane.showMessageDialog(gameWindow,
-					"Player limit reached.Cannot add anymore players", "Error Message",
-					JOptionPane.ERROR_MESSAGE);
-		}
-		
-	}
-
 	/**
 	 * Getter to the element shopMapButton
 	 * @return shopMapButton

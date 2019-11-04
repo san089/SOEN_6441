@@ -308,7 +308,6 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
 		for(Player player:playerList) {
 			//System.out.println("RowCount "+rowCount);
 			String playerName=player.getPlayerName();
-			System.out.println("PlayerName "+player.getPlayerName());
 			List<Country> playerOwnedCountryList=gameInstance.getSelectedMap().getOwnedCountries(playerName);
 			List<Continent> continentList=gameInstance.getSelectedMap().getOwnedContinents(playerName);
 			String continentsOwned="";
@@ -338,11 +337,6 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
 			
 		}
 		
-		/*
-		 * for (int i = 0; i < data.length; i++) { for (int j = 0; j < data[i].length;
-		 * j++) { if(data[i][j]!=null) System.out.print(data[i][j].toString() + " "); }
-		 * System.out.println("\n"); }
-		 */
 		final JTable table = new JTable(data, columnNames);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
