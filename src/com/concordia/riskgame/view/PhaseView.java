@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
+import javax.swing.text.DefaultCaret;
 
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Player;
@@ -81,15 +82,12 @@ public class PhaseView extends JFrame implements Observer{
         
         
         loggerLabel=new JLabel("Current Phase Logs");
-//        loggerLabel.setBounds((commonViewFrame.getSize().width-200)/2, 66, loggerLabel.getPreferredSize().width+500, loggerLabel.getPreferredSize().height);
         loggerLabel.setSize(loggerLabel.getPreferredSize().width+100, loggerLabel.getPreferredSize().height);
         loggerLabel.setLocation((commonViewFrame.getSize().width-200)/2, 76);
         loggerLabel.setFont(new Font("dialog", 1, 15));
         loggerLabel.setVisible(true);
         loggerLabelViewPanel.setOpaque(false);
-        commonViewFrame.add(loggerLabel);
-               
-//        commonViewFrame.add(loggerLabel);
+        commonViewFrame.add(loggerLabel);             
         loggerLabelViewPanel.repaint();
 		
         
@@ -102,6 +100,8 @@ public class PhaseView extends JFrame implements Observer{
 		repaint();
 		
 		loggerText=new JTextArea();
+		DefaultCaret caret = (DefaultCaret)loggerText.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		JScrollPane logScrollPane=new JScrollPane(loggerText);
 		logScrollPane.setBounds(10, 95, commonViewFrame.getSize().width - 40, ((commonViewFrame.getHeight())/2)-150);
 		loggerText.setBorder(Constants.blackline);

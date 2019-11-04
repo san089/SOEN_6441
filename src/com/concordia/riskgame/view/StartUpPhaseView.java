@@ -40,7 +40,7 @@ import com.concordia.riskgame.utilities.Phases;
  * The Class Initiates the Startup View in the Project after the MapEditor View.
  *
  */
-public class StartUpPhaseView extends JFrame implements Observer {
+public class StartUpPhaseView extends JFrame  {
 
 	private static final long serialVersionUID = 1L;
 	public static JPanel cardsContainerPanel;
@@ -91,7 +91,6 @@ public class StartUpPhaseView extends JFrame implements Observer {
 		StartUpPhaseView.cardsContainerPanel=panel;
 		this.gamePlay = Gameplay.getInstance();
 		gamePlay.setCurrentPhase(Phases.Startup);
-		gamePlay.addObserver(this);
 		initaliseUI();
 
 	}
@@ -237,8 +236,8 @@ public class StartUpPhaseView extends JFrame implements Observer {
 
 	}
 
-
 	
+<<<<<<< HEAD
 
 	/* (non-Javadoc)
 	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
@@ -255,6 +254,8 @@ public class StartUpPhaseView extends JFrame implements Observer {
 		
 	}
 
+=======
+>>>>>>> b597cccee1ea33832171e49a34fd81670e681d72
 	/**
 	 * Getter to the element shopMapButton
 	 * @return shopMapButton
