@@ -165,6 +165,11 @@ public class Player extends Observable {
 	private Player defensivePlayer;
 	private Scanner scanner;
 
+	/**
+	 * Reinforce army to one country, parse country and number from command, then do move.
+	 * @param command
+	 * @return Add number of army to corresponding armies.
+	 */
 
 	public void reinforceArmy(String command) {
 		commands = command.split(" ");
@@ -185,6 +190,11 @@ public class Player extends Observable {
 	//	gameplay.triggerObserver("domination");
 	}
 
+	/**
+	 * Perform attack command sparse
+	 * @param command
+	 * @param sc
+	 */
 
 	public void attack(String command, Scanner sc) {
 		scanner = sc;
@@ -229,6 +239,10 @@ public class Player extends Observable {
 		
 	}
 
+	/**
+	 * Check available attack in attack phase, print out all available attacks.
+	 * @return If there is available attack, return true, otherwise false.
+	 */
 
 	public boolean checkAvailableAttack() {
 		boolean attackAvailable = false;
@@ -239,7 +253,7 @@ public class Player extends Observable {
 				for (String neighbor : country.getListOfNeighbours()) {
 					if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
 						Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor);
-						gameplay.addToViewLogger(countryName + country.getNoOfArmiesPresent() + " →" + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
+						gameplay.addToViewLogger(countryName + " " + country.getNoOfArmiesPresent() + " → " + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
 						attackAvailable = true;
 					}
 				}
@@ -248,6 +262,11 @@ public class Player extends Observable {
 		return attackAvailable;
 	}
 
+	/**
+	 * Check defend command, whether the defend dice num is valid or not.
+	 * @param commands
+	 * @return
+	 */
 	private boolean checkDefendCommand(String[] commands){
 		if (commands.length != 2) {
 			return false;
@@ -271,6 +290,10 @@ public class Player extends Observable {
 		return true;
 	}
 
+	/**
+	 * Perform one time attack, compare the result of dice, do deduction of result. check if the country is conquered
+	 * @return attack done, return true.
+	 */
 
 	private boolean attackOnce() {
 		ArrayList<Integer> attackDice = dice.rollNDice(numOfAttackDice);
@@ -333,6 +356,11 @@ public class Player extends Observable {
 		}
 		return false;
 	}
+	/**
+	 * Check attack move command, the number of movement should be valid.
+	 * @param moveCommands
+	 * @return
+	 */
 
 	private boolean checkMoveCommands(String[] moveCommands) {
 		int moveNum;
@@ -358,7 +386,10 @@ public class Player extends Observable {
 		}
 		return true;
 	}
-
+	/**
+	 * Check attack command, check attack country and defending country's owner, neighbour, armies.
+	 * @return
+	 */
 	private boolean checkAttackCommand() {
 		if (!getCountriesOwned().contains(commands[1])) {
 			gameplay.addToViewLogger("Offensive Country is not your country! Re-input:");
@@ -398,6 +429,9 @@ public class Player extends Observable {
 		return true;
 	}
 
+	/**
+	 * check whether one conquered country's owner is out, if it is, add it to removed player list.
+	 */
 
 	private void isPlayerOut() {
 		if (defensivePlayer.getCountriesOwned().size() == 0) {
@@ -414,13 +448,17 @@ public class Player extends Observable {
 			}
 	}
 
+	/**
+	 * After each player out, check whether the winner player is the final winner. If it is, exit game.
+	 */
 	private void isWinner() {
 		if (gameplay.getPlayers().size() == 1) {
 			gameplay.addToViewLogger("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
-			System.exit(0);
 		}
 	}
-
+	/**
+	 * When -allout is specified, do auto attack till attack country left only one army or defending country is conquered.
+	 */
 	private void autoAttack() {
 		while (fromCountry.getNoOfArmiesPresent() != 1 && toCountry.getNoOfArmiesPresent() != 0) {
 			if (fromCountry.getNoOfArmiesPresent() > 3) {

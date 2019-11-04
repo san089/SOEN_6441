@@ -8,6 +8,7 @@ import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
 import com.concordia.riskgame.view.WorldDominationView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -42,7 +43,7 @@ public class CommandController {
      *
      * @param command takes command input from user
      */
-    public static void parseCommand(String command, Scanner sc) {
+    public static void parseCommand(String command, Scanner sc) throws IOException {
         command = command.trim().replaceAll(" +", " "); //replace multiple whitespaces with one.
         commandType = command.split(" ")[0];
 
@@ -86,6 +87,9 @@ public class CommandController {
             case "reinforce":
                 reinforce(command);
                 break;
+            case "exchangecards":
+                exchangeCards(command);
+                break;
             case "attack":
                 attack(command, sc);
                 break;
@@ -121,11 +125,15 @@ public class CommandController {
             gameplay.addToViewLogger("Incorrect command!");
             return;
         }
-
-        if (command.split(" ")[1].equals("-noattack")) {
-            gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
-            gameplay.setCurrentPhase(Phases.Fortification);
-            return;
+        if (command.split(" ").length == 2) {
+            if (command.split(" ")[1].equals("-noattack")) {
+                gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
+                gameplay.setCurrentPhase(Phases.Fortification);
+                return;
+            } else {
+                gameplay.addToViewLogger("Incorrect command");
+                return;
+            }
         }
 
         gameplay.getCurrentPlayer().attack(command, sc);
@@ -539,8 +547,7 @@ public class CommandController {
      *
      * @exception Exception if the number entered by the user is not valid.
      */
-    public static void placeArmy(String command)
-    {
+    public static void placeArmy(String command) throws IOException {
     	Scanner in=new Scanner(System.in);   
     	int armyCount = 0;
         String countryName = command.split(" ")[1];   
@@ -582,12 +589,13 @@ public class CommandController {
         if (totalNumOfReinforce == 0) {
             gameplay.getPlayerQueue().clear();
             gameplay.getPlayerQueue().addAll(players);
-            gameplay.assignReinforcementArmies();
+            //gameplay.assignReinforcementArmies();
             gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
             gameplay.setCurrentPhase(Phases.Reinforcement);
             gameplay.roundRobinPlayer();
-            gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
-                    gameplay.getCurrentPlayer().getArmyCount() + " armies to place");
+            gameplay.addObserver(CardExchangeView.getInstance());
+            gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. Exchange your" +
+                    " card first or exchange -none");
         }
 
     }
@@ -596,25 +604,24 @@ public class CommandController {
     /**
      * Place all.
      */
-    public static void placeAll()
-    {
+    public static void placeAll() throws IOException {
     	gameplay.placeAllArmies();
 
         ArrayList<Player> players = gameplay.getPlayers();
         //after placeall, game play starts, initialize player queue
         gameplay.getPlayerQueue().clear();
         gameplay.getPlayerQueue().addAll(players);
-        gameplay.assignReinforcementArmies();
+        //gameplay.assignReinforcementArmies();
 
         gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
         gameplay.setCurrentPhase(Phases.Reinforcement);
         gameplay.displayArmyDistribution();
         //start round robin play
         gameplay.roundRobinPlayer();
-
+        gameplay.addObserver(CardExchangeView.getInstance());
         gameplay.triggerObserver("domination");
-        gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. You have " +
-                gameplay.getCurrentPlayer().getArmyCount() + " armies to place");
+        gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase." +
+                "Please exchange cards first or exchange none");
     }
 
 
@@ -629,6 +636,10 @@ public class CommandController {
     {
         try {
             if(gameplay.getCurrentPhase() == Phases.Reinforcement){
+                if (gameplay.getCurrentPlayer().getCardsOwned().size() >= 5) {
+                    gameplay.addToViewLogger("You have too many cards, you must exchange");
+                    return;
+                }
                 if (command.split(" ").length != 3) {
                     gameplay.addToViewLogger("Incorrect command!");
                     return;
@@ -637,6 +648,10 @@ public class CommandController {
                 String num = command.split(" ")[2];
                 if (!verifyNumber(num)) {
                     gameplay.addToViewLogger("Not an integer!");
+                    return;
+                }
+                if (Integer.parseInt(num)<=0){
+                    gameplay.addToViewLogger("Invalid Number");
                     return;
                 }
                 gameplay.addToViewLogger("Reinforce " + num + " armies in " + countryName);
@@ -656,6 +671,50 @@ public class CommandController {
             gameplay.addToViewLogger("Some exception occurred.");
             showHelpOptions();
         }
+    }
+
+    /**
+     * This method perform attack commands acceptance, call Player's playing methods.
+     *
+     * @param command exchange commands user input.
+     * @throws IOException Card view file loading exception
+     */
+
+
+    private static void exchangeCards(String command) throws IOException {
+        if (gameplay.getCurrentPhase() != Phases.Reinforcement) {
+            gameplay.addToViewLogger("Now is not reinforcement phase!");
+            return;
+        }
+        CardExchangeController cardExchangeController = new CardExchangeController();
+        cardExchangeController.addObserver(CardExchangeView.getInstance());
+        String[] commands = command.split(" ");
+        if (commands.length != 4 && commands.length !=2) {
+            gameplay.addToViewLogger("Exchange command incorrect!");
+            return;
+        }
+        if (commands.length == 2) {
+            if (commands[1].equals("-none")) {
+                if (gameplay.getCurrentPlayer().getCardsOwned().size() >= 5) {
+                    gameplay.addToViewLogger("You have too many cards, you must exchange");
+                    return;
+                } else {
+                    gameplay.assignReinforcementArmies();
+                    gameplay.addToViewLogger("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies!");
+                    return;
+                }
+            } else {
+                gameplay.addToViewLogger("Incorrect command");
+                return;
+            }
+        }
+        if(!cardExchangeController.checkInput(commands[1], commands[2], commands[3])) {
+            gameplay.addToViewLogger("Number Invalid!");
+            return;
+        }
+        cardExchangeController.exchange();
+        gameplay.assignReinforcementArmies();
+        gameplay.addToViewLogger("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies!" );
     }
 
 
@@ -681,24 +740,6 @@ public class CommandController {
             if (gameplay.getCurrentPlayer().getCardFlag()) {
                 Card newCard = Card.getCard(Card.class);
                 gameplay.getCurrentPlayer().addNewCard(newCard);
-                newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-
-
                 gameplay.getCurrentPlayer().resetCardFlag();
                 gameplay.addToViewLogger("You have got a card: " + newCard);
             }
@@ -708,8 +749,8 @@ public class CommandController {
             }
             gameplay.roundRobinPlayer();
             gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+            gameplay.setCurrentPhase(Phases.Reinforcement);
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
-            new CardExchangeView();
         }catch (Exception e){
             gameplay.addToViewLogger("Some exception occurred");
         }

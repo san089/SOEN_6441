@@ -40,7 +40,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	/**
 	 * Instantiates a new game launcher view.
 	 */
-	public GameLauncherView() {
+	public GameLauncherView() throws IOException {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		gameWindow=new JFrame("***********************************************************RISK GAME****************************************************");
 		
