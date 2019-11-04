@@ -1,7 +1,5 @@
 package com.concordia.riskgame.model.Modules;
 
-
-import com.concordia.riskgame.model.Modules.Dice;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,4 +39,11 @@ public class DiceTest {
 
         Assert.assertTrue(max<=6&&min>=1);
     }
+
+    @Test
+    public void rollOneDice() {
+        int num = randomNo.rollOneDice();
+        Assert.assertTrue(num<=6&&num>=1);
+    }
+
 }
