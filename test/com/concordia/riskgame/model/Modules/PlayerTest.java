@@ -14,11 +14,16 @@ public class PlayerTest {
     @Before
     public void setup(){
         Scanner sc = new Scanner(System.in);
+        try {
         CommandController.parseCommand("loadmap H:\\SOEN_6441\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
         CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
         CommandController.parseCommand("populatecountries", sc);
         CommandController.parseCommand("showphases", sc);
-
+        }
+        catch(Exception ex)
+    	{
+    		System.out.println("Exception while parsing commands");
+    	}
 
     }
 

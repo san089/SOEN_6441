@@ -252,11 +252,7 @@ public class Player extends Observable {
 				for (String neighbor : country.getListOfNeighbours()) {
 					if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
 						Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor);
-<<<<<<< HEAD
 						gameplay.addToViewLogger(countryName + " " + country.getNoOfArmiesPresent() + " → " + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
-=======
-						gameplay.addToViewLogger(countryName +" "+ country.getNoOfArmiesPresent() + " →" + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
->>>>>>> b597cccee1ea33832171e49a34fd81670e681d72
 						attackAvailable = true;
 					}
 				}
