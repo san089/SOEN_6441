@@ -6,7 +6,7 @@ package com.concordia.riskgame.model.Modules;
 import com.concordia.riskgame.utilities.Phases;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import java.util.Observable;
 
 import java.util.Scanner;
@@ -187,7 +187,6 @@ public class Player extends Observable {
 		setArmyCount(armyCount - reinforcement);
 		int n = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
 		gameplay.getSelectedMap().searchCountry(countryName).setNoOfArmiesPresent(n + reinforcement);
-	//	gameplay.triggerObserver("domination");
 	}
 
 	/**
@@ -253,7 +252,11 @@ public class Player extends Observable {
 				for (String neighbor : country.getListOfNeighbours()) {
 					if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
 						Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor);
+<<<<<<< HEAD
 						gameplay.addToViewLogger(countryName + " " + country.getNoOfArmiesPresent() + " → " + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
+=======
+						gameplay.addToViewLogger(countryName +" "+ country.getNoOfArmiesPresent() + " →" + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
+>>>>>>> b597cccee1ea33832171e49a34fd81670e681d72
 						attackAvailable = true;
 					}
 				}
@@ -296,11 +299,20 @@ public class Player extends Observable {
 	 */
 
 	private boolean attackOnce() {
+		String attackDiceLine="";
+		String defenderDiceLine="";
 		ArrayList<Integer> attackDice = dice.rollNDice(numOfAttackDice);
 		ArrayList<Integer> defensiveDice = dice.rollNDice(numOfDefensiveDice);
 
-		System.out.println(attackDice);
-		System.out.println(defensiveDice);
+		for(Integer dice:attackDice)
+			attackDiceLine+=String.valueOf(dice)+",";
+
+		for(Integer dice:defensiveDice)
+			defenderDiceLine+=String.valueOf(dice)+",";
+		
+		
+		gameplay.addToViewLogger(attackDiceLine.substring(0, attackDiceLine.length()-1));
+		gameplay.addToViewLogger(defenderDiceLine.substring(0, defenderDiceLine.length()-1));
 		int defensiveCountryLose = 0;
 		int offensiveCountryLose = 0;
 		for (int i = 0; i < Math.min(defensiveDice.size(), attackDice.size()); i++) {
