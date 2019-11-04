@@ -14,7 +14,9 @@ public class PlayerTest {
     @Before
     public void setup(){
         Scanner sc = new Scanner(System.in);
-        CommandController.parseCommand("loadmap H:\\SOEN_6441\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
+        String fullPath = System.getProperty("user.dir") + "\\Maps\\Valid_Maps\\" + "SmallValidMap.map";
+
+        CommandController.parseCommand("loadmap " + fullPath , sc);
         CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
         CommandController.parseCommand("populatecountries", sc);
         CommandController.parseCommand("showphases", sc);

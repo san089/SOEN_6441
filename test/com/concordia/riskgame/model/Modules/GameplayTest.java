@@ -1,16 +1,12 @@
 package com.concordia.riskgame.model.Modules;
 
 import com.concordia.riskgame.controller.CommandController;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import com.concordia.riskgame.utilities.MapTools;
+import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -18,22 +14,49 @@ import static org.junit.Assert.*;
  * Test class for testing GamePlayer class
  */
 public class GameplayTest {
-    Gameplay gamePlay;
-    PrintStream console = null;
-    ByteArrayOutputStream bytes = null;
+    private Gameplay gamePlay;
+    private PrintStream console = null;
+    private ByteArrayOutputStream bytes = null;
+    private int numberofPlayers;
+    private Queue<Player> playerQueue;
+    private List<String> countries;
+    private ArrayList<Player> players;
+    private Player currentPlayer;
+    private int floorCountryPerPlayer,ceilingCountryperPlayer;
+    private Map gameMap;
+    private MapTools maptools;
     Scanner sc = new Scanner(System.in);
-
-    @BeforeClass
-    public static void classSetup() throws Exception{
-        Scanner sc = new Scanner(System.in);
-        CommandController.parseCommand("loadmap D:\\SOEN_6441\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
-        CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
-    }
 
 
     @Before
     public void setUp() throws Exception {
+        this.gamePlay = null;
+        Scanner sc = new Scanner(System.in);
+        String userDir=System.getProperty("user.dir");
+        CommandController.parseCommand("loadmap "+userDir+"\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
+        CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
         gamePlay = Gameplay.getInstance();
+    }
+
+
+    public void startUpPhaseSetUp() {
+        gamePlay = Gameplay.getInstance();
+        gameMap=new Map();
+        maptools=new MapTools();
+        countries=new ArrayList<String>();
+        players=new ArrayList<Player>();
+        playerQueue=new LinkedList<Player>();
+        numberofPlayers=5;
+        for(int i=0;i<numberofPlayers;i++) {
+            players.add(new Player(i+1,"Player"+(i+1)));
+        }
+        gamePlay.setPlayers(players);
+        maptools.pickMapFileService(gameMap, System.getProperty("user.dir") + "\\Maps\\Valid_Maps\\AtlanticCity.map");
+        gamePlay.setSelectedMap(gameMap);
+        countries=gamePlay.getSelectedMap().listOfCountryNames();
+        gamePlay.setPlayers(players);
+        floorCountryPerPlayer=Math.floorDiv(countries.size(),numberofPlayers);
+        ceilingCountryperPlayer=(int) Math.ceil((double)(countries.size()/(double)numberofPlayers));
     }
 
     @After
@@ -69,6 +92,7 @@ public class GameplayTest {
      */
     @Test
     public void addPlayer() {
+        System.out.println(gamePlay.getCurrentPhase());
         String playerRemoveCommand = "gameplayer -add Haifeng";
         CommandController.parseCommand(playerRemoveCommand, (new Scanner(System.in)));
         List<String> playerNames = new ArrayList<String>();
@@ -141,5 +165,61 @@ public class GameplayTest {
 
     @Test
     public void placeAllArmies() {
+        CommandController.parseCommand("populatecountries", sc);
+        CommandController.parseCommand("showphases", sc);
+        CommandController.parseCommand("placeall", sc);
+        for(Player P : gamePlay.getPlayers()){
+            ArrayList<Country> ownedCountries = gamePlay.getSelectedMap().getOwnedCountries(P.getPlayerName());
+            for(Country C : ownedCountries){
+                System.out.println(C.getCountryName() + " has armies : " + C.getNoOfArmiesPresent());
+                assertTrue(C.getNoOfArmiesPresent() >= 1);
+            }
+        }
+    }
+
+    /**
+     * Initialise players test.
+     */
+    @Test
+    public void initialisePlayersTest() {
+        System.out.println("========================INITIALISE PLAYERS TEST CASE START==============================");
+        gamePlay.initialisePlayers();
+        playerQueue=gamePlay.getPlayerQueue();
+        while(!playerQueue.isEmpty()) {
+            currentPlayer=playerQueue.remove();
+            Assert.assertTrue(currentPlayer.getCountriesOwned().size()==floorCountryPerPlayer||currentPlayer.getCountriesOwned().size()==ceilingCountryperPlayer);
+        }
+        System.out.println("========================INITIALISE PLAYERS TEST CASE END==============================");
+
+    }
+
+    /**
+     * Assign armies test.
+     */
+    @Test
+    public void assignArmiesTest() {
+        this.startUpPhaseSetUp();
+        System.out.println("========================ASSIGN ARMIES TEST CASE START==============================");
+
+        int initialPlayerArmyCount,countryArmyCount = 0,finalPlayerArmyCount = 0;
+        gamePlay.assignStartupArmies();
+        initialPlayerArmyCount=(gamePlay.getPlayers().get(0).getArmyCount())*(gamePlay.getPlayers().size());
+        System.out.println(initialPlayerArmyCount);
+        gamePlay.initialisePlayers();
+        gamePlay.placeAllArmies();
+        for(Player player:gamePlay.getPlayers())
+            finalPlayerArmyCount+=player.getArmyCount();
+        for(Continent continent:gamePlay.getSelectedMap().getContinents())
+            for(Country country:continent.getCountriesPresent()) {
+                countryArmyCount+=country.getNoOfArmiesPresent();
+                Assert.assertTrue(country.getNoOfArmiesPresent()>0);
+            }
+        Assert.assertTrue(countryArmyCount==initialPlayerArmyCount);
+        Assert.assertTrue(finalPlayerArmyCount==0);
+        for(Continent continent:gamePlay.getSelectedMap().getContinents())
+            for(Country country:continent.getCountriesPresent())
+                Assert.assertTrue(country.getNoOfArmiesPresent()>0);
+        System.out.println("========================ASSIGN ARMIES PLAYERS TEST CASE END==============================");
+
     }
 }
