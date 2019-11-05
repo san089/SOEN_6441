@@ -3,6 +3,9 @@ package com.concordia.riskgame.controller;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.rmi.server.ExportException;
+import java.util.Scanner;
+
 import static org.junit.Assert.*;
 
 // TODO: Auto-generated Javadoc
@@ -93,5 +96,16 @@ public class CommandControllerTest {
         assertFalse(CommandController.validateGamePlayerCommand(invalidCommand));
 
         System.out.println("\n========================GAMEPLAYER TEST CASE END==============================\n");
+    }
+
+    @Test
+    public void testHelp(){
+        try {
+            CommandController.parseCommand("help", new Scanner(System.in));
+            assertTrue(true);
+        }
+        catch (Exception e){
+            System.out.println("Some exception occured.");
+        }
     }
 }

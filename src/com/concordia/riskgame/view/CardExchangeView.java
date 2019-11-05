@@ -60,7 +60,7 @@ public class CardExchangeView extends JFrame implements Observer {
      * Constructor
      * @throws IOException
      */
-    private CardExchangeView() throws IOException {
+    public CardExchangeView() throws IOException {
         text1 = String.valueOf(gameplay.getCurrentPlayer().getNumOfInfCard());
         text2 = String.valueOf(gameplay.getCurrentPlayer().getNumOfCavCard());
         text3 = String.valueOf(gameplay.getCurrentPlayer().getNumOfArtCard());
@@ -157,7 +157,7 @@ public class CardExchangeView extends JFrame implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-     //   System.out.println("Card Exchange view observer triggered");
+
         currentPlayer = "Current Player: " + gameplay.getCurrentPlayer().getPlayerName();
         player.setText(currentPlayer);
         text1 = Integer.toString(gameplay.getCurrentPlayer().getNumOfInfCard());
@@ -167,5 +167,13 @@ public class CardExchangeView extends JFrame implements Observer {
         num2.setText(text2);
         num3.setText(text3);
 
+    }
+
+    public void setVisible(boolean b){
+        if (b == false) {
+            cardWindow.setVisible(false);
+        } else {
+            cardWindow.setVisible(true);
+        }
     }
 }

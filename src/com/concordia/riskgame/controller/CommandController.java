@@ -701,6 +701,7 @@ public class CommandController {
                     gameplay.addToViewLogger("You have too many cards, you must exchange");
                     return;
                 } else {
+                    CardExchangeView.getInstance().setVisible(false);
                     gameplay.assignReinforcementArmies();
                     gameplay.addToViewLogger("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies!");
                     return;
@@ -740,10 +741,15 @@ public class CommandController {
                 };
             }
             if (gameplay.getCurrentPlayer().getCardFlag()) {
-                Card newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                gameplay.getCurrentPlayer().resetCardFlag();
-                gameplay.addToViewLogger("You have got a card: " + newCard);
+                if (Card.getNumOfCards() >=42) {
+                    gameplay.addToViewLogger("There is no more cards on the table");
+                    gameplay.getCurrentPlayer().resetCardFlag();
+                } else {
+                    Card newCard = Card.getCard(Card.class);
+                    gameplay.getCurrentPlayer().addNewCard(newCard);
+                    gameplay.getCurrentPlayer().resetCardFlag();
+                    gameplay.addToViewLogger("You have got a card: " + newCard);
+                }
             }
             //check if the top of player is out, if it is, remove it
             while (gameplay.getRemovedPlayer().contains(gameplay.getPlayerQueue().peek())) {
@@ -751,6 +757,7 @@ public class CommandController {
             }
             gameplay.roundRobinPlayer();
             gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+            CardExchangeView.getInstance().setVisible(true);
             gameplay.setCurrentPhase(Phases.Reinforcement);
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
         }catch (Exception e){
@@ -781,13 +788,18 @@ public class CommandController {
         System.out.format("%-20s%-50s%-50s\n", "populatecountries", " ", " command initialize game and assign country to players.");
         System.out.format("%-20s%-50s%-50s\n", "placearmy", "<countryname> ", " command to place army for a player in a country.");
         System.out.format("%-20s%-50s%-50s\n", "placeall", " ", " automatically randomly place all remaining unplaced armies for all players.");
-        System.out.format("%-20s%-50s%-50s\n", "reinforce", "<countryname> <num> ", " until all reinforcements have been placed.");
+        System.out.format("%-20s%-50s%-50s\n", "exchangecards", "<num> <num> <num> ", " specify number of cards to exchange for each card type.");
+        System.out.format("%-20s%-50s%-50s\n", "exchangecards", "[-none] ", " to skip exchange cards.");
+        System.out.format("%-20s%-50s%-50s\n", "reinforce", "<countryname> <num> ", " reinforce number of armies into the given country until reinforce army is 0.");
+        System.out.format("%-20s%-50s%-50s\n", "attack", "<fromcountryname> <tocountryname> <numdice> ", " attack from country to another country.");
+        System.out.format("%-20s%-50s%-50s\n", "attack", "<fromcountryname> <tocountryname> [-allout] ", " attack from country to another country with max dices until conquered or army is 1.");
+        System.out.format("%-20s%-50s%-50s\n", "attack", " [-noattack] ", " skip the attack phase.");
+        System.out.format("%-20s%-50s%-50s\n", "defend", " <num> ", " specify number of dice for the defender.");
+        System.out.format("%-20s%-50s%-50s\n", "attackmove", " <num> ", " If country conquered during attack, move armies to the country won.");
         System.out.format("%-20s%-50s%-50s\n", "fortify", "<fromcountry> <tocountry> <num> ", " command to Fortify country");
         System.out.format("%-20s%-50s%-50s\n", "fortify", "none ", " commad to choose to not do a move");
         System.out.format("%-20s%-50s%-50s\n", "showphases", "none ", " command to show current running phase.");
         System.out.format("%-20s%-50s%-50s\n", "exit", "none ", " command to stop program execution at any point in time.");
-
-
     }
 }
 
