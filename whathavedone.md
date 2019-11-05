@@ -71,3 +71,11 @@ assignReinforcementArmies() method: this method only revoke when one player star
             reinforcementArmyCount = reinforcementArmyCount + currentPlayer.getArmyCount();
             reinforcementArmyCount = Math.max(reinforcementArmyCount, 3);
             currentPlayer.setArmyCount(reinforcementArmyCount);
+
+# Reproduce Issue 
+    loadmap D:\SOEN_6441\Maps\Valid_Maps\2CountryMap.map
+    gameplayer -add Sanchit -add Sucheta
+    populatecountries
+    placeall
+    showmap
+    exchangecards -none
