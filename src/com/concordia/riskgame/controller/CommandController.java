@@ -662,7 +662,10 @@ public class CommandController {
                 if (gameplay.getCurrentPlayer().getArmyCount() <= 0) {
                     gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Attack Phase.");
                     gameplay.setCurrentPhase(Phases.Attack);
-                    gameplay.getCurrentPlayer().checkAvailableAttack();
+                    if(!gameplay.getCurrentPlayer().checkAvailableAttack()){
+                        gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Fortification Phase.");
+                        gameplay.setCurrentPhase(Phases.Reinforcement);
+                    }
                 }
             }else{
                 gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot move to " + Phases.Reinforcement + " phase.");

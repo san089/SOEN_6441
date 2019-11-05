@@ -213,6 +213,9 @@ public class Player extends Observable {
 
 		if ("-allout".equals(commands[3])) {
 			autoAttack();
+            if (isWinner()) {
+                return;
+            }
 			gameplay.triggerObserver("domination");
 			gameplay.triggerObserver("showmap");
 		} else {
@@ -228,6 +231,9 @@ public class Player extends Observable {
 				commandDone = true;
 			}
 			attackOnce();
+            if (isWinner()) {
+                return;
+            }
 			gameplay.triggerObserver("domination");
 			gameplay.triggerObserver("showmap");
 		}
@@ -341,6 +347,10 @@ public class Player extends Observable {
 			toCountry.setOwnedBy(this);
 
 			isPlayerOut();
+            if (isWinner()){
+                gameplay.addToViewLogger("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
+                return true;
+            }
 
 			//Set card flag, give a card at the end of this turn
 			setCardFlag();
@@ -452,18 +462,17 @@ public class Player extends Observable {
 			gameplay.addRemovedPlayer(defensivePlayer);
 			gameplay.getPlayers().remove(defensivePlayer);
 			gameplay.addToViewLogger(defensivePlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
-			isWinner();
-			
 			}
 	}
 
 	/**
 	 * After each player out, check whether the winner player is the final winner. If it is, exit game.
 	 */
-	private void isWinner() {
+	private boolean isWinner() {
 		if (gameplay.getPlayers().size() == 1) {
-			gameplay.addToViewLogger("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
+			return true;
 		}
+		return false;
 	}
 	/**
 	 * When -allout is specified, do auto attack till attack country left only one army or defending country is conquered.
