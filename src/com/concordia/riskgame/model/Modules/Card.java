@@ -13,6 +13,7 @@ public enum Card {
     ARTILLERY("Artillery");
 
     private final String cardType;
+    private static int numOfCards = 0;
     
     /**
      * Instantiates a new card.
@@ -32,7 +33,11 @@ public enum Card {
      * @return one random kind of cards
      */
     public static Card getCard(Class<Card> cardObject) {
+        numOfCards++;
         return cardObject.getEnumConstants()[new Random().nextInt(cardObject.getEnumConstants().length)];
+    }
+    public static int getNumOfCards() {
+        return numOfCards;
     }
 
 }
