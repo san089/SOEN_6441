@@ -317,7 +317,18 @@ public class Gameplay extends Observable {
 	/**
 	 * Assign reinforcement armies.
 	 */
-
+	public void assignReinforcementArmies(){
+		int reinforcementArmyCount = ((currentPlayer.getCountriesOwned().size())/3);
+		for(Continent continent:getSelectedMap().getOwnedContinents(currentPlayer.getPlayerName())) {
+			reinforcementArmyCount = reinforcementArmyCount + continent.getControlValue();
+		}
+		reinforcementArmyCount = reinforcementArmyCount + currentPlayer.getArmyCount();
+		reinforcementArmyCount = Math.max(reinforcementArmyCount, 3);
+		currentPlayer.setArmyCount(reinforcementArmyCount);
+		triggerObserver("domination");
+		triggerObserver("showmap");
+	}
+/*
 	public void assignReinforcementArmies() {
 
 		for(Player player:getPlayers()) {
@@ -330,9 +341,10 @@ public class Gameplay extends Observable {
 		reinforcementArmyCount = Math.max(reinforcementArmyCount, 3);
 		player.setArmyCount(reinforcementArmyCount);
 		triggerObserver("domination");
+		triggerObserver("showmap");
 		}
 	}
-  
+ */
 	  /**
 		 * Place army.
 		 *

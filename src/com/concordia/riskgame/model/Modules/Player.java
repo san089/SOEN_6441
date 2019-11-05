@@ -187,6 +187,7 @@ public class Player extends Observable {
 		setArmyCount(armyCount - reinforcement);
 		int n = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
 		gameplay.getSelectedMap().searchCountry(countryName).setNoOfArmiesPresent(n + reinforcement);
+
 	}
 
 	/**
@@ -511,6 +512,7 @@ public class Player extends Observable {
 		int m = gameMap.searchCountry(commands[2]).getNoOfArmiesPresent() + num;
 		gameMap.searchCountry(commands[2]).setNoOfArmiesPresent(m);
 		gameplay.triggerObserver("domination");
+		gameplay.triggerObserver("showmap");
 		
 		return true;
 	}

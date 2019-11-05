@@ -667,6 +667,7 @@ public class CommandController {
                 gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot move to " + Phases.Reinforcement + " phase.");
             }
             gameplay.triggerObserver("domination");
+            gameplay.triggerObserver("showmap");
         }catch (Exception e){
             gameplay.addToViewLogger("Some exception occurred.");
             showHelpOptions();

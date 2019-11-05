@@ -30,10 +30,7 @@ public class DiceTest {
      */
     @Test
     public void rollNDice() {
-        ArrayList<Integer> result = new ArrayList<>();
-        for (int i = 0; i < n; i++){
-            result.add(r);
-        }
+        ArrayList<Integer> result = randomNo.rollNDice(3);
         int max = Collections.max(result);
         int min = Collections.min(result);
 

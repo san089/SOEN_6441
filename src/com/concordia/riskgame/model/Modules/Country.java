@@ -119,7 +119,7 @@ public class Country extends Observable {
      * @param longitude longitude value
      */
     public void setLongitude(double longitude) {
-        longitude = longitude;
+        this.longitude = longitude;
     }
 
     /**
@@ -135,7 +135,7 @@ public class Country extends Observable {
      * @param latitude latitude value
      */
     public void setLatitude(double latitude) {
-        latitude = latitude;
+        this.latitude = latitude;
     }
 
 
