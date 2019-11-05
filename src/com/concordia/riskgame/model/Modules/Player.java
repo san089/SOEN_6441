@@ -344,6 +344,11 @@ public class Player extends Observable {
 
 			//Set card flag, give a card at the end of this turn
 			setCardFlag();
+
+			if (gameplay.getPlayers().size() == 1){
+				return false;
+			}
+
 			gameplay.addToViewLogger("Input your move command!");
 			gameplay.addToViewLogger("Attack country has " + fromCountry.getNoOfArmiesPresent() + "armies");
 			boolean moveCommandDone = false;
