@@ -149,8 +149,6 @@ public class Player extends Observable {
 		return cardExchangeIndex;
 	}
 
-	private String[] commands;
-	private Gameplay gameplay = Gameplay.getInstance();;
 	public void addCardExchangeNum() {
 		cardExchangeIndex++;
 	}
@@ -161,6 +159,8 @@ public class Player extends Observable {
 	private int numOfDefensiveDice;
 	private Country fromCountry;
 	private Country toCountry;
+	private String[] commands;
+	private Gameplay gameplay = Gameplay.getInstance();;
 	private Map gameMap = gameplay.getSelectedMap();
 	private Player defensivePlayer;
 	private Scanner scanner;
