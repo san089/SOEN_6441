@@ -1,0 +1,7 @@
+[Map]
+author=Sanchit
+[Continents]
+ASIA=6
+[Territories]
+China,0.0,0.0,ASIA,India
+India,0.0,0.0,ASIA,China

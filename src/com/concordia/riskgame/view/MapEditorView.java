@@ -301,8 +301,8 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
     	
 		String[] columnNames = { "Player Name ", "Countries Owned", "Number of Armies", "Continents Owned"};
 		Gameplay gameInstance=Gameplay.getInstance();
-		int rowCount=gameInstance.getSelectedMap().listOfCountryNames().size();
 		List<Player> playerList= gameInstance.getPlayers();
+        int rowCount=gameInstance.getSelectedMap().listOfCountryNames().size() + playerList.size() - 1;
 		Object[][] data = new Object[rowCount][4];
 		int row=0;
 		for(Player player:playerList) {
@@ -323,7 +323,7 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
 			else {	
 			for(Country country:playerOwnedCountryList)
 			{
-			if(playerOwnedCountryList.get(0).equals(country) || playerOwnedCountryList.size()==0)	
+			if(playerOwnedCountryList.get(0).equals(country))
 			{	Object[] rowData= {playerName,country.getCountryName(),country.getNoOfArmiesPresent(),continentsOwned};
 				data[row]=rowData;
 			}

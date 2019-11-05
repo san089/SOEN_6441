@@ -1,16 +1,16 @@
 package com.concordia.riskgame.model.Modules;
 
 import com.concordia.riskgame.controller.CommandController;
+import com.concordia.riskgame.utilities.Phases;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -20,9 +20,11 @@ public class PlayerTest {
     Scanner sc = new Scanner(System.in);
     Gameplay gameplay;
 
+
     @Before
     public void setup(){
         try {
+        gameplay = null;
         CommandController.parseCommand("loadmap "+ mapPath, sc);
         CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
         CommandController.parseCommand("populatecountries", sc);
@@ -34,6 +36,19 @@ public class PlayerTest {
     	}
 
     }
+
+    @Test
+    public void testAsequenceExecution(){
+        getCountriesOwned();
+        reinforceArmy();
+        checkAvailableAttack();
+        attack();
+        fortifyArmy();
+        getNumOfArtCard();
+        getNumOfCavCard();
+        getNumOfInfCard();
+    }
+
 
     @Test
     public void getNumOfInfCard() {
@@ -193,20 +208,90 @@ public class PlayerTest {
 
     @Test
     public void checkAvailableAttack() {
+        try{
+            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("exchangecards -none", sc);
+            gameplay = Gameplay.getInstance();
+            String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(0);
+            int armies = gameplay.getCurrentPlayer().getArmyCount();
+            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies), sc);
+        }
+        catch (Exception e){
+            System.out.println("Some exception occured.");
+        }
+        assertTrue(gameplay.getCurrentPlayer().checkAvailableAttack());
     }
 
     @Test
     public void fortifyArmy() {
-        Scanner sc = new Scanner(System.in);
-        Gameplay gameplay = Gameplay.getInstance();
-        Player p=gameplay.getCurrentPlayer();
-        System.out.println(p.getCountriesOwned()+"@@@@@@@@");
-        Country source =  gameplay.getSelectedMap().searchCountry("Canada");
-        Country destination =  gameplay.getSelectedMap().searchCountry("China");
-        source.setNoOfArmiesPresent(4);
-        destination.setNoOfArmiesPresent(4);
-        p.fortifyArmy("fortify pak canada 2");
-        assertEquals(source.getNoOfArmiesPresent(),4);
-        assertNotEquals(destination.getNoOfArmiesPresent(),3);
+        gameplay = Gameplay.getInstance();
+        try{
+            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("exchangecards -none", sc);
+            gameplay = Gameplay.getInstance();
+            String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(0);
+            int armies = gameplay.getCurrentPlayer().getArmyCount();
+            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies), sc);
+            CommandController.parseCommand("attack -noattack", sc);
+        }
+        catch (Exception e){
+            System.out.println("Some exception occured.");
+        }
+
+
+        Player p = gameplay.getCurrentPlayer();
+        System.out.println(p.getCountriesOwned() + "@@@@@@@@");
+        Country source = gameplay.getSelectedMap().searchCountry(p.getCountriesOwned().get(0));
+        Country destination = null;
+        int sourceArmies = source.getNoOfArmiesPresent();
+        List<String> neighbours = source.getListOfNeighbours();
+        System.out.println("Source country : " + source.getCountryName());
+        System.out.println("Neighbours of source country :" + neighbours);
+        if (neighbours.isEmpty()) {
+            try {
+                CommandController.parseCommand("fortify -none", sc);
+            } catch (Exception e) {
+                System.out.println("Fortify -none. Some exception occured");
+            }
+            assertEquals(source.getNoOfArmiesPresent(), sourceArmies);
+        } else {
+            for (String c : neighbours) {
+                if(p.getCountriesOwned().contains(c)) {
+                    destination = gameplay.getSelectedMap().searchCountry(c);
+                    if(destination.getCountryName().equals(source.getCountryName())){
+                        destination = null;
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        try {
+            if(destination == null){
+                CommandController.parseCommand("fortify -none", sc);
+                System.out.println("Destination is null. fortify -none. Some exception occured");
+                assertEquals(gameplay.getSelectedMap().searchCountry(source.getCountryName()).getNoOfArmiesPresent(), sourceArmies);
+                return;
+            }
+            int destinationArmies = destination.getNoOfArmiesPresent();
+            System.out.println("Source Country : " + source.getCountryName() + " armies before : " + source.getNoOfArmiesPresent());
+            System.out.println("Destination country : " + destination.getCountryName()+ " armies before : " + destination.getNoOfArmiesPresent());
+
+            String forifyCommand = "fortify " + source.getCountryName() + " " + destination.getCountryName() + " " + (sourceArmies - 1);
+            System.out.println("fortify command : " + forifyCommand);
+            CommandController.parseCommand(forifyCommand, sc);
+
+            System.out.println("Source Armies after : " +  gameplay.getSelectedMap().searchCountry(source.getCountryName()).getNoOfArmiesPresent());
+            System.out.println("Destination Armies After : " + gameplay.getSelectedMap().searchCountry(destination.getCountryName()).getNoOfArmiesPresent());
+            assertTrue(source.getNoOfArmiesPresent() == 1 || source.getNoOfArmiesPresent() == sourceArmies);
+            assertTrue(destination.getNoOfArmiesPresent() == 1 || destination.getNoOfArmiesPresent() == destinationArmies);
+        } catch (Exception e) {
+            System.out.println("Some exception occured.");
+        }
+
+
     }
 }
