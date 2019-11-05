@@ -352,7 +352,7 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		//System.out.println(arg1.toString());
+		
 		if(arg1.toString().contains("showmap")) {
 		if(playerScrollPane!=null) {
 		remove(playerScrollPane);
@@ -363,6 +363,8 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
 		}
     	
 	}
+
+	
 
     
 }

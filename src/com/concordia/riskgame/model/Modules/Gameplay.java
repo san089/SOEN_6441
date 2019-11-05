@@ -374,6 +374,7 @@ public class Gameplay extends Observable {
 			 * if(displayArmy) displayArmyDistribution();
 			 */
 			triggerObserver("domination");
+			triggerObserver("showmap");
 			return true;
 		}
 
@@ -444,6 +445,7 @@ public class Gameplay extends Observable {
 
 		displayArmyDistribution();
 		triggerObserver("domination");
+		triggerObserver("showmap");
 
 	}
 

@@ -74,6 +74,7 @@ public class StartUpPhaseView extends JFrame  {
 		this.gamePlay = Gameplay.getInstance();
 		gamePlay.setCurrentPhase(Phases.Startup);
 		initaliseUI();
+		new PhaseView();
 
 	}
 

@@ -157,7 +157,7 @@ public class CardExchangeView extends JFrame implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-        System.out.println("Card Exchange view observer triggered");
+     //   System.out.println("Card Exchange view observer triggered");
         currentPlayer = "Current Player: " + gameplay.getCurrentPlayer().getPlayerName();
         player.setText(currentPlayer);
         text1 = Integer.toString(gameplay.getCurrentPlayer().getNumOfInfCard());

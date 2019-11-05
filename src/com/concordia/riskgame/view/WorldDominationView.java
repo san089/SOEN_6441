@@ -64,13 +64,10 @@ public class WorldDominationView extends JFrame implements Observer {
 		
 		dominationViewLabel=new JLabel("World Domination View");
 		dominationViewLabel.setFont(new Font("dialog", 1, 15));
-//		dominationViewLabel.setBounds((commonViewFrame.getSize().width-200)/2,((commonViewFrame.getHeight())/2)-10,dominationViewLabel.getPreferredSize().width+500, dominationViewLabel.getPreferredSize().height);
 		dominationViewLabel.setSize(dominationViewLabel.getPreferredSize());
 		dominationViewLabel.setLocation((viewLabelPanel.getSize().width-200)/2,((viewLabelPanel.getHeight())/4)-2);
 		dominationViewLabel.setVisible(true);
 		viewLabelPanel.add(dominationViewLabel);
-//		commonViewFrame.add(dominationViewLabel);
-//		viewLabelPanel.setOpaque(false);
 		viewLabelPanel.repaint();
 		
 		
@@ -96,7 +93,7 @@ public class WorldDominationView extends JFrame implements Observer {
 	    	
 			String[] columnNames = { "Player Name ", "Percentage Of Map Owned", "Number of Armies Owned", "Continents Owned"};
 			Object[][] data = new Object[rowCount][4];
-			float countryCount=gameMap.listOfCountryNames().size();			
+			float countryCount=(gameMap==null)?0:gameMap.listOfCountryNames().size();			
 			int row=0;
 			for(Player player:playerList) {
 				
@@ -118,9 +115,11 @@ public class WorldDominationView extends JFrame implements Observer {
 			table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 			table.setFillsViewportHeight(true);
 			table.setEnabled(false);
+		//	table.setAutoscrolls(true);
 
 	//Create the scroll pane and add the table to it.
-			JScrollPane scrollPane = new JScrollPane(table);
+			JScrollPane scrollPane = new JScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			
 
 	//Add the scroll pane to this panel.
 			return (scrollPane);
@@ -131,9 +130,10 @@ public class WorldDominationView extends JFrame implements Observer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
-//		System.out.println("Observer triggered by " + o.getClass().getName());
+
 		if(arg.toString().contains("domination")) {
 		try {
+			
 			Field playerField = o.getClass().getDeclaredField("players");
 			playerField.setAccessible(true);
 			Field mapField = o.getClass().getDeclaredField("selectedMap");
@@ -144,7 +144,7 @@ public class WorldDominationView extends JFrame implements Observer {
 			commonViewFrame.remove(playerScrollPane);
 			initUI();
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		}

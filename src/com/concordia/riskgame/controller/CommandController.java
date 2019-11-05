@@ -619,9 +619,10 @@ public class CommandController {
         //start round robin play
         gameplay.roundRobinPlayer();
         gameplay.addObserver(CardExchangeView.getInstance());
-        gameplay.triggerObserver("domination");
         gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase." +
                 "Please exchange cards first or exchange none");
+        gameplay.triggerObserver("domination");
+        
     }
 
 

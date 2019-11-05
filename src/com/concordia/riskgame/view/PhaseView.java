@@ -65,7 +65,7 @@ public class PhaseView extends JFrame implements Observer{
 		commonViewFrame.setLayout(null);
 		commonViewFrame.setVisible(true);
 		commonViewFrame.setAlwaysOnTop(true);
-
+		commonViewFrame.isResizable();
 		   	
     	JPanel phaseLabelViewPanel = new JPanel();
         phaseLabelViewPanel.setBounds(10, 15, commonViewFrame.getSize().width - 40, 25);
@@ -196,8 +196,6 @@ public class PhaseView extends JFrame implements Observer{
 			Field loggerField = o.getClass().getDeclaredField("viewLogger");
 			loggerField.setAccessible(true);
 			this.loggerList = ((ArrayList<String>) (loggerField.get(o)));
-		//	viewLogger="";
-		//	Arrays.stream(loggerList.toArray()).forEach(i ->viewLogger=viewLogger+i+"\r\n" );
 			this.loggerText.setText(this.loggerText.getText()+"\r\n"+this.loggerList.get(loggerList.size()-1));
 			}
 			catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
