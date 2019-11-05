@@ -700,6 +700,7 @@ public class CommandController {
                     gameplay.addToViewLogger("You have too many cards, you must exchange");
                     return;
                 } else {
+                    CardExchangeView.getInstance().setVisible(false);
                     gameplay.assignReinforcementArmies();
                     gameplay.addToViewLogger("You still have " + gameplay.getCurrentPlayer().getArmyCount() + " armies!");
                     return;
@@ -739,10 +740,15 @@ public class CommandController {
                 };
             }
             if (gameplay.getCurrentPlayer().getCardFlag()) {
-                Card newCard = Card.getCard(Card.class);
-                gameplay.getCurrentPlayer().addNewCard(newCard);
-                gameplay.getCurrentPlayer().resetCardFlag();
-                gameplay.addToViewLogger("You have got a card: " + newCard);
+                if (Card.getNumOfCards() >=42) {
+                    gameplay.addToViewLogger("There is no more cards on the table");
+                    gameplay.getCurrentPlayer().resetCardFlag();
+                } else {
+                    Card newCard = Card.getCard(Card.class);
+                    gameplay.getCurrentPlayer().addNewCard(newCard);
+                    gameplay.getCurrentPlayer().resetCardFlag();
+                    gameplay.addToViewLogger("You have got a card: " + newCard);
+                }
             }
             //check if the top of player is out, if it is, remove it
             while (gameplay.getRemovedPlayer().contains(gameplay.getPlayerQueue().peek())) {
@@ -750,6 +756,7 @@ public class CommandController {
             }
             gameplay.roundRobinPlayer();
             gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
+            CardExchangeView.getInstance().setVisible(true);
             gameplay.setCurrentPhase(Phases.Reinforcement);
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
         }catch (Exception e){
