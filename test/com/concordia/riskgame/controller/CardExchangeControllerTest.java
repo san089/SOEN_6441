@@ -5,59 +5,71 @@ import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Player;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CardExchangeControllerTest {
 
-    private Gameplay gameplay;
-    private Player currentPlayer;
-    private int num1, num2, num3;
-    private int cardExchangeIndex;
+    String path = System.getProperty("user.dir");
+    String mapPath = path + "\\Maps\\Valid_Maps\\SmallValidMap.map";
+    Scanner sc = new Scanner(System.in);
+    Gameplay gameplay;
+    CardExchangeController cc = new CardExchangeController();
 
     @Before
     public void setUp() {
-        gameplay = Gameplay.getInstance();
-        currentPlayer = gameplay.getCurrentPlayer();
-        cardExchangeIndex++;
-        num1 = 0;
-        num2 = 0;
-        num3 = 0;
+        try {
+            CommandController.parseCommand("loadmap "+ mapPath, sc);
+            CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
+            CommandController.parseCommand("populatecountries", sc);
+            CommandController.parseCommand("showphases", sc);
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Exception while parsing commands");
+        }
 
     }
 
     @Test
     public void exchange() {
-        int currentPlayerIndex = 1;
-        int currentPlayerArmies = 2;
-        int reinforcement = cardExchangeIndex * 5;
-        int armyCount = (currentPlayerArmies + reinforcement);
-        Assert.assertEquals(7, armyCount);
-        for (int i = 0; i < num1; i++) {
-            assertTrue(currentPlayer.getCardsOwned().remove(Card.INFANTRY));
+        try {
+            CommandController.parseCommand("placeall", sc);
+            gameplay = Gameplay.getInstance();
+            gameplay.getCurrentPlayer().setCardsOwned(new ArrayList<>(Arrays.asList(Card.CAVALRY,Card.CAVALRY, Card.CAVALRY)));
+            cc.checkInput("0","3","0");
+            CommandController.parseCommand("exchangecards 0 3 0", sc);
         }
-        for (int i = 0; i < num2; i++) {
-            assertTrue(currentPlayer.getCardsOwned().remove(Card.CAVALRY));
+        catch (Exception e){
+            System.out.println("Exception while parsing commands.");
         }
-        for (int i = 0; i < num3; i++) {
-            assertTrue(currentPlayer.getCardsOwned().remove(Card.ARTILLERY));
-        }
+        assertTrue(gameplay.getCurrentPlayer().getArmyCount() >= 5);
 
     }
+
 
     @Test
     public void checkInput() {
-        for (int i = 0; i < num3; i++) {
-            assertTrue(currentPlayer.getCardsOwned().contains(Card.ARTILLERY));
-            assertTrue(currentPlayer.getCardsOwned().remove(Card.CAVALRY));
-            assertTrue(currentPlayer.getCardsOwned().remove(Card.INFANTRY));
+        try {
+            CommandController.parseCommand("placeall", sc);
+            gameplay = Gameplay.getInstance();
+            gameplay.getCurrentPlayer().setCardsOwned(new ArrayList<>(Arrays.asList(Card.CAVALRY,Card.CAVALRY, Card.CAVALRY)));
+            cc.num1 = 0;
+            cc.num2 = 3;
+            cc.num3 = 0;
+            assertFalse(cc.checkInput("0","4","0"));
         }
-
+        catch (Exception e){
+            System.out.println("Exception while parsing commands.");
+        }
     }
 
-    @Test
-    public void verifyNumber() {
 
-    }
 }

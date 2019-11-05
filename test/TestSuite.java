@@ -5,7 +5,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-		com.concordia.riskgame.controller.CardExchangeController.class,
+		com.concordia.riskgame.controller.CardExchangeControllerTest.class,
 		com.concordia.riskgame.controller.CommandControllerTest.class,
 		com.concordia.riskgame.controller.StartupPhaseControllerTest.class,
 

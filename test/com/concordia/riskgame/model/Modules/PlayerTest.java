@@ -4,6 +4,9 @@ import com.concordia.riskgame.controller.CommandController;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +22,6 @@ public class PlayerTest {
 
     @Before
     public void setup(){
-        Scanner sc = new Scanner(System.in);
         try {
         CommandController.parseCommand("loadmap "+ mapPath, sc);
         CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
@@ -119,21 +121,74 @@ public class PlayerTest {
 
     @Test
     public void reinforceArmy() {
+        try{
+            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("exchangecards -none", sc);
+            gameplay = Gameplay.getInstance();
+            String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(0);
+            int initialArmies = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
+            int armies = gameplay.getCurrentPlayer().getArmyCount();
+            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies), sc);
+            int armiesAfterReinforce = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
+            assertTrue(initialArmies + armies == armiesAfterReinforce);
+        }
+        catch (Exception e){
+            System.out.println("Some exception occured.");
+        }
     }
 
     @Test
     public void attack() {
-        Scanner sc = new Scanner(System.in);
-        Gameplay gameplay = Gameplay.getInstance();
-        Player p=gameplay.getCurrentPlayer();
-        System.out.println(p.getCountriesOwned()+"@@@@@@@@");
-        Country source =  gameplay.getSelectedMap().searchCountry( p.getCountriesOwned().get(0));
-        Country destination =  gameplay.getSelectedMap().searchCountry( p.getCountriesOwned().get(1));
-        source.setNoOfArmiesPresent(4);
-        destination.setNoOfArmiesPresent(4);
-        p.attack("attack "+ p.getCountriesOwned().get(0)+" "+ p.getCountriesOwned().get(1)+" 1",sc);
-        assertEquals(source.getNoOfArmiesPresent(),4);
-        assertEquals(destination.getNoOfArmiesPresent(),4);
+        try{
+            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("exchangecards -none", sc);
+            gameplay = Gameplay.getInstance();
+            String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(0);
+            int armies = gameplay.getCurrentPlayer().getArmyCount();
+            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies), sc);
+        }
+        catch (Exception e){
+            System.out.println("Some exception occured.");
+        }
+
+        boolean attackAvailable = false;
+        Country country = new Country();
+        String neighbor = "";
+        gameplay = Gameplay.getInstance();
+        for (String countryName : gameplay.getCurrentPlayer().getCountriesOwned()) {
+            country = gameplay.getSelectedMap().searchCountry(countryName);
+            if (country.getNoOfArmiesPresent() != 1) {
+                for (String neighbor1 : country.getListOfNeighbours()) {
+                    if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor1)) {
+                        Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor1);
+                        gameplay.addToViewLogger(countryName + " " + country.getNoOfArmiesPresent() + " → " + neighbor1 + " " + neighborCountry.getNoOfArmiesPresent());
+                        neighbor = neighbor1;
+                        attackAvailable = true;
+                        break;
+                    }
+                }
+                if(attackAvailable == true){
+                    break;
+                }
+            }
+        }
+        try {
+            Player currentPlayer = gameplay.getCurrentPlayer();
+            country.setNoOfArmiesPresent(1);
+            String attackerCountry = country.getCountryName();
+            System.out.println("Neighbour is : " + neighbor);
+            System.out.println(gameplay.getSelectedMap().searchCountry(neighbor).getCountryName());
+            CommandController.parseCommand("attack " + attackerCountry + ". " + neighbor + " -allout", sc);
+            int attackerArmyLeft = gameplay.getSelectedMap().searchCountry(attackerCountry).getNoOfArmiesPresent();
+            int defenderArmyLeft = gameplay.getSelectedMap().searchCountry(neighbor).getNoOfArmiesPresent();
+            System.out.println(attackerArmyLeft);
+            System.out.println(defenderArmyLeft);
+            assertTrue(attackerArmyLeft == 1 || defenderArmyLeft <=1);
+        }
+        catch (Exception e){
+            System.out.println("Some exception occured");
+        }
+
     }
 
     @Test
