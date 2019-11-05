@@ -1,5 +1,5 @@
 /*
- *
+ * 
  */
 package com.concordia.riskgame.model.Modules;
 
@@ -18,17 +18,17 @@ import java.util.logging.Logger;
  * The Class Player.
  */
 public class Player extends Observable {
-
+	
 	private static final int COUNTRY_DIVISION_FACTOR=9;
-
+	
 	private  int playerIndex;
-
+	
 	private String playerName;
-
+	
 	private ArrayList<String> countriesOwned;
-
+	
 	private ArrayList<Card> cardsOwned;
-
+	
 	private int armyCount;
 
 	private boolean cardFlag;
@@ -82,7 +82,7 @@ public class Player extends Observable {
 		}
 		return n;
 	}
-
+	
 	public void setPlayerIndex(int playerIndex) {
 		this.playerIndex = playerIndex;
 	}
@@ -92,9 +92,9 @@ public class Player extends Observable {
 		this.playerName = playerName;
 	}
 
-
+	
 	public void setCountriesOwned(String country) {
-		this.countriesOwned.add(country);
+		this.countriesOwned.add(country); 
 	}
 
 	public void setCardsOwned(ArrayList<Card> cardsOwned) {
@@ -112,12 +112,12 @@ public class Player extends Observable {
 	public int getPlayerIndex() {
 		return playerIndex;
 	}
-
+	
 	public String getPlayerName() {
 		return playerName;
 	}
-
-
+	
+	
 	public ArrayList<String> getCountriesOwned() {
 		return countriesOwned;
 	}
@@ -129,7 +129,7 @@ public class Player extends Observable {
 		cardsOwned.add(card);
 	}
 
-
+	
 	public int getArmyCount() {
 		return armyCount;
 	}
@@ -213,9 +213,9 @@ public class Player extends Observable {
 
 		if ("-allout".equals(commands[3])) {
 			autoAttack();
-			if (isWinner()) {
-				return;
-			}
+            if (isWinner()) {
+                return;
+            }
 			gameplay.triggerObserver("domination");
 			gameplay.triggerObserver("showmap");
 		} else {
@@ -231,9 +231,9 @@ public class Player extends Observable {
 				commandDone = true;
 			}
 			attackOnce();
-			if (isWinner()) {
-				return;
-			}
+            if (isWinner()) {
+                return;
+            }
 			gameplay.triggerObserver("domination");
 			gameplay.triggerObserver("showmap");
 		}
@@ -242,7 +242,7 @@ public class Player extends Observable {
 			gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
 			gameplay.setCurrentPhase(Phases.Fortification);
 		}
-
+		
 	}
 
 	/**
@@ -312,8 +312,8 @@ public class Player extends Observable {
 
 		for(Integer dice:defensiveDice)
 			defenderDiceLine+=String.valueOf(dice)+",";
-
-
+		
+		
 		gameplay.addToViewLogger(attackDiceLine.substring(0, attackDiceLine.length()-1));
 		gameplay.addToViewLogger(defenderDiceLine.substring(0, defenderDiceLine.length()-1));
 		int defensiveCountryLose = 0;
@@ -347,10 +347,10 @@ public class Player extends Observable {
 			toCountry.setOwnedBy(this);
 
 			isPlayerOut();
-			if (isWinner()){
-				gameplay.addToViewLogger("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
-				return true;
-			}
+            if (isWinner()){
+                gameplay.addToViewLogger("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
+                return true;
+            }
 
 			//Set card flag, give a card at the end of this turn
 			setCardFlag();
@@ -367,7 +367,7 @@ public class Player extends Observable {
 				moveCommandDone = true;
 				moveArmies = Integer.parseInt(moveCommands[1]);
 			}
-
+			
 			fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - moveArmies);
 			toCountry.setNoOfArmiesPresent(moveArmies);
 
@@ -462,7 +462,7 @@ public class Player extends Observable {
 			gameplay.addRemovedPlayer(defensivePlayer);
 			gameplay.getPlayers().remove(defensivePlayer);
 			gameplay.addToViewLogger(defensivePlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
-		}
+			}
 	}
 
 	/**
@@ -489,13 +489,13 @@ public class Player extends Observable {
 			} else {
 				numOfDefensiveDice = toCountry.getNoOfArmiesPresent();
 			}
-
+			
 			if (attackOnce()){
 				break;
 			}
 		}
-
-
+	
+		
 	}
 
 	public boolean fortifyArmy(String command) {
@@ -522,10 +522,10 @@ public class Player extends Observable {
 		gameMap.searchCountry(commands[2]).setNoOfArmiesPresent(m);
 		gameplay.triggerObserver("domination");
 		gameplay.triggerObserver("showmap");
-
+		
 		return true;
 	}
-
-
+	
+	
 
 }
