@@ -4,18 +4,24 @@ import com.concordia.riskgame.controller.CommandController;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
 public class PlayerTest {
+    String path = System.getProperty("user.dir");
+    String mapPath = path + "\\Maps\\Valid_Maps\\SmallValidMap.map";
+    Scanner sc = new Scanner(System.in);
+    Gameplay gameplay;
 
     @Before
     public void setup(){
         Scanner sc = new Scanner(System.in);
         try {
-        CommandController.parseCommand("loadmap H:\\SOEN_6441\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
+        CommandController.parseCommand("loadmap "+ mapPath, sc);
         CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
         CommandController.parseCommand("populatecountries", sc);
         CommandController.parseCommand("showphases", sc);
@@ -29,7 +35,21 @@ public class PlayerTest {
 
     @Test
     public void getNumOfInfCard() {
-
+        try {
+            CommandController.parseCommand("placeall", sc);
+        }
+        catch (Exception e){
+            System.out.println("Exception while parsing commands.");
+        }
+        Gameplay gameplay = Gameplay.getInstance();
+        gameplay.getCurrentPlayer().setCardsOwned(new ArrayList<>(Arrays.asList(Card.INFANTRY,Card.INFANTRY)));
+        int count = 0;
+        for(Card c : gameplay.getCurrentPlayer().getCardsOwned()){
+            if(c.equals(Card.INFANTRY)){
+                count++;
+            }
+        }
+        assertEquals(gameplay.getCurrentPlayer().getNumOfInfCard(), 2);
     }
 
 
@@ -61,10 +81,40 @@ public class PlayerTest {
 
     @Test
     public void getNumOfCavCard() {
+        try {
+            CommandController.parseCommand("placeall", sc);
+        }
+        catch (Exception e){
+            System.out.println("Exception while parsing commands.");
+        }
+        Gameplay gameplay = Gameplay.getInstance();
+        gameplay.getCurrentPlayer().setCardsOwned(new ArrayList<>(Arrays.asList(Card.CAVALRY,Card.CAVALRY, Card.CAVALRY)));
+        int count = 0;
+        for(Card c : gameplay.getCurrentPlayer().getCardsOwned()){
+            if(c.equals(Card.CAVALRY)){
+                count++;
+            }
+        }
+        assertEquals(gameplay.getCurrentPlayer().getNumOfCavCard(), 3);
     }
 
     @Test
     public void getNumOfArtCard() {
+        try {
+            CommandController.parseCommand("placeall", sc);
+        }
+        catch (Exception e){
+            System.out.println("Exception while parsing commands.");
+        }
+        Gameplay gameplay = Gameplay.getInstance();
+        gameplay.getCurrentPlayer().setCardsOwned(new ArrayList<>(Arrays.asList(Card.ARTILLERY)));
+        int count = 0;
+        for(Card c : gameplay.getCurrentPlayer().getCardsOwned()){
+            if(c.equals(Card.ARTILLERY)){
+                count++;
+            }
+        }
+        assertEquals(1, gameplay.getCurrentPlayer().getNumOfArtCard());
     }
 
     @Test
