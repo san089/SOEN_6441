@@ -42,6 +42,8 @@ public class CommandController {
      * This method takes command as input and calls respective methods corresponding to the command and executes the method.
      *
      * @param command takes command input from user
+     * @param sc a Scanner object to take input
+     * @throws IOException throws an exception if input is invalid.
      */
     public static void parseCommand(String command, Scanner sc) throws IOException {
         command = command.trim().replaceAll(" +", " "); //replace multiple whitespaces with one.
@@ -185,32 +187,35 @@ public class CommandController {
      * @param command Command to execute
      */
     public static void editContinent(String command) {
-        if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
-            return;
-        }
-        if (validateEditContinentCommand(command)) {
-            for (String Key : addContinent.keySet()) {
-               mapEditor.addContinentService(Key,addContinent.get(Key),false);//Add continent functiono call.
+        try {
+            if (gameplay.getCurrentPhase() != Phases.MapEditor) {
+                gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+                return;
             }
-            for (String val : removeContinent) {
-            	mapEditor.removeContinentService(val,false);//Add continent functiono call.
-                 //Remove continent function call.
+            if (validateEditContinentCommand(command)) {
+                for (String Key : addContinent.keySet()) {
+                    mapEditor.addContinentService(Key, addContinent.get(Key), false);//Add continent functiono call.
+                }
+                for (String val : removeContinent) {
+                    mapEditor.removeContinentService(val, false);//Add continent functiono call.
+                    //Remove continent function call.
+                }
+            } else {
+                invalidCommandMessage();
             }
-        } else {
-            invalidCommandMessage();
+        } catch (Exception e) {
+            System.out.println("Some exception occured.");
         }
     }
-
     /**
      * This method reads editcontinent command, validates the command and add continent to add or remove to list.
      *
      * @param command Command to validate
      * @return True if the command is valid, else false.
      *
-     * @exception Exception when the command entered is invalid.
+     * @throws  IOException when the command entered is invalid.
      */
-    public static boolean validateEditContinentCommand(String command) {
+    public static boolean validateEditContinentCommand(String command) throws IOException {
 
         addContinent.clear();
         removeContinent.clear();
@@ -251,20 +256,26 @@ public class CommandController {
      * @param command command to execute
      */
     public static void editCountry(String command) {
-        if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
-            return;
-        }
-        if (validateEditCountryCommand(command)) {
-            for (String countryName : addCountry.keySet()) {
-            	mapEditor.addCountriesService(addCountry.get(countryName), countryName,false);
+        try {
+            if(gameplay.getCurrentPhase() != Phases.MapEditor){
+                gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+                return;
             }
-            for (String countryName : removeCountry) {
-            	mapEditor.removeCountryService(new Continent(), countryName,false);
-             }
-        } else {
-            invalidCommandMessage();
+            if (validateEditCountryCommand(command)) {
+                for (String countryName : addCountry.keySet()) {
+                    mapEditor.addCountriesService(addCountry.get(countryName), countryName,false);
+                }
+                for (String countryName : removeCountry) {
+                    mapEditor.removeCountryService(new Continent(), countryName,false);
+                }
+            } else {
+                invalidCommandMessage();
+            }
         }
+        catch (Exception e){
+            System.out.println("Some exception occured.");
+        }
+
     }
 
     /**
@@ -273,9 +284,9 @@ public class CommandController {
      * @param command Command to validate
      * @return True if the command is valid, else false.
      *
-     * @exception Exception when the command entered is invalid.
+     * @throws  IOException when the command entered is invalid.
      */
-    public static boolean validateEditCountryCommand(String command) {
+    public static boolean validateEditCountryCommand(String command) throws  IOException{
         addContinent.clear();
         removeCountry.clear();
         addCountry.clear();
@@ -317,24 +328,27 @@ public class CommandController {
      * @param command command to execute
      */
     public static void editNeighbour(String command) {
-        if(gameplay.getCurrentPhase() != Phases.MapEditor){
-            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
-            return;
-        }
-        if (validateEditNeighbourCommand(command)) {
-            for (String countryName : addNeighbour.keySet()) {
-                String neighbourName = addNeighbour.get(countryName);
-                mapEditor.addNeighbourService(countryName,neighbourName);
+        try {
+            if (gameplay.getCurrentPhase() != Phases.MapEditor) {
+                gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+                return;
             }
-            for (String countryName : removeNeighbour.keySet()) {
-                String neighbourName = removeNeighbour.get(countryName);
-                mapEditor.removeNeighbourService(countryName,neighbourName);
+            if (validateEditNeighbourCommand(command)) {
+                for (String countryName : addNeighbour.keySet()) {
+                    String neighbourName = addNeighbour.get(countryName);
+                    mapEditor.addNeighbourService(countryName, neighbourName);
+                }
+                for (String countryName : removeNeighbour.keySet()) {
+                    String neighbourName = removeNeighbour.get(countryName);
+                    mapEditor.removeNeighbourService(countryName, neighbourName);
+                }
+            } else {
+                invalidCommandMessage();
             }
-        } else {
-            invalidCommandMessage();
+        } catch (Exception e) {
+            System.out.println("Some exception Occured.");
         }
     }
-
 
     /**
      * This method reads editneighbour command, validates the command and add neighbour to add or remove to list.
@@ -342,9 +356,9 @@ public class CommandController {
      * @param command Command to validate
      * @return True if the command is valid, else false.
      *
-     * @exception Exception when the command entered is invalid.
+     * @throws  IOException when the command entered is invalid.
      */
-    public static boolean validateEditNeighbourCommand(String command) {
+    public static boolean validateEditNeighbourCommand(String command) throws IOException{
         addNeighbour.clear();
         removeNeighbour.clear();
 
@@ -380,17 +394,23 @@ public class CommandController {
      * This method reads gameplayer command, validates the command and add or remove player.
      *
      * @param command Command to validate
-     * @return True if the command is valid, else false.
+     *
      */
     public static void gamePlayer(String command) {
-        if(gameplay.getCurrentPhase() != Phases.Startup){
-            gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
-            return;
+        try {
+
+            if(gameplay.getCurrentPhase() != Phases.Startup){
+                gameplay.addToViewLogger("Current Phase is " + gameplay.getCurrentPhase() + ". Cannot perform action");
+                return;
+            }
+            if (validateGamePlayerCommand(command)) {
+                gameplay.addToViewLogger("");
+            } else {
+                invalidCommandMessage();
+            }
         }
-        if (validateGamePlayerCommand(command)) {
-            gameplay.addToViewLogger("");
-        } else {
-            invalidCommandMessage();
+        catch (Exception e){
+            System.out.println("Some exception occured.");
         }
     }
 
@@ -417,9 +437,9 @@ public class CommandController {
      * @param command Command to validate
      * @return True if the command is valid, else false.
      *
-     * @exception Exception when the command entered is invalid.
+     * @throws  IOException when the command entered is invalid.
      */
-    public static boolean validateGamePlayerCommand(String command) {
+    public static boolean validateGamePlayerCommand(String command) throws IOException {
         String[] args = command.split(" ");
         String arg_type;
         String value1;
@@ -545,7 +565,7 @@ public class CommandController {
      *
      * @param command the command
      *
-     * @exception Exception if the number entered by the user is not valid.
+     * @throws  IOException if the number entered by the user is not valid.
      */
     public static void placeArmy(String command) throws IOException {
     	Scanner in=new Scanner(System.in);   
@@ -603,6 +623,8 @@ public class CommandController {
 
     /**
      * Place the armies in round robin fashion for all players.
+     *
+     * @throws IOException throws an exception if input is invalid.
      */
     public static void placeAll() throws IOException {
     	gameplay.placeAllArmies();
@@ -631,9 +653,9 @@ public class CommandController {
      *
      * @param command the command
      *
-     * @exception Exception when the input is not valid.
+     * @throws  IOException when the input is not valid.
      */
-    public static void reinforce(String command)
+    public static void reinforce(String command) throws IOException
     {
         try {
             if(gameplay.getCurrentPhase() == Phases.Reinforcement){
@@ -728,9 +750,9 @@ public class CommandController {
      * Fortify army from one country to another.
      *
      * @param command the command
-     * @exception Exception when error placing army.
+     * @throws  IOException when error placing army.
      */
-    public static void fortify(String command)
+    public static void fortify(String command) throws IOException
     {
         if (gameplay.getCurrentPhase() != Phases.Fortification) {
             gameplay.addToViewLogger("Now is " + gameplay.getCurrentPhase() + " phase, cannot do fortification");

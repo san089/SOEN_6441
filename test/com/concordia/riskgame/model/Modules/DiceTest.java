@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-// TODO: Auto-generated Javadoc
+
+/**
+ * A test class to test Dice Module.
+ */
 public class DiceTest {
     private Dice randomNo;
     private int r;

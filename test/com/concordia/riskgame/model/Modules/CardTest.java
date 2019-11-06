@@ -16,6 +16,9 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
+/**
+ * A test class to test Card Module.
+ */
 public class CardTest {
 
     @Test

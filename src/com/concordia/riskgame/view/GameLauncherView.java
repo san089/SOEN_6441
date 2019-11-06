@@ -52,6 +52,8 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	
 	/**
 	 * Instantiates a new game launcher view.
+	 *
+	 * @throws IOException throws an invalid input exceptions.
 	 */
 	public GameLauncherView() throws IOException {
 		JFrame.setDefaultLookAndFeelDecorated(true);
@@ -179,6 +181,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 	 * The main method.
 	 *
 	 * @param args the arguments
+	 * @throws IOException throws an invalid input exception.
 	 */
 	public static void main(String args[]) throws IOException {
 		new GameLauncherView();

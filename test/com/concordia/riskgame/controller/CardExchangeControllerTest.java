@@ -26,6 +26,9 @@ import java.util.Scanner;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * A Test class to test Card Exchange Controller.
+ */
 public class CardExchangeControllerTest {
 
     String path = System.getProperty("user.dir");

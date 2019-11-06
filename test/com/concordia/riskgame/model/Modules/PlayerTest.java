@@ -26,6 +26,9 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * A test class to test Gameplay module
+ */
 public class PlayerTest {
     String path = System.getProperty("user.dir");
     String mapPath = path + "\\Maps\\Valid_Maps\\SmallValidMap.map";

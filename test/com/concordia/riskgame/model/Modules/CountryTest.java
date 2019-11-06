@@ -24,6 +24,9 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * A test class to test Country Module.
+ */
 public class CountryTest {
     Country country;
 

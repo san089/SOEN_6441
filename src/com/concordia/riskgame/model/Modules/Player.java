@@ -174,8 +174,7 @@ public class Player extends Observable {
 
 	/**
 	 * Reinforce army to one country, parse country and number from command, then do move.
-	 * @param command
-	 * @return Add number of army to corresponding armies.
+	 * @param command command to reinforce.
 	 */
 
 	public void reinforceArmy(String command) {
@@ -199,8 +198,8 @@ public class Player extends Observable {
 
 	/**
 	 * Perform attack command sparse
-	 * @param command
-	 * @param sc
+	 * @param command command to attack a country
+	 * @param sc A Scanner object to take input.
 	 */
 
 	public void attack(String command, Scanner sc) {
