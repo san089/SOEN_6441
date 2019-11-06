@@ -149,7 +149,7 @@ public class MapEditorController implements ActionListener {
     
     
     /**
-     * Adds the countries.
+     * Adds the countries to the game map.
      */
     public void addCountries() {
         JTextField inputCountry = new JTextField();
@@ -254,7 +254,7 @@ public class MapEditorController implements ActionListener {
     
 
     /**
-     * Removes the continent.
+     * Removes the continent from game map.
      */
     public void removeContinent() {
         if (gameMap.getContinents().size() == 0) {
@@ -325,7 +325,7 @@ public class MapEditorController implements ActionListener {
 
 
     /**
-     * Removes the country.
+     * Removes the country from game map.
      */
     public void removeCountry() {
         if (gameMap.getContinents().size() == 0) {

@@ -1,3 +1,13 @@
+/**
+ *
+ * This Module rolls the dice for gameplay.
+ *
+ * @author Hai Feng
+ * @version 1.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
+
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;

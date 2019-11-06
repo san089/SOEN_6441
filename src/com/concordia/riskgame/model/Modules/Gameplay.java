@@ -1,3 +1,15 @@
+/**
+ *
+ *
+ * <b> This is a singleton. </b>
+ * This Module is the core of the game. It has various functionalities that controls the gameplay.
+ *
+ * @author Sucheta, Hai Feng, Shubham, Sanchit
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
+
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;

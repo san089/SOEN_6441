@@ -1,5 +1,12 @@
-/*
- * 
+/**
+ *
+ * This Module contains the high level constants used in the entire application
+ *
+ * @author Sucheta.
+ *
+ * @version 1.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
  */
 package com.concordia.riskgame.utilities;
 

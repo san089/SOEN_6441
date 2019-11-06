@@ -1,3 +1,13 @@
+/**
+ *
+ * This Module contains the enum for different gamephases in the gameplay.
+ *
+ * @author Sanchit
+ *
+ * @version 1.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
 package com.concordia.riskgame.utilities;
 
 /**

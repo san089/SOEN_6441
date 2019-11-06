@@ -1,3 +1,15 @@
+/**
+ *
+ * Test Class for Command Controller
+ *
+ * @author Sanchit.
+ *
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
+
+
 package com.concordia.riskgame.controller;
 
 import org.junit.Ignore;

@@ -602,7 +602,7 @@ public class CommandController {
 
 
     /**
-     * Place all.
+     * Place the armies in round robin fashion for all players.
      */
     public static void placeAll() throws IOException {
     	gameplay.placeAllArmies();
@@ -725,7 +725,7 @@ public class CommandController {
 
 
     /**
-     * Fortify.
+     * Fortify army from one country to another.
      *
      * @param command the command
      * @exception Exception when error placing army.

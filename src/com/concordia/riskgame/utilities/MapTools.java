@@ -1,6 +1,17 @@
- package com.concordia.riskgame.utilities;
+/**
+ *
+ * This Module contains the some utility functions to help map editor module.
+ *
+ * @author Sucheta, Shubham
+ *
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
 
- import com.concordia.riskgame.model.Modules.Continent;
+package com.concordia.riskgame.utilities;
+
+import com.concordia.riskgame.model.Modules.Continent;
  import com.concordia.riskgame.model.Modules.Country;
  import com.concordia.riskgame.model.Modules.Map;
 

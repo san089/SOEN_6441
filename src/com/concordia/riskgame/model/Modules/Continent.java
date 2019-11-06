@@ -1,3 +1,13 @@
+/**
+ *
+ * This Module holds the data & methods related to Continent.
+ *
+ * @author Shubham, Sucheta
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
+
 package com.concordia.riskgame.model.Modules;
 
 import java.util.ArrayList;

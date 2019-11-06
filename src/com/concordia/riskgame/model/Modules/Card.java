@@ -1,5 +1,11 @@
-/*
- * 
+/**
+ *
+ * This Module defines the cards we have in the game.
+ *
+ * @author Hai Feng
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
  */
 package com.concordia.riskgame.model.Modules;
 

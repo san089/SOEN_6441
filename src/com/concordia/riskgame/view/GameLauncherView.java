@@ -1,3 +1,16 @@
+/**
+ *
+ * <h1> THIS IS THE MAIN CLASS </h1>
+ * <b> Initial Game launch will happen from this class </b>
+ * This Module is the main module for game launch. It also has a view which is the first view user will interact.
+ *
+ * @author Sucheta.
+ *
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ * @see https://www.hasbro.com/common/instruct/risk.pdf
+ *
+ */
 package com.concordia.riskgame.view;
 
 import com.concordia.riskgame.controller.CommandController;

@@ -1,3 +1,15 @@
+/**
+ *
+ * This Module is the view for domination which shows who owns what at any point in game.
+ *
+ * @author Sucheta
+ *
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
+
+
 package com.concordia.riskgame.view;
 
 import java.awt.Color;

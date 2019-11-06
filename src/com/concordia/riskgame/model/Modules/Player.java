@@ -1,5 +1,12 @@
-/*
- * 
+/**
+ *
+ * The Player class handled the player data as well as helps simulate gameplay commands during card exchange,
+ * reinforcement, fortification, attack phases of the gameplay.
+ *
+ * @author Hai Feng
+ * @version 2.0
+ *
+ *
  */
 package com.concordia.riskgame.model.Modules;
 

@@ -1,3 +1,14 @@
+/**
+ *
+ * This Module is the view for Map Editor functionalities
+ *
+ * @author Shubham, Sucheta
+ *
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
+
 package com.concordia.riskgame.view;
 import com.concordia.riskgame.controller.MapEditorController;
 import com.concordia.riskgame.model.Modules.Continent;

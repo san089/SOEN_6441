@@ -1,3 +1,14 @@
+/**
+ *
+ * This Module is the view for card exchange
+ *
+ * @author Hai Feng
+ *
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
+
 package com.concordia.riskgame.view;
 
 import com.concordia.riskgame.model.Modules.Gameplay;

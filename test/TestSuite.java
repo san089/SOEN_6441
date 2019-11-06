@@ -7,7 +7,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 		com.concordia.riskgame.controller.CardExchangeControllerTest.class,
 		com.concordia.riskgame.controller.CommandControllerTest.class,
-		com.concordia.riskgame.controller.StartupPhaseControllerTest.class,
 
 		com.concordia.riskgame.model.Modules.CardTest.class,
 		com.concordia.riskgame.model.Modules.CountryTest.class,

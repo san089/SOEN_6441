@@ -1,3 +1,14 @@
+/**
+ *
+ * This Module is the view for gameplay which shows various information about the current game phase.
+ *
+ * @author Sucheta
+ *
+ * @version 2.0
+ * @see https://www.ultraboardgames.com/risk/game-rules.php
+ *
+ */
+
 package com.concordia.riskgame.view;
 
 import java.awt.Color;
