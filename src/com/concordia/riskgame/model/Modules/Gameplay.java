@@ -235,20 +235,20 @@ public class Gameplay extends Observable {
 			return "Please select a valid map for current game.";
 
 		else if (getPlayers().size() == 0) {
-			addToViewLogger("No Players Added");
+			//addToViewLogger("No Players Added");
 			return "No Players Added";
 		} else if ((getPlayerCount() != 0) && !(getPlayers().size() == getPlayerCount())) {
-			addToViewLogger("Number of players added is less than " + getPlayerCount() + ".Please add more players.");
+			//addToViewLogger("Number of players added is less than " + getPlayerCount() + ".Please add more players.");
 			return "Number of players added is less than " + getPlayerCount() + ".Please add more players.";
 
 		} else if (getPlayers().size() < 2) {
-			addToViewLogger("Number of players less than 2.Please add atleast 2 players.");
+			//addToViewLogger("Number of players less than 2.Please add atleast 2 players.");
 			return "Number of players less than 2.Please add atleast 2 players.";
 		} else if (getPlayers().size() > getSelectedMap().listOfCountryNames().size()) {
-			addToViewLogger("Number of countries less than the number of players.Please select another valid map");
+			//addToViewLogger("Number of countries less than the number of players.Please select another valid map");
 			return "Number of countries less than the number of players.Please select another valid map";
 		}
-		addToViewLogger("Success");
+		//addToViewLogger("Success");
 		return "Success";
 
 	}
