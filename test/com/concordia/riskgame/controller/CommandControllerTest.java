@@ -138,7 +138,7 @@ public class CommandControllerTest {
     @Test
     public void testHelp(){
         try {
-            CommandController.parseCommand("help", new Scanner(System.in));
+            CommandController.parseCommand("help");
             assertTrue(true);
         }
         catch (Exception e){

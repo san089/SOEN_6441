@@ -11,6 +11,7 @@
 package com.concordia.riskgame.model.Modules;
 
 import com.concordia.riskgame.utilities.Phases;
+import com.concordia.riskgame.utilities.ScannerUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -170,7 +171,7 @@ public class Player extends Observable {
 	private Gameplay gameplay = Gameplay.getInstance();;
 	private Map gameMap = gameplay.getSelectedMap();
 	private Player defensivePlayer;
-	private Scanner scanner;
+	private Scanner scanner = ScannerUtil.sc;
 
 	/**
 	 * Reinforce army to one country, parse country and number from command, then do move.
@@ -202,8 +203,8 @@ public class Player extends Observable {
 	 * @param sc A Scanner object to take input.
 	 */
 
-	public void attack(String command, Scanner sc) {
-		scanner = sc;
+	public void attack(String command) {
+		//scanner = sc;
 		commands = command.split(" ");
 		fromCountry = gameMap.searchCountry(commands[1]);
 		toCountry = gameMap.searchCountry(commands[2]);

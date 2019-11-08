@@ -56,7 +56,7 @@ public class CardExchangeViewTest {
     @Test
     public void update() throws IOException {
         command = "exchangecards 1 1 1";
-        CommandController.parseCommand(command, scanner);
+        CommandController.parseCommand(command);
 
     }
 

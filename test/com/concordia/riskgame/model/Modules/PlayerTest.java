@@ -40,10 +40,10 @@ public class PlayerTest {
     public void setup(){
         try {
         gameplay = null;
-        CommandController.parseCommand("loadmap "+ mapPath, sc);
-        CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
-        CommandController.parseCommand("populatecountries", sc);
-        CommandController.parseCommand("showphases", sc);
+        CommandController.parseCommand("loadmap "+ mapPath);
+        CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta");
+        CommandController.parseCommand("populatecountries");
+        CommandController.parseCommand("showphases");
         }
         catch(Exception ex)
     	{
@@ -68,7 +68,7 @@ public class PlayerTest {
     @Test
     public void getNumOfInfCard() {
         try {
-            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("placeall");
         }
         catch (Exception e){
             System.out.println("Exception while parsing commands.");
@@ -114,7 +114,7 @@ public class PlayerTest {
     @Test
     public void getNumOfCavCard() {
         try {
-            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("placeall");
         }
         catch (Exception e){
             System.out.println("Exception while parsing commands.");
@@ -133,7 +133,7 @@ public class PlayerTest {
     @Test
     public void getNumOfArtCard() {
         try {
-            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("placeall");
         }
         catch (Exception e){
             System.out.println("Exception while parsing commands.");
@@ -152,13 +152,13 @@ public class PlayerTest {
     @Test
     public void reinforceArmy() {
         try{
-            CommandController.parseCommand("placeall", sc);
-            CommandController.parseCommand("exchangecards -none", sc);
+            CommandController.parseCommand("placeall");
+            CommandController.parseCommand("exchangecards -none");
             gameplay = Gameplay.getInstance();
             String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(0);
             int initialArmies = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
             int armies = gameplay.getCurrentPlayer().getArmyCount();
-            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies), sc);
+            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies));
             int armiesAfterReinforce = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
             assertTrue(initialArmies + armies == armiesAfterReinforce);
         }
@@ -170,12 +170,12 @@ public class PlayerTest {
     @Test
     public void attack() {
         try{
-            CommandController.parseCommand("placeall", sc);
-            CommandController.parseCommand("exchangecards -none", sc);
+            CommandController.parseCommand("placeall");
+            CommandController.parseCommand("exchangecards -none");
             gameplay = Gameplay.getInstance();
             String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(0);
             int armies = gameplay.getCurrentPlayer().getArmyCount();
-            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies), sc);
+            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies));
         }
         catch (Exception e){
             System.out.println("Some exception occured.");
@@ -204,11 +204,17 @@ public class PlayerTest {
         }
         try {
             Player currentPlayer = gameplay.getCurrentPlayer();
-            country.setNoOfArmiesPresent(1);
+            //country.setNoOfArmiesPresent(1);
             String attackerCountry = country.getCountryName();
-            System.out.println("Neighbour is : " + neighbor);
-            System.out.println(gameplay.getSelectedMap().searchCountry(neighbor).getCountryName());
-            CommandController.parseCommand("attack " + attackerCountry + ". " + neighbor + " -allout", sc);
+            System.out.println("Attack Country is : " + attackerCountry + " and has armies : " + country.getNoOfArmiesPresent());
+            System.out.println("Neighbour is : " + neighbor + " and has army count : " +
+                    gameplay.getSelectedMap().searchCountry(neighbor).getNoOfArmiesPresent());
+
+            ByteArrayInputStream in = new ByteArrayInputStream("attackmove 3".getBytes());
+            Scanner keyboardInput = new Scanner(in);
+            System.setIn(in);
+
+            CommandController.parseCommand("attack " + attackerCountry + " " + neighbor + " -allout");
             int attackerArmyLeft = gameplay.getSelectedMap().searchCountry(attackerCountry).getNoOfArmiesPresent();
             int defenderArmyLeft = gameplay.getSelectedMap().searchCountry(neighbor).getNoOfArmiesPresent();
             System.out.println(attackerArmyLeft);
@@ -224,12 +230,12 @@ public class PlayerTest {
     @Test
     public void checkAvailableAttack() {
         try{
-            CommandController.parseCommand("placeall", sc);
-            CommandController.parseCommand("exchangecards -none", sc);
+            CommandController.parseCommand("placeall");
+            CommandController.parseCommand("exchangecards -none");
             gameplay = Gameplay.getInstance();
             String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(0);
             int armies = gameplay.getCurrentPlayer().getArmyCount();
-            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies), sc);
+            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies));
         }
         catch (Exception e){
             System.out.println("Some exception occured.");
@@ -241,13 +247,13 @@ public class PlayerTest {
     public void fortifyArmy() {
         gameplay = Gameplay.getInstance();
         try{
-            CommandController.parseCommand("placeall", sc);
-            CommandController.parseCommand("exchangecards -none", sc);
+            CommandController.parseCommand("placeall");
+            CommandController.parseCommand("exchangecards -none");
             gameplay = Gameplay.getInstance();
             String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(0);
             int armies = gameplay.getCurrentPlayer().getArmyCount();
-            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies), sc);
-            CommandController.parseCommand("attack -noattack", sc);
+            CommandController.parseCommand("reinforce " + countryName + " " + Integer.toString(armies));
+            CommandController.parseCommand("attack -noattack");
         }
         catch (Exception e){
             System.out.println("Some exception occured.");
@@ -264,7 +270,7 @@ public class PlayerTest {
         System.out.println("Neighbours of source country :" + neighbours);
         if (neighbours.isEmpty()) {
             try {
-                CommandController.parseCommand("fortify -none", sc);
+                CommandController.parseCommand("fortify -none");
             } catch (Exception e) {
                 System.out.println("Fortify -none. Some exception occured");
             }
@@ -286,7 +292,7 @@ public class PlayerTest {
 
         try {
             if(destination == null){
-                CommandController.parseCommand("fortify -none", sc);
+                CommandController.parseCommand("fortify -none");
                 System.out.println("Destination is null. fortify -none. Some exception occured");
                 assertEquals(gameplay.getSelectedMap().searchCountry(source.getCountryName()).getNoOfArmiesPresent(), sourceArmies);
                 return;
@@ -297,7 +303,7 @@ public class PlayerTest {
 
             String forifyCommand = "fortify " + source.getCountryName() + " " + destination.getCountryName() + " " + (sourceArmies - 1);
             System.out.println("fortify command : " + forifyCommand);
-            CommandController.parseCommand(forifyCommand, sc);
+            CommandController.parseCommand(forifyCommand);
 
             System.out.println("Source Armies after : " +  gameplay.getSelectedMap().searchCountry(source.getCountryName()).getNoOfArmiesPresent());
             System.out.println("Destination Armies After : " + gameplay.getSelectedMap().searchCountry(destination.getCountryName()).getNoOfArmiesPresent());

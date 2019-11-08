@@ -40,10 +40,10 @@ public class CardExchangeControllerTest {
     @Before
     public void setUp() {
         try {
-            CommandController.parseCommand("loadmap "+ mapPath, sc);
-            CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
-            CommandController.parseCommand("populatecountries", sc);
-            CommandController.parseCommand("showphases", sc);
+            CommandController.parseCommand("loadmap "+ mapPath);
+            CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta");
+            CommandController.parseCommand("populatecountries");
+            CommandController.parseCommand("showphases");
         }
         catch(Exception ex)
         {
@@ -55,11 +55,11 @@ public class CardExchangeControllerTest {
     @Test
     public void exchange() {
         try {
-            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("placeall");
             gameplay = Gameplay.getInstance();
             gameplay.getCurrentPlayer().setCardsOwned(new ArrayList<>(Arrays.asList(Card.CAVALRY,Card.CAVALRY, Card.CAVALRY)));
             cc.checkInput("0","3","0");
-            CommandController.parseCommand("exchangecards 0 3 0", sc);
+            CommandController.parseCommand("exchangecards 0 3 0");
         }
         catch (Exception e){
             System.out.println("Exception while parsing commands.");
@@ -72,7 +72,7 @@ public class CardExchangeControllerTest {
     @Test
     public void checkInput() {
         try {
-            CommandController.parseCommand("placeall", sc);
+            CommandController.parseCommand("placeall");
             gameplay = Gameplay.getInstance();
             gameplay.getCurrentPlayer().setCardsOwned(new ArrayList<>(Arrays.asList(Card.CAVALRY,Card.CAVALRY, Card.CAVALRY)));
             cc.num1 = 0;

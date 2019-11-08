@@ -17,6 +17,7 @@ import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.controller.StartupPhaseController;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.ScannerUtil;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -77,12 +78,12 @@ public class GameLauncherView extends JFrame implements ActionListener {
 
 		CreateMenuBar();
 		while(true) {
-			Scanner sc = new Scanner(System.in);
+			Scanner sc = ScannerUtil.sc;
 			String user_input;
 			while (true)
 			{
 				user_input = sc.nextLine();
-				CommandController.parseCommand(user_input, sc);
+				CommandController.parseCommand(user_input);
 			}
 		}
 

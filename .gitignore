@@ -1,1 +1,16 @@
-/target/
+#target
+/target
+
+#Ignore Intellij Folder
+.idea
+
+
+#Ignore Intellij Settings
+.settings
+
+#Ignore classpaths 
+.classpath
+
+#Ignore IML files
+SOEN_6441.iml
+SOEN6441_RiskGame.iml

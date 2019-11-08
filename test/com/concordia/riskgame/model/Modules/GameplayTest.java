@@ -53,8 +53,8 @@ public class GameplayTest {
     public static void classSetup() throws Exception{
         Scanner sc = new Scanner(System.in);
         String userDir=System.getProperty("user.dir");
-        CommandController.parseCommand("loadmap "+userDir+"\\Maps\\Valid_Maps\\SmallValidMap.map", sc);
-        CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta", sc);
+        CommandController.parseCommand("loadmap "+userDir+"\\Maps\\Valid_Maps\\SmallValidMap.map");
+        CommandController.parseCommand("gameplayer -add Sanchit -add Sucheta");
         
     }
 
@@ -107,9 +107,9 @@ public class GameplayTest {
     @Test
     public void assignReinforcementArmies() {
     	try {
-        CommandController.parseCommand("populatecountries", sc);
-        CommandController.parseCommand("showphases", sc);
-        CommandController.parseCommand("placeall", sc);
+        CommandController.parseCommand("populatecountries");
+        CommandController.parseCommand("showphases");
+        CommandController.parseCommand("placeall");
         gamePlay.assignReinforcementArmies();
     	}
     	catch(Exception ex)
@@ -129,7 +129,7 @@ public class GameplayTest {
     	gamePlay.setCurrentPhase(Phases.Startup);
         String playerRemoveCommand = "gameplayer -add Haifeng";
         try {
-        CommandController.parseCommand(playerRemoveCommand, (new Scanner(System.in)));
+        CommandController.parseCommand(playerRemoveCommand);
         }
         catch(Exception ex)
     	{
@@ -152,7 +152,7 @@ public class GameplayTest {
         String playerRemoveCommand = "gameplayer -add Sanchit";
         int numPlayersBefore = gamePlay.getPlayerCount();
         try {
-        CommandController.parseCommand(playerRemoveCommand, (new Scanner(System.in)));
+        CommandController.parseCommand(playerRemoveCommand);
         }
         catch(Exception ex)
     	{
@@ -169,7 +169,7 @@ public class GameplayTest {
     public void removePlayer() {
         String playerRemoveCommand = "gameplayer -remove Sanchit";
         try {
-        CommandController.parseCommand(playerRemoveCommand, (new Scanner(System.in)));
+        CommandController.parseCommand(playerRemoveCommand);
         }catch(Exception ex)
     	{
     		System.out.println("Exception while parsing commands");
@@ -233,9 +233,9 @@ public class GameplayTest {
     public void placeArmy() {
     	gamePlay.setCurrentPhase(Phases.Startup);
     	try {
-        CommandController.parseCommand("populatecountries", sc);
-        CommandController.parseCommand("showphases", sc);
-        CommandController.parseCommand("placeall", sc);
+        CommandController.parseCommand("populatecountries");
+        CommandController.parseCommand("showphases");
+        CommandController.parseCommand("placeall");
     	}
     	catch(Exception ex)
     	{
@@ -250,7 +250,7 @@ public class GameplayTest {
         //Checking army count before and after reinforce command run
         int armyBeforeReinforce = ownedCountries.get(0).getNoOfArmiesPresent();
         try {
-        CommandController.parseCommand(command, sc);
+        CommandController.parseCommand(command);
         }
         catch(Exception ex)
     	{

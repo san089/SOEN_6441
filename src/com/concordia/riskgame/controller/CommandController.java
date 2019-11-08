@@ -3,6 +3,7 @@ package com.concordia.riskgame.controller;
 import com.concordia.riskgame.model.Modules.*;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
+import com.concordia.riskgame.utilities.ScannerUtil;
 import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
@@ -42,10 +43,9 @@ public class CommandController {
      * This method takes command as input and calls respective methods corresponding to the command and executes the method.
      *
      * @param command takes command input from user
-     * @param sc a Scanner object to take input
      * @throws IOException throws an exception if input is invalid.
      */
-    public static void parseCommand(String command, Scanner sc) throws IOException {
+    public static void parseCommand(String command) throws IOException {
         command = command.trim().replaceAll(" +", " "); //replace multiple whitespaces with one.
         commandType = command.split(" ")[0];
 
@@ -93,7 +93,7 @@ public class CommandController {
                 exchangeCards(command);
                 break;
             case "attack":
-                attack(command, sc);
+                attack(command);
                 break;
             case "fortify":
                 fortify(command);
@@ -117,7 +117,7 @@ public class CommandController {
      *
      * @param command
      */
-    private static void attack(String command, Scanner sc) {
+    private static void attack(String command) {
         if (gameplay.getCurrentPhase() != Phases.Attack) {
             gameplay.addToViewLogger("Now it's not attack phase, you cannot attack");
             return;
@@ -138,7 +138,7 @@ public class CommandController {
             }
         }
 
-        gameplay.getCurrentPlayer().attack(command, sc);
+        gameplay.getCurrentPlayer().attack(command);
 
 
     }
@@ -568,7 +568,7 @@ public class CommandController {
      * @throws  IOException if the number entered by the user is not valid.
      */
     public static void placeArmy(String command) throws IOException {
-    	Scanner in=new Scanner(System.in);   
+    	Scanner in = ScannerUtil.sc;
     	int armyCount = 0;
         String countryName = command.split(" ")[1];   
         gameplay.addToViewLogger("Enter the number armies to be placed ");
