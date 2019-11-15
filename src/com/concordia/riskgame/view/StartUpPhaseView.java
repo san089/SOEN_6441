@@ -43,6 +43,7 @@ public class StartUpPhaseView extends JFrame  {
 	public final static String PLAYERPANEL = "Card with Add/Removing Player";
 	public final static String ASSIGNARMYPANEL = "Card with Assign Armies View";
 	public final static String[] playerCountValues = { "2", "3", "4", "5", "6" };
+	public final static String[] playerStrategies= {"Human","Aggressive","Benevolent","Random","Cheater"};
 
 	//private StartupPhaseController startupController;
 	private Gameplay gamePlay;
@@ -64,6 +65,10 @@ public class StartUpPhaseView extends JFrame  {
 
 	private JComboBox<String> playerCount;
 	private JLabel playerCountLabel;
+	
+	private JComboBox<String> playerStrategy;
+	
+	
 	
 	private JComboBox<String> playerList;
 	private JLabel playerListLabel;
@@ -175,36 +180,45 @@ public class StartUpPhaseView extends JFrame  {
 		playerName.setBounds(216, 120, 121, 20);
 
 		addPlayerButton=new JButton("Add Player");
-		addPlayerButton.setBounds(350, 120, 121, 20);
+		addPlayerButton.setBounds(216, 150, 121, 20);
 		addPlayerButton.setVisible(true);
 		StartupViewPanel.add(addPlayerButton);
+		
+		playerStrategy = new JComboBox<String>(playerStrategies);
+	//	playerStrategyLabel = new JLabel("Select player type");
+	//	StartupViewPanel.add(playerStrategyLabel);
+	//	playerStrategyLabel.setVisible(true);
+	//	playerStrategyLabel.setBounds(36, 150, 121,20);
+		StartupViewPanel.add(playerStrategy);
+		playerStrategy.setBounds(350, 120, 121, 20);
+
 
 		removeplayerLabel = new JLabel("Enter Player name to remove");
 		StartupViewPanel.add(removeplayerLabel);
 		removeplayerLabel.setVisible(true);
-		removeplayerLabel.setBounds(36, 150, 200, 21);
+		removeplayerLabel.setBounds(36, 180, 200, 21);
 
 		removePlayerName = new JTextField();
 		StartupViewPanel.add(removePlayerName);
 		removePlayerName.setVisible(true);
-		removePlayerName.setBounds(216, 150, 121, 20);
+		removePlayerName.setBounds(216, 180, 121, 20);
 
 		removePlayerButton=new JButton("Remove Player");
-		removePlayerButton.setBounds(350, 150, 121, 20);
+		removePlayerButton.setBounds(350, 180, 121, 20);
 		removePlayerButton.setVisible(true);
 		StartupViewPanel.add(removePlayerButton);
 
 
 		populateCountriesButton = new JButton("Populate Countries and Assign Armies");
 		StartupViewPanel.add(populateCountriesButton);
-		populateCountriesButton.setBounds(36, 180, 250, 30);
+		populateCountriesButton.setBounds(36, 210, 250, 30);
 		populateCountriesButton.setVisible(true);
 
 		
 
 		showMapButton = new JButton("Show Current Game Map");
 		StartupViewPanel.add(showMapButton);
-		showMapButton.setBounds(300, 180, 200, 30);
+		showMapButton.setBounds(300, 210, 200, 30);
 		//showMapButton.setHorizontalAlignment(SwingConstants.LEFT);
 		showMapButton.setVisible(true);
 
@@ -332,6 +346,12 @@ public class StartUpPhaseView extends JFrame  {
 	 */
 	public JList<String> getCurrentPlayerList() {
 		return currentPlayerList;
+	}
+
+
+
+	public JComboBox<String> getPlayerStrategy() {
+		return playerStrategy;
 	}
 
 	

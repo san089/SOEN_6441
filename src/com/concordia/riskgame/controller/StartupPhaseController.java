@@ -143,6 +143,8 @@ public class StartupPhaseController implements ActionListener  {
 			else
 			{
 				String message=gameplay.addPlayer(sView.getPlayerName().getText());
+				String playerStrategy=sView.getPlayerStrategy().getSelectedItem().toString();
+				System.out.println(playerStrategy);
 				JOptionPane.showMessageDialog(null,
 						message, "Message",
 						JOptionPane.INFORMATION_MESSAGE);

@@ -155,9 +155,9 @@ public class WorldDominationView extends JFrame implements Observer {
 			this.rowCount = playerList.size();
 			commonViewFrame.remove(playerScrollPane);
 			initUI();
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (Exception  e) {
 			
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		}
 	
