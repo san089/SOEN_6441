@@ -1,0 +1,13 @@
+[Map]
+author=Anonymous
+[Continents]
+AFRICA=9
+ASIA=6
+Australia=6
+Antartica=9
+[Territories]
+Pak,0.0,0.0,AFRICA,india
+india,0.0,0.0,ASIA,Pak,Canada,Korea
+Canada,0.0,0.0,Australia,india
+Korea,0.0,0.0,Antartica,india
+
