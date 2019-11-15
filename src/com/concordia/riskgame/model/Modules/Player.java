@@ -9,19 +9,15 @@
  *
  */
 package com.concordia.riskgame.model.Modules;
-
+import com.concordia.riskgame.model.Modules.Stratigies.Human;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.utilities.ScannerUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
-
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Player.
  */
@@ -43,6 +39,8 @@ public class Player extends Observable {
 
 	private int cardExchangeIndex;
 
+	private Strategy strategy;
+
 
 
 
@@ -60,6 +58,7 @@ public class Player extends Observable {
 		this.armyCount = 0;
 		this.cardFlag = false;
 		this.cardExchangeIndex = 0;
+		this.strategy = new Human();
 	}
 
 	public int getNumOfInfCard() {
@@ -532,7 +531,13 @@ public class Player extends Observable {
 		
 		return true;
 	}
-	
-	
 
+
+	public Strategy getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(Strategy strategy) {
+		this.strategy = strategy;
+	}
 }

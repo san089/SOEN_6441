@@ -1,0 +1,11 @@
+loadmap D:\SOEN_6441\Maps\Valid_Maps\SmallValidMap.map
+gameplayer -add Sanchit Human -add Sucheta Aggressive -remove Sucheta -add Sucheta Benevolent
+populatecountries
+placeall
+exchangecards -none
+reinforce China 3
+reinforce India 3
+reinforce Canada 3
+reinforce Usa 3
+attack -noattack
+fortify -none

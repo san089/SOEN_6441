@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Queue;
 import java.util.Random;
+
+import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Phases;
@@ -118,13 +120,32 @@ public class Gameplay extends Observable {
 		setCurrentPlayer(playerQueue.remove());
 		setCurrentPlayer(currentPlayer);
 		playerQueue.add(currentPlayer);
+		while (!gameplayObj.currentPlayer.getStrategy().getStrategyName().equals("Human")){
+			gameplayObj.setCurrentPhase(Phases.Reinforcement);
+			System.out.println("\n\nCurrent player is a bot and strategy is : " + gameplayObj.currentPlayer.getStrategy().getStrategyName());
+			System.out.println("Simulating Bot Play");
+			simulateBotPlay();
+			System.out.println(CommandController.ANSI_RESET);
+		}
+	}
+
+	private void simulateBotPlay() {
+		System.out.println(gameplayObj.currentPlayer.getStrategy().getColor());
+		System.out.println("==========================Bot performing Card Exchange=========================");
+		gameplayObj.currentPlayer.getStrategy().doCardExchange();
+		System.out.println("==========================Bot performing Reinforcement=========================");
+		gameplayObj.currentPlayer.getStrategy().doReinforcement();
+		System.out.println("==========================Bot performing Attack=========================");
+		gameplayObj.currentPlayer.getStrategy().doAttack();
+		System.out.println("==========================Bot performing Fortification=========================");
+		gameplayObj.currentPlayer.getStrategy().doFortification();
+		System.out.println(CommandController.ANSI_RESET);
 	}
 
 	public void setArmyCount(int count) {
 		for (Player player : getPlayers()) {
 			player.setArmyCount(count);
 		}
-
 	}
 
 	public Map getSelectedMap() {
@@ -160,7 +181,7 @@ public class Gameplay extends Observable {
 	 * @param playerName the player name
 	 * @return the string
 	 */
-	public String addPlayer(String playerName) {
+	public String addPlayer(String playerName, Strategy strategy) {
 		if ((players.size() == playerCount && playerCount != 0) || players.size() == MAX_PLAYER_LIMIT) {
 			addToViewLogger("PLAYER LIMIT REACHED.CANNOT ADD MORE PLAYERS");
 			return "PLAYER LIMIT REACHED.CANNOT ADD MORE PLAYERS";
@@ -169,7 +190,9 @@ public class Gameplay extends Observable {
 			addToViewLogger("Another player with the same name exists.Please enter a different name");
 			return "Another player with the same name exists.Please enter a different name";
 		} else {
-			players.add(new Player(players.size() + 1, playerName));
+			Player p = new Player(players.size() + 1, playerName);
+			p.setStrategy(strategy);
+			players.add(p);
 			triggerObserver("domination");
 			triggerObserver("phase");
 			triggerObserver("showmap");

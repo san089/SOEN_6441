@@ -38,11 +38,12 @@ public class StartUpPhaseView extends JFrame  {
 	private static final long serialVersionUID = 1L;
 	public static JPanel cardsContainerPanel;
 	public static CardLayout cardLayout;
-	
+
 	public final static String MAPPANEL = "Card with MapLoaderView";
 	public final static String PLAYERPANEL = "Card with Add/Removing Player";
 	public final static String ASSIGNARMYPANEL = "Card with Assign Armies View";
 	public final static String[] playerCountValues = { "2", "3", "4", "5", "6" };
+	public final static String[] playerStrategies= {"Human","Aggressive","Benevolent","Random","Cheater"};
 
 	//private StartupPhaseController startupController;
 	private Gameplay gamePlay;
@@ -60,19 +61,23 @@ public class StartUpPhaseView extends JFrame  {
 	private JButton populateCountriesButton;
 	private JList<String> currentPlayerList;
 	private DefaultListModel<String> model;
-	private JButton showMapButton; 
+	private JButton showMapButton;
 
 	private JComboBox<String> playerCount;
 	private JLabel playerCountLabel;
-	
+
+	private JComboBox<String> playerStrategy;
+
+
+
 	private JComboBox<String> playerList;
 	private JLabel playerListLabel;
 	private JPanel placeArmiesViewPanel;
 
 
 
-	
-	
+
+
 	/**
 	 * Instantiates a new start up phase view.
 	 *
@@ -90,7 +95,7 @@ public class StartUpPhaseView extends JFrame  {
 	}
 
 
-	
+
 	/**
 	 * Initalise UI.
 	 */
@@ -110,9 +115,9 @@ public class StartUpPhaseView extends JFrame  {
 		cardLayout.show(cardsContainerPanel, MAPPANEL);
 
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Initalise UI.
 	 */
@@ -141,17 +146,17 @@ public class StartUpPhaseView extends JFrame  {
 		currentPlayerList.setBounds(530, 50, 121, 200);
 		currentPlayerList.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		currentPlayerList.setVisible(true);
-		
-		
-		
+
+
+
 
 	}
 
 
-		/**
-		 * Edits the player UI.
-		 */
-		public void editPlayerUI() {
+	/**
+	 * Edits the player UI.
+	 */
+	public void editPlayerUI() {
 
 		playerCount = new JComboBox<String>(playerCountValues);
 		playerCountLabel = new JLabel("Select player count");
@@ -175,43 +180,52 @@ public class StartUpPhaseView extends JFrame  {
 		playerName.setBounds(216, 120, 121, 20);
 
 		addPlayerButton=new JButton("Add Player");
-		addPlayerButton.setBounds(350, 120, 121, 20);
+		addPlayerButton.setBounds(216, 150, 121, 20);
 		addPlayerButton.setVisible(true);
 		StartupViewPanel.add(addPlayerButton);
+
+		playerStrategy = new JComboBox<String>(playerStrategies);
+		//	playerStrategyLabel = new JLabel("Select player type");
+		//	StartupViewPanel.add(playerStrategyLabel);
+		//	playerStrategyLabel.setVisible(true);
+		//	playerStrategyLabel.setBounds(36, 150, 121,20);
+		StartupViewPanel.add(playerStrategy);
+		playerStrategy.setBounds(350, 120, 121, 20);
+
 
 		removeplayerLabel = new JLabel("Enter Player name to remove");
 		StartupViewPanel.add(removeplayerLabel);
 		removeplayerLabel.setVisible(true);
-		removeplayerLabel.setBounds(36, 150, 200, 21);
+		removeplayerLabel.setBounds(36, 180, 200, 21);
 
 		removePlayerName = new JTextField();
 		StartupViewPanel.add(removePlayerName);
 		removePlayerName.setVisible(true);
-		removePlayerName.setBounds(216, 150, 121, 20);
+		removePlayerName.setBounds(216, 180, 121, 20);
 
 		removePlayerButton=new JButton("Remove Player");
-		removePlayerButton.setBounds(350, 150, 121, 20);
+		removePlayerButton.setBounds(350, 180, 121, 20);
 		removePlayerButton.setVisible(true);
 		StartupViewPanel.add(removePlayerButton);
 
 
 		populateCountriesButton = new JButton("Populate Countries and Assign Armies");
 		StartupViewPanel.add(populateCountriesButton);
-		populateCountriesButton.setBounds(36, 180, 250, 30);
+		populateCountriesButton.setBounds(36, 210, 250, 30);
 		populateCountriesButton.setVisible(true);
 
-		
+
 
 		showMapButton = new JButton("Show Current Game Map");
 		StartupViewPanel.add(showMapButton);
-		showMapButton.setBounds(300, 180, 200, 30);
+		showMapButton.setBounds(300, 210, 200, 30);
 		//showMapButton.setHorizontalAlignment(SwingConstants.LEFT);
 		showMapButton.setVisible(true);
 
 	}
 
 
-	
+
 	/**
 	 * Place armies UI.
 	 */
@@ -222,14 +236,14 @@ public class StartUpPhaseView extends JFrame  {
 			playerNames.add(player.getPlayerName());
 		playerList=new JComboBox<String>(playerNames.toArray(new String[playerNames.size()]));
 		placeArmiesViewPanel.add(playerList);
-		
-		
+
+
 		playerListLabel=new JLabel("Select the player ");
 		placeArmiesViewPanel.setVisible(true);
 
 
 	}
-	
+
 	/**
 	 * Getter to the element shopMapButton
 	 * @return shopMapButton
@@ -334,6 +348,12 @@ public class StartUpPhaseView extends JFrame  {
 		return currentPlayerList;
 	}
 
-	
+
+
+	public JComboBox<String> getPlayerStrategy() {
+		return playerStrategy;
+	}
+
+
 
 }

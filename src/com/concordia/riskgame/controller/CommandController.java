@@ -1,6 +1,7 @@
 package com.concordia.riskgame.controller;
 
 import com.concordia.riskgame.model.Modules.*;
+import com.concordia.riskgame.model.Modules.Stratigies.*;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.utilities.ScannerUtil;
@@ -421,9 +422,9 @@ public class CommandController {
      * @param operation Type of Operation, either add or remove
      * @param playername The name of the player to be added or removed.
      */
-    public static void gamePlayerAddRemove(String operation, String playername){
+    public static void gamePlayerAddRemove(String operation, String playername, String playerstrategy){
         if(operation.trim().equals("-add"))
-            Gameplay.getInstance().addPlayer(playername);
+            Gameplay.getInstance().addPlayer(playername, createPlayerStrategy(playerstrategy));
         else if(operation.trim().equals("-remove"))
            Gameplay.getInstance().removePlayer(playername);
         else
@@ -443,14 +444,36 @@ public class CommandController {
         String[] args = command.split(" ");
         String arg_type;
         String value1;
+        String value2;
         try {
             for (int i = 1; i < args.length; i += 2) {
                 arg_type = args[i];
-                value1 = args[i + 1];
-
-                if (verifyAllCharacters(value1))
-                    gamePlayerAddRemove(arg_type, value1);
+                if(arg_type.trim().equals("-add")){
+                    value1 = args[i + 1];
+                    value2 = args[i + 2];
+                    if(verifyAllCharacters(value1) && verifyAllCharacters(value2)){
+                        gamePlayerAddRemove(arg_type, value1, value2);
+                        i+=1;
+                    }
+                    else{
+                        gameplay.addToViewLogger("Some execption occured while parsing command.");
+                        System.out.println("Error in gameplayer command");
+                        return false;
+                    }
+                }
+                else if(arg_type.trim().equals("-remove")){
+                    value1 = args[i + 1];
+                    if (verifyAllCharacters(value1))
+                        gamePlayerAddRemove(arg_type, value1, "");
+                    else{
+                        gameplay.addToViewLogger("Some execption occured while parsing command.");
+                        System.out.println("Error in gameplayer command");
+                        return false;
+                    }
+                }
                 else {
+                    gameplay.addToViewLogger("Some execption occured while parsing command.");
+                    System.out.println("Error in gameplayer command");
                     return false;
                 }
             }
@@ -787,6 +810,25 @@ public class CommandController {
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
         }catch (Exception e){
             gameplay.addToViewLogger("Some exception occurred");
+        }
+
+    }
+
+
+    public static Strategy createPlayerStrategy(String strategyName){
+        switch (strategyName.toLowerCase()){
+            case "human":
+                return new Human();
+            case "random":
+                return new Random();
+            case "aggressive":
+                return new Aggressive();
+            case "cheater":
+                return new Cheater();
+            case "benevolent":
+                return new Benevolent();
+            default:
+                return new Human();
         }
 
     }
