@@ -171,6 +171,8 @@ public class Player extends Observable {
 	private Map gameMap = gameplay.getSelectedMap();
 	private Player defensivePlayer;
 	private Scanner scanner = ScannerUtil.sc;
+	private boolean defendCommandInput = false;
+	private boolean attackMoveCommandInput =false;
 
 	/**
 	 * Reinforce army to one country, parse country and number from command, then do move.
@@ -199,7 +201,6 @@ public class Player extends Observable {
 	/**
 	 * Perform attack command sparse
 	 * @param command command to attack a country
-	 * @param sc A Scanner object to take input.
 	 */
 
 	public void attack(String command) {
@@ -225,30 +226,34 @@ public class Player extends Observable {
 			gameplay.triggerObserver("domination");
 			gameplay.triggerObserver("showmap");
 		} else {
-			boolean commandDone = false;
-			String[] command2;
 			gameplay.addToViewLogger("Input defend command!");
-			while (!commandDone) {
-				command2 = scanner.nextLine().split(" ");
-				if (!checkDefendCommand(command2)) {
-					gameplay.addToViewLogger("Incorrect defend command!");
-					continue;
-				}
-				commandDone = true;
-			}
-			attackOnce();
-            if (isWinner()) {
-                return;
-            }
-			gameplay.triggerObserver("domination");
-			gameplay.triggerObserver("showmap");
+			attackMoveCommandInput = true;
 		}
+		
+	}
+
+	public void defendCommand(String command) {
+		if (defendCommandInput = false) {
+			System.out.println("Not defending time");
+			return;
+		}
+		String[] command2 = command.split(" ");
+		if (!checkDefendCommand(command2)) {
+			gameplay.addToViewLogger("Incorrect defend command!");
+			return;
+		}
+		attackOnce();
+		if (isWinner()) {
+			return;
+		}
+		gameplay.triggerObserver("domination");
+		gameplay.triggerObserver("showmap");
 
 		if (!checkAvailableAttack()) {
 			gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
 			gameplay.setCurrentPhase(Phases.Fortification);
 		}
-		
+		defendCommandInput = false;
 	}
 
 	/**
@@ -362,25 +367,27 @@ public class Player extends Observable {
 			setCardFlag();
 			gameplay.addToViewLogger("Input your move command!");
 			gameplay.addToViewLogger("Attack country has " + fromCountry.getNoOfArmiesPresent() + "armies");
-			boolean moveCommandDone = false;
-			int moveArmies = 0;
-			while (!moveCommandDone) {
-				String[] moveCommands = scanner.nextLine().split(" ");
-				if (!checkMoveCommands(moveCommands)) {
-					gameplay.addToViewLogger("Incorrect move command!");
-					continue;
-				}
-				moveCommandDone = true;
-				moveArmies = Integer.parseInt(moveCommands[1]);
-			}
-			
-			fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - moveArmies);
-			toCountry.setNoOfArmiesPresent(moveArmies);
-
 			return true;
 		}
 		return false;
 	}
+
+	public void attackMove(String command){
+		if (attackMoveCommandInput = false) {
+			System.out.println("Not moving time");
+			return;
+		}
+		String[] moveCommands = command.split(" ");
+		if (!checkMoveCommands(moveCommands)) {
+			gameplay.addToViewLogger("Incorrect move command!");
+			return;
+		}
+		int moveArmies = Integer.parseInt(moveCommands[1]);
+		fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - moveArmies);
+		toCountry.setNoOfArmiesPresent(moveArmies);
+		attackMoveCommandInput = false;
+	}
+
 	/**
 	 * Check attack move command, the number of movement should be valid.
 	 * @param moveCommands
