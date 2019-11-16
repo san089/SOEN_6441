@@ -204,7 +204,10 @@ public class Player extends Observable {
 	 */
 
 	public void attack(String command) {
-		//scanner = sc;
+		if (attackMoveCommandInput || defendCommandInput) {
+			System.out.println("You have not finished last attack!");
+			return;
+		}
 		commands = command.split(" ");
 		fromCountry = gameMap.searchCountry(commands[1]);
 		toCountry = gameMap.searchCountry(commands[2]);
@@ -220,20 +223,20 @@ public class Player extends Observable {
 
 		if ("-allout".equals(commands[3])) {
 			autoAttack();
+			gameplay.triggerObserver("domination");
+			gameplay.triggerObserver("showmap");
             if (isWinner()) {
                 return;
             }
-			gameplay.triggerObserver("domination");
-			gameplay.triggerObserver("showmap");
 		} else {
 			gameplay.addToViewLogger("Input defend command!");
-			attackMoveCommandInput = true;
+			defendCommandInput = true;
 		}
 		
 	}
 
 	public void defendCommand(String command) {
-		if (defendCommandInput = false) {
+		if (!defendCommandInput) {
 			System.out.println("Not defending time");
 			return;
 		}
@@ -345,6 +348,10 @@ public class Player extends Observable {
 
 		if (fromCountry.getNoOfArmiesPresent() == 1) {
 			gameplay.addToViewLogger("Offensive country left only one army, cannot do any more attack");
+			if (!checkAvailableAttack()) {
+				gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
+				gameplay.setCurrentPhase(Phases.Fortification);
+			}
 			return true;
 		}
 
@@ -367,13 +374,14 @@ public class Player extends Observable {
 			setCardFlag();
 			gameplay.addToViewLogger("Input your move command!");
 			gameplay.addToViewLogger("Attack country has " + fromCountry.getNoOfArmiesPresent() + "armies");
+			attackMoveCommandInput = true;
 			return true;
 		}
 		return false;
 	}
 
 	public void attackMove(String command){
-		if (attackMoveCommandInput = false) {
+		if (!attackMoveCommandInput) {
 			System.out.println("Not moving time");
 			return;
 		}
@@ -385,6 +393,10 @@ public class Player extends Observable {
 		int moveArmies = Integer.parseInt(moveCommands[1]);
 		fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - moveArmies);
 		toCountry.setNoOfArmiesPresent(moveArmies);
+		if (!checkAvailableAttack()) {
+			gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
+			gameplay.setCurrentPhase(Phases.Fortification);
+		}
 		attackMoveCommandInput = false;
 	}
 

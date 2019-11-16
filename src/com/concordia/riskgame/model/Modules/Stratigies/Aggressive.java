@@ -57,7 +57,7 @@ public class Aggressive implements Strategy {
         Country strongest = gameplay.getSelectedMap().searchCountry(strongestCountry);
         try {
             for (String neighbor : strongest.getListOfNeighbours()) {
-                if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
+                if (gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
                     continue;
                 }
                 String command = "attack" + strongestCountry + " " + neighbor + " -allout";
