@@ -96,6 +96,12 @@ public class CommandController {
             case "attack":
                 attack(command);
                 break;
+            case "defend":
+                defend(command);
+                break;
+            case "attackmove":
+                attackmove(command);
+                break;
             case "fortify":
                 fortify(command);
                 break;
@@ -831,6 +837,15 @@ public class CommandController {
                 return new Human();
         }
 
+    }
+
+
+    private static void attackmove(String command) {
+        gameplay.getCurrentPlayer().attackMove(command);
+    }
+
+    private static void defend(String command) {
+        gameplay.getCurrentPlayer().defendCommand(command);
     }
 
     /**

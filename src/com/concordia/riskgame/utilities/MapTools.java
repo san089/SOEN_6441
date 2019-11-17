@@ -124,7 +124,7 @@ public class MapTools  {
 		try {
 			FileReader mapFile;
 			String line = null;
-			mapFile = new FileReader(gameMap.getPath() + "//" + gameMap.getName());
+			mapFile = new FileReader(gameMap.getPath() + "\\" + gameMap.getName());
 			String Data = "";
 			BufferedReader mapReader = new BufferedReader(mapFile);
 			while ((line = mapReader.readLine()) != null) {
