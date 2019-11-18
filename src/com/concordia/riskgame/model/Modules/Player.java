@@ -519,7 +519,7 @@ public class Player extends Observable {
 	/**
 	 * After each player out, check whether the winner player is the final winner. If it is, exit game.
 	 */
-	private boolean isWinner() {
+	public boolean isWinner() {
 		if (gameplay.getPlayers().size() == 1) {
 			return true;
 		}

@@ -134,16 +134,19 @@ public class Gameplay extends Observable {
 		System.out.println(CommandController.ANSI_RESET);
 
 		System.out.println(gameplayObj.currentPlayer.getStrategy().getColor());
-		System.out.println("==========================Bot performing Card Exchange=========================");
+		System.out.println("==========================" + gameplayObj.currentPlayer.getStrategy().getStrategyName().toUpperCase() +" Bot performing Card Exchange=========================");
 		gameplayObj.currentPlayer.getStrategy().doCardExchange();
 		waitOneSecond();
-		System.out.println("==========================Bot performing Reinforcement=========================");
+		System.out.println("==========================" + gameplayObj.currentPlayer.getStrategy().getStrategyName().toUpperCase() +" Bot performing Reinforcement=========================");
 		gameplayObj.currentPlayer.getStrategy().doReinforcement();
 		waitOneSecond();
-		System.out.println("==========================Bot performing Attack=========================");
+		System.out.println("==========================" + gameplayObj.currentPlayer.getStrategy().getStrategyName().toUpperCase() +" Bot performing Attack=========================");
 		gameplayObj.currentPlayer.getStrategy().doAttack();
 		waitOneSecond();
-		System.out.println("==========================Bot performing Fortification=========================");
+		if(gameplayObj.currentPlayer.isWinner()) {
+			return;
+		}
+		System.out.println("==========================" + gameplayObj.currentPlayer.getStrategy().getStrategyName().toUpperCase() +" Bot performing Fortification=========================");
 		gameplayObj.currentPlayer.getStrategy().doFortification();
 		waitOneSecond();
 		System.out.println(CommandController.ANSI_RESET);
