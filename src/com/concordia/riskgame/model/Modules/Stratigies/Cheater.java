@@ -73,6 +73,7 @@ public class Cheater implements Strategy {
         System.out.println(getStrategyName() + " bot playing reinforcement phase.");
         ArrayList<Country> ownedCountries = gameplay.getSelectedMap().getOwnedCountries(gameplay.getCurrentPlayer().getPlayerName());
 
+        outerloop:
         for(Country c : ownedCountries){
             List<String> neighbourCountries = c.getListOfNeighbours();
 
@@ -92,6 +93,9 @@ public class Cheater implements Strategy {
                         c.setNoOfArmiesPresent(999);
                         String attackCommand = "attack " + c.getCountryName() + " " + neigbourCountry + " -allout";
                         CommandController.parseCommand(attackCommand);
+                        if(gameplay.getCurrentPlayer().isWinner()){
+                            break outerloop;
+                        }
                         String attackmove = "attackmove " + defendArmyCount;
                         CommandController.parseCommand(attackmove);
                         c.setNoOfArmiesPresent(attackArmyCount);
@@ -100,9 +104,6 @@ public class Cheater implements Strategy {
                         System.out.println("EXCEPTION!! BOT " + getStrategyName() + " attack phase. Executing attack commands.");
                     }
                 }
-            }
-            if(gameplay.getCurrentPlayer().isWinner()){
-                break;
             }
         }
 
