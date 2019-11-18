@@ -105,6 +105,9 @@ public class CommandController {
             case "fortify":
                 fortify(command);
                 break;
+            case "botplay":
+                botPlay();
+                break;
             case "help":
                 showHelpOptions();
                 break;
@@ -696,6 +699,7 @@ public class CommandController {
                     gameplay.addToViewLogger("Incorrect command!");
                     return;
                 }
+
                 String countryName = command.split(" ")[1];
                 String num = command.split(" ")[2];
                 if (!verifyNumber(num)) {
@@ -724,7 +728,7 @@ public class CommandController {
             gameplay.triggerObserver("domination");
             gameplay.triggerObserver("showmap");
         }catch (Exception e){
-            gameplay.addToViewLogger("Some exception occurred.");
+            gameplay.addToViewLogger("Some exception occurred in reinforcement command.");
             showHelpOptions();
         }
     }
@@ -809,15 +813,27 @@ public class CommandController {
             while (gameplay.getRemovedPlayer().contains(gameplay.getPlayerQueue().peek())) {
                 gameplay.getPlayerQueue().remove();
             }
+
+            System.out.println(ANSI_RESET);
+
             gameplay.roundRobinPlayer();
             gameplay.addToViewLogger("Moving from "+ gameplay.getCurrentPhase() +" Phase to Reinforcement Phase.");
-            CardExchangeView.getInstance().setVisible(true);
             gameplay.setCurrentPhase(Phases.Reinforcement);
-            gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn!");
+            CardExchangeView.getInstance().setVisible(true);
+            gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn! Player Strategy is : " + gameplay.getCurrentPlayer().getStrategy().getStrategyName());
         }catch (Exception e){
             gameplay.addToViewLogger("Some exception occurred");
         }
 
+    }
+
+    public static void botPlay() {
+        if(!gameplay.getCurrentPlayer().getStrategy().getStrategyName().equals("Human")) {
+            gameplay.simulateBotPlay();
+        }
+        else{
+            System.out.println("Current player is not a bot. Please enter valid command.");
+        }
     }
 
 

@@ -14,6 +14,7 @@ import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.utilities.ScannerUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Scanner;
 
@@ -173,6 +174,15 @@ public class Player extends Observable {
 	private Scanner scanner = ScannerUtil.sc;
 	private boolean defendCommandInput = false;
 	private boolean attackMoveCommandInput =false;
+	private HashMap<Country, ArrayList<Country>> availableAttacks = new HashMap<>();
+
+	public HashMap<Country, ArrayList<Country>> getAvailableAttacks() {
+		return availableAttacks;
+	}
+
+	public boolean isAttackMoveCommandInput() {
+		return attackMoveCommandInput;
+	}
 
 	/**
 	 * Reinforce army to one country, parse country and number from command, then do move.
@@ -265,6 +275,9 @@ public class Player extends Observable {
 	 */
 
 	public boolean checkAvailableAttack() {
+		availableAttacks.clear();
+		ArrayList<Country> defendCountry = new ArrayList<>();
+
 		boolean attackAvailable = false;
 		gameplay.addToViewLogger("Next available attacks are:");
 		for (String countryName : gameplay.getCurrentPlayer().getCountriesOwned()) {
@@ -275,11 +288,24 @@ public class Player extends Observable {
 						Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor);
 						gameplay.addToViewLogger(countryName + " " + country.getNoOfArmiesPresent() + " → " + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
 						attackAvailable = true;
+						defendCountry.add(neighborCountry);
 					}
+				}
+				if(defendCountry.size() > 0){
+					availableAttacks.put(country, deepCopyArrayList(defendCountry));
+					defendCountry.clear();
 				}
 			}
 		}
 		return attackAvailable;
+	}
+
+	private ArrayList<Country> deepCopyArrayList(ArrayList<Country> defend){
+		ArrayList<Country> deepCopyCountry = new ArrayList<>();
+		for(Country c: defend){
+			deepCopyCountry.add(c);
+		}
+		return deepCopyCountry;
 	}
 
 	/**

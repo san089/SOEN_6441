@@ -1,5 +1,5 @@
 loadmap D:\SOEN_6441\Maps\Valid_Maps\SmallValidMap.map
-gameplayer -add Sanchit Human -add Sucheta Aggressive -remove Sucheta -add Sucheta Benevolent
+gameplayer -add Sanchit Human -add Sucheta Random -remove Sucheta -add Sucheta Random
 populatecountries
 placeall
 exchangecards -none

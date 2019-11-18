@@ -29,11 +29,11 @@ public class Aggressive implements Strategy {
 
     public void doCardExchange(){
         try {
-            System.out.println("Bot executing command : " + " exchangecards -none");
             CommandController.parseCommand("exchangecards 3 0 0");
             CommandController.parseCommand("exchangecards 0 3 0");
             CommandController.parseCommand("exchangecards 0 0 3");
             CommandController.parseCommand("exchangecards 1 1 1");
+            CommandController.parseCommand("exchangecards -none");
         }
         catch (Exception e){
             System.out.println("Some exception occured while exchange cards command.");
@@ -45,6 +45,7 @@ public class Aggressive implements Strategy {
         try {
             strongestCountry = getStrongestCountry();
             String command = "reinforce " + strongestCountry + " " + gameplay.getCurrentPlayer().getArmyCount();
+            System.out.println("Bot Executing Command : " + command);
             CommandController.parseCommand(command);
         }
         catch (Exception e) {
@@ -60,7 +61,7 @@ public class Aggressive implements Strategy {
                 if (gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
                     continue;
                 }
-                String command = "attack" + strongestCountry + " " + neighbor + " -allout";
+                String command = "attack " + strongestCountry + " " + neighbor + " -allout";
                 CommandController.parseCommand(command);
                 if (strongest.getNoOfArmiesPresent() != 1) {
                     command = "attackmove 1";

@@ -12,6 +12,7 @@
 
 package com.concordia.riskgame.model.Modules;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -24,6 +25,9 @@ import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Phases;
+import com.concordia.riskgame.view.CardExchangeView;
+
+import java.util.concurrent.TimeUnit;
 
 // TODO: Auto-generated Javadoc
 public class Gameplay extends Observable {
@@ -120,26 +124,31 @@ public class Gameplay extends Observable {
 		setCurrentPlayer(playerQueue.remove());
 		setCurrentPlayer(currentPlayer);
 		playerQueue.add(currentPlayer);
-		while (!gameplayObj.currentPlayer.getStrategy().getStrategyName().equals("Human")){
-			gameplayObj.setCurrentPhase(Phases.Reinforcement);
-			System.out.println("\n\nCurrent player is a bot and strategy is : " + gameplayObj.currentPlayer.getStrategy().getStrategyName());
-			System.out.println("Simulating Bot Play");
-			simulateBotPlay();
-			System.out.println(CommandController.ANSI_RESET);
-		}
 	}
 
-	private void simulateBotPlay() {
+	public void simulateBotPlay() {
+
+		gameplayObj.setCurrentPhase(Phases.Reinforcement);
+		System.out.println("\n\nCurrent player is a bot and strategy is : " + gameplayObj.currentPlayer.getStrategy().getStrategyName());
+		System.out.println("Simulating Bot Play");
+		System.out.println(CommandController.ANSI_RESET);
+
 		System.out.println(gameplayObj.currentPlayer.getStrategy().getColor());
 		System.out.println("==========================Bot performing Card Exchange=========================");
 		gameplayObj.currentPlayer.getStrategy().doCardExchange();
+		waitOneSecond();
 		System.out.println("==========================Bot performing Reinforcement=========================");
 		gameplayObj.currentPlayer.getStrategy().doReinforcement();
+		waitOneSecond();
 		System.out.println("==========================Bot performing Attack=========================");
 		gameplayObj.currentPlayer.getStrategy().doAttack();
+		waitOneSecond();
 		System.out.println("==========================Bot performing Fortification=========================");
 		gameplayObj.currentPlayer.getStrategy().doFortification();
+		waitOneSecond();
 		System.out.println(CommandController.ANSI_RESET);
+
+		return;
 	}
 
 	public void setArmyCount(int count) {
@@ -486,7 +495,15 @@ public class Gameplay extends Observable {
 	public void triggerObserver(String observerName) {
 		setChanged();
 		notifyObservers(observerName);
+	}
 
+	public void waitOneSecond() {
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		}
+		catch (Exception e){
+			System.out.println("Gameplay class. Some Exception occured while waiting.");
+		}
 	}
 
 }
