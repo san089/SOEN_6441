@@ -35,6 +35,7 @@ public class Cheater implements Strategy {
     }
 
     public void doReinforcement(){
+
         Country tempCountry = null;
         System.out.println(getStrategyName() + " bot playing reinforcement phase.");
         ArrayList<Country> ownedCountries = gameplay.getSelectedMap().getOwnedCountries(gameplay.getCurrentPlayer().getPlayerName());

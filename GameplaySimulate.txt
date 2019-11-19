@@ -1,5 +1,5 @@
-loadmap D:\SOEN_6441\Maps\Valid_Maps\SmallValidMap.map
-gameplayer -add Sanchit Human -add Sucheta Random -remove Sucheta -add Sucheta Random
+loadmap D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map
+gameplayer -add Sanchit Benevolent -add HaiFeng Human -add Sucheta Cheater 
 populatecountries
 placeall
 exchangecards -none
@@ -9,3 +9,8 @@ reinforce Canada 3
 reinforce Usa 3
 attack -noattack
 fortify -none
+
+
+
+
+tournament -M D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map|D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map|D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map -P Random|Random|Random -G 4 -D 10

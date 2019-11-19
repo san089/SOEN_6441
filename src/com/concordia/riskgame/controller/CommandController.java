@@ -1,7 +1,9 @@
 package com.concordia.riskgame.controller;
 
 import com.concordia.riskgame.model.Modules.*;
+import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Stratigies.*;
+import com.concordia.riskgame.model.Modules.Stratigies.Random;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.utilities.ScannerUtil;
@@ -11,10 +13,9 @@ import com.concordia.riskgame.view.PhaseView;
 import com.concordia.riskgame.view.WorldDominationView;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.net.Inet4Address;
+import java.util.*;
 
 
 // TODO: Auto-generated Javadoc
@@ -107,6 +108,10 @@ public class CommandController {
                 break;
             case "botplay":
                 botPlay();
+                break;
+            case "tournament":
+                System.out.println("/////////  TOURNAMENT MODE SELECTED  ///////////////");
+                runTournament(command);
                 break;
             case "help":
                 showHelpOptions();
@@ -833,6 +838,74 @@ public class CommandController {
         }
         else{
             System.out.println("Current player is not a bot. Please enter valid command.");
+        }
+    }
+
+    public static boolean validateTournamentCommand(String command){
+        String[] args = command.split(" ");
+
+        if(args.length != 9){
+            System.out.println("Some error in arguments of tournament command. Please check if all the arguments are provided");
+            return false;
+        }
+
+        try {
+            if (args[1].equals("-M") && args[3].equals("-P") && args[5].equals("-G") && args[7].equals("-D") ){
+
+                //validate mapfile input, delimited for mapfiles input is pipe (|}
+                if(args[2].split("|").length <= 0){
+                    System.out.println("Invalid number of map files");
+                    return false;
+                }
+
+                //validate player strategies
+                if(args[4].split("|").length <=0 ){
+                    System.out.println("Invalid number of player strategies");
+                    return false;
+                }
+
+                //validate number of games
+                if( (!verifyNumber(args[6])) && (Integer.parseInt(args[6]) <= 0) ){
+                    System.out.println("Invalid number of games");
+                    return false;
+                }
+
+                //validate number of turns
+                if( (!verifyNumber(args[8])) && (Integer.parseInt(args[8]) <= 0) ){
+                    System.out.println("Invalid number of turns");
+                    return false;
+                }
+
+            }
+            else {
+                return false;
+            }
+        }
+        catch (Exception e){
+            System.out.println("Some exception occured while parsing tournament command.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void runTournament(String Command){
+        if(validateTournamentCommand(Command)){
+            String[] args = Command.split(" ");
+
+            ArrayList<String> mapFiles = new ArrayList<>();
+            mapFiles.addAll(Arrays.asList(args[2].split("|")));
+
+            ArrayList<String> strategyList = new ArrayList<>();
+            strategyList.addAll(Arrays.asList(args[2].split("|")));
+
+            int numberOfGames = Integer.parseInt(args[6]);
+            int numberOfTurns = Integer.parseInt(args[8]);
+
+
+            Tournament t1 = new Tournament(mapFiles, strategyList, numberOfGames, numberOfTurns);
+            t1.run();
+
         }
     }
 
