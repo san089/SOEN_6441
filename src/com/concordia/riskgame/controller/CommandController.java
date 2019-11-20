@@ -10,11 +10,8 @@ import com.concordia.riskgame.utilities.ScannerUtil;
 import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
-import com.concordia.riskgame.view.WorldDominationView;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.Inet4Address;
 import java.util.*;
 
 
@@ -36,7 +33,7 @@ public class CommandController {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
     
-    public static Gameplay gameplay=Gameplay.getInstance();
+    public static Gameplay gameplay;
     public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
     public static MapTools mapTools=new MapTools();
 
@@ -47,10 +44,10 @@ public class CommandController {
      * @param command takes command input from user
      * @throws IOException throws an exception if input is invalid.
      */
-    public static void parseCommand(String command) throws IOException {
+    public static void parseCommand(String command) {
         command = command.trim().replaceAll(" +", " "); //replace multiple whitespaces with one.
         commandType = command.split(" ")[0];
-
+        gameplay=Gameplay.getInstance();
         switch (commandType) {
             case "editcontinent":
                 editContinent(command);
@@ -129,7 +126,7 @@ public class CommandController {
     }
 
     /**
-     *
+     *This method parse attack command from command terminal
      * @param command
      */
     private static void attack(String command) {
@@ -604,7 +601,7 @@ public class CommandController {
      *
      * @throws  IOException if the number entered by the user is not valid.
      */
-    public static void placeArmy(String command) throws IOException {
+    public static void placeArmy(String command) {
     	Scanner in = ScannerUtil.sc;
     	int armyCount = 0;
         String countryName = command.split(" ")[1];   
@@ -663,7 +660,7 @@ public class CommandController {
      *
      * @throws IOException throws an exception if input is invalid.
      */
-    public static void placeAll() throws IOException {
+    public static void placeAll() {
     	gameplay.placeAllArmies();
 
         ArrayList<Player> players = gameplay.getPlayers();
@@ -681,7 +678,9 @@ public class CommandController {
         gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase." +
                 "Please exchange cards first or exchange none");
         gameplay.triggerObserver("domination");
-        
+        if (!gameplay.getCurrentPlayer().getStrategy().equals("Human")) {
+            parseCommand("botplay");
+        }
     }
 
 
@@ -692,7 +691,7 @@ public class CommandController {
      *
      * @throws  IOException when the input is not valid.
      */
-    public static void reinforce(String command) throws IOException
+    public static void reinforce(String command)
     {
         try {
             if(gameplay.getCurrentPhase() == Phases.Reinforcement){
@@ -746,7 +745,7 @@ public class CommandController {
      */
 
 
-    private static void exchangeCards(String command) throws IOException {
+    private static void exchangeCards(String command){
         if (gameplay.getCurrentPhase() != Phases.Reinforcement) {
             gameplay.addToViewLogger("Now is not reinforcement phase!");
             return;
@@ -790,7 +789,7 @@ public class CommandController {
      * @param command the command
      * @throws  IOException when error placing army.
      */
-    public static void fortify(String command) throws IOException
+    public static void fortify(String command)
     {
         if (gameplay.getCurrentPhase() != Phases.Fortification) {
             gameplay.addToViewLogger("Now is " + gameplay.getCurrentPhase() + " phase, cannot do fortification");
@@ -826,6 +825,9 @@ public class CommandController {
             gameplay.setCurrentPhase(Phases.Reinforcement);
             CardExchangeView.getInstance().setVisible(true);
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn! Player Strategy is : " + gameplay.getCurrentPlayer().getStrategy().getStrategyName());
+            if (!gameplay.getCurrentPlayer().getStrategy().equals("Human")) {
+                parseCommand("botplay");
+            }
         }catch (Exception e){
             gameplay.addToViewLogger("Some exception occurred");
         }
@@ -894,16 +896,16 @@ public class CommandController {
             String[] args = Command.split(" ");
 
             ArrayList<String> mapFiles = new ArrayList<>();
-            mapFiles.addAll(Arrays.asList(args[2].split("|")));
+            mapFiles.addAll(Arrays.asList(args[2].split("\\|")));
 
             ArrayList<String> strategyList = new ArrayList<>();
-            strategyList.addAll(Arrays.asList(args[2].split("|")));
+            strategyList.addAll(Arrays.asList(args[4].split("\\|")));
 
             int numberOfGames = Integer.parseInt(args[6]);
             int numberOfTurns = Integer.parseInt(args[8]);
 
 
-            Tournament t1 = new Tournament(mapFiles, strategyList, numberOfGames, numberOfTurns);
+            TournamentGame t1 = new TournamentGame(mapFiles, strategyList, numberOfGames, numberOfTurns);
             t1.run();
 
         }
