@@ -24,7 +24,15 @@ public class Random implements Strategy {
 
     public void doCardExchange(){
         try {
-            System.out.println("Bot executing command : " + " exchangecards -none");
+            System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
+            CommandController.parseCommand("exchangecards 3 0 0");
+            System.out.println("Bot Executing Command : " + "exchangecards 0 3 0");
+            CommandController.parseCommand("exchangecards 0 3 0");
+            System.out.println("Bot Executing Command : " + "exchangecards 0 0 3");
+            CommandController.parseCommand("exchangecards 0 0 3");
+            System.out.println("Bot Executing Command : " + "exchangecards 1 1 1");
+            CommandController.parseCommand("exchangecards 1 1 1");
+            System.out.println("Bot Executing Command : " + "exchangecards -none");
             CommandController.parseCommand("exchangecards -none");
         }
         catch (Exception e){

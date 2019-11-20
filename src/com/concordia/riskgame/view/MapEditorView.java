@@ -311,16 +311,16 @@ public class MapEditorView extends JFrame implements Serializable,Observer {
     public JScrollPane createTable() {
     	
 		String[] columnNames = { "Player Name ", "Countries Owned", "Number of Armies", "Continents Owned"};
-		Gameplay gameInstance=Gameplay.getInstance();
-		List<Player> playerList= gameInstance.getPlayers();
-        int rowCount=gameInstance.getSelectedMap().listOfCountryNames().size() + playerList.size() - 1;
+		//Gameplay gameInstance=Gameplay.getInstance();
+		List<Player> playerList= Gameplay.getInstance().getPlayers();
+        int rowCount=Gameplay.getInstance().getSelectedMap().listOfCountryNames().size() + playerList.size() - 1;
 		Object[][] data = new Object[rowCount][4];
 		int row=0;
 		for(Player player:playerList) {
 			//System.out.println("RowCount "+rowCount);
 			String playerName=player.getPlayerName();
-			List<Country> playerOwnedCountryList=gameInstance.getSelectedMap().getOwnedCountries(playerName);
-			List<Continent> continentList=gameInstance.getSelectedMap().getOwnedContinents(playerName);
+			List<Country> playerOwnedCountryList=Gameplay.getInstance().getSelectedMap().getOwnedCountries(playerName);
+			List<Continent> continentList=Gameplay.getInstance().getSelectedMap().getOwnedContinents(playerName);
 			String continentsOwned="";
 			for(Continent continent:continentList)
 				continentsOwned+=", "+continent.getContinentName();
