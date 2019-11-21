@@ -47,7 +47,7 @@ public class WorldDominationView extends JFrame implements Observer {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JFrame commonViewFrame;
-	private Gameplay gameInstance;
+	//private Gameplay gameInstance;
 	private int rowCount;
 	private List<Player> playerList;
 	private Map gameMap;
@@ -67,11 +67,11 @@ public class WorldDominationView extends JFrame implements Observer {
 		commonViewFrame.add(viewLabelPanel);
 
 
-		gameInstance=Gameplay.getInstance();
-		gameInstance.addObserver(this);
-		rowCount=gameInstance.getPlayers().size();
-		gameMap=gameInstance.getSelectedMap();
-		playerList= gameInstance.getPlayers();
+		//gameInstance=Gameplay.getInstance();
+		Gameplay.getInstance().addObserver(this);
+		rowCount=Gameplay.getInstance().getPlayers().size();
+		gameMap=Gameplay.getInstance().getSelectedMap();
+		playerList= Gameplay.getInstance().getPlayers();
 
 
 		dominationViewLabel=new JLabel("World Domination View");

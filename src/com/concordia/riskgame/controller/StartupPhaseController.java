@@ -46,7 +46,7 @@ public class StartupPhaseController implements ActionListener  {
 	 */
 	public StartupPhaseController(StartUpPhaseView startupView) {
 		this.countries=new ArrayList<String>();
-		this.gameplay = Gameplay.getInstance();
+		//this.gameplay = Gameplay.getInstance();
 		this.sView=startupView;
 		initView();
 	}
@@ -111,8 +111,8 @@ public class StartupPhaseController implements ActionListener  {
 				boolean isMapValid=mapTool.parseAndValidateMap(existingMap,3);
 				if(isMapValid) {
 					JOptionPane.showMessageDialog(null, "Map successfully loaded");
-					gameplay.setSelectedMap(existingMap);
-					System.out.println(gameplay.getSelectedMap().getAuthorName());
+					Gameplay.getInstance().setSelectedMap(existingMap);
+					System.out.println(Gameplay.getInstance().getSelectedMap().getAuthorName());
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Invalid Map selected");
@@ -122,14 +122,14 @@ public class StartupPhaseController implements ActionListener  {
 		}
 
 		else if(event.getSource()==sView.getAddPlayerButton())
-		{	if(gameplay.getPlayerCount()==0)
-			gameplay.setPlayerCount(Integer.parseInt(sView.getPlayerCount().getSelectedItem().toString()));
+		{	if(Gameplay.getInstance().getPlayerCount()==0)
+			Gameplay.getInstance().setPlayerCount(Integer.parseInt(sView.getPlayerCount().getSelectedItem().toString()));
 
 			if(sView.getPlayerName().getText().contentEquals(""))
 				JOptionPane.showMessageDialog(null,
 						"Please enter a player name", "Error Message",
 						JOptionPane.ERROR_MESSAGE);
-			if(gameplay.getPlayers().size()>=gameplay.getPlayerCount()) {
+			if(Gameplay.getInstance().getPlayers().size()>=Gameplay.getInstance().getPlayerCount()) {
 
 				JOptionPane.showMessageDialog(null,
 						"Player limit reached.Cannot add anymore players", "Error Message",
@@ -141,14 +141,14 @@ public class StartupPhaseController implements ActionListener  {
 				String playerName = sView.getPlayerName().getText();
 				String playerStrategyName=sView.getPlayerStrategy().getSelectedItem().toString();
 				Strategy playerStrategy = CommandController.createPlayerStrategy(playerStrategyName);
-				String message=gameplay.addPlayer(playerName, playerStrategy);
+				String message=Gameplay.getInstance().addPlayer(playerName, playerStrategy);
 				System.out.println(playerStrategy);
 				JOptionPane.showMessageDialog(null,
 						message, "Message",
 						JOptionPane.INFORMATION_MESSAGE);
 				sView.getModel().clear();
-				for(int i=0;i<gameplay.getPlayers().size();i++)
-					sView.getModel().add(i, gameplay.getPlayers().get(i).getPlayerName());
+				for(int i=0;i<Gameplay.getInstance().getPlayers().size();i++)
+					sView.getModel().add(i, Gameplay.getInstance().getPlayers().get(i).getPlayerName());
 
 			}
 
@@ -159,14 +159,14 @@ public class StartupPhaseController implements ActionListener  {
 		else if(event.getSource()==sView.getRemovePlayerButton())
 		{
 			if(!(sView.getRemovePlayerName().getText().contentEquals(""))) {
-				String message=gameplay.removePlayer(sView.getRemovePlayerName().getText());
+				String message=Gameplay.getInstance().removePlayer(sView.getRemovePlayerName().getText());
 				JOptionPane.showMessageDialog(null,
 						message, "Message",
 						JOptionPane.INFORMATION_MESSAGE);
 
 				sView.getModel().clear();
-				for(int i=0;i<gameplay.getPlayers().size();i++)
-					sView.getModel().add(i, gameplay.getPlayers().get(i).getPlayerName());
+				for(int i=0;i<Gameplay.getInstance().getPlayers().size();i++)
+					sView.getModel().add(i, Gameplay.getInstance().getPlayers().get(i).getPlayerName());
 
 			}
 			else {
@@ -182,7 +182,7 @@ public class StartupPhaseController implements ActionListener  {
 
 		else if(event.getSource()==sView.getPopulateCountriesButton())
 		{
-			String message=gameplay.validateStartupInputs();
+			String message=Gameplay.getInstance().validateStartupInputs();
 			if(!message.contentEquals("Success"))
 			{
 
@@ -193,7 +193,7 @@ public class StartupPhaseController implements ActionListener  {
 			}
 			else
 			{
-				gameplay.initialisePlayers();
+				Gameplay.getInstance().initialisePlayers();
 				JOptionPane.showMessageDialog(null,
 						"Player Initialisation complete.Please use command line interface for the rest of gameplay", "Information Message",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -204,10 +204,10 @@ public class StartupPhaseController implements ActionListener  {
 
 		else if (event.getSource()==sView.getShowMapButton())
 		{
-			if(gameplay.getSelectedMap()==null)
+			if(Gameplay.getInstance().getSelectedMap()==null)
 				JOptionPane.showMessageDialog(null, "No Map Selected!");
 			else
-				mapEditor.showMapService(gameplay.getSelectedMap());
+				mapEditor.showMapService(Gameplay.getInstance().getSelectedMap());
 		}
 
 	}

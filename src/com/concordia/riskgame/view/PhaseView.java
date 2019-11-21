@@ -59,11 +59,11 @@ public class PhaseView extends JFrame implements Observer{
 
 	public PhaseView() {
 		
-		gameInstance=Gameplay.getInstance();
-		gameInstance.addObserver(this);
-		currentPlayer=gameInstance.getCurrentPlayer();
-		currentPhase=gameInstance.getCurrentPhase();
-		loggerList=gameInstance.getViewLogger();
+		//gameInstance=Gameplay.getInstance();
+		Gameplay.getInstance().addObserver(this);
+		currentPlayer=Gameplay.getInstance().getCurrentPlayer();
+		currentPhase=Gameplay.getInstance().getCurrentPhase();
+		loggerList=Gameplay.getInstance().getViewLogger();
 		viewLogger="";
 		
 		

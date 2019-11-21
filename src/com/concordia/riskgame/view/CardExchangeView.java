@@ -49,7 +49,7 @@ public class CardExchangeView extends JFrame implements Observer {
     private JTextField use1;
     private JTextField use2;
     private JTextField use3;
-    private Gameplay gameplay = Gameplay.getInstance();
+   // private Gameplay gameplay = Gameplay.getInstance();
     String currentPlayer;
     String text1;
     String text2;
@@ -60,7 +60,7 @@ public class CardExchangeView extends JFrame implements Observer {
      * @return The only one instance of card exchange view.
      * @throws IOException throws an exception if any input output mismatch
      */
-    public static CardExchangeView getInstance() throws IOException {
+    public static CardExchangeView getInstance() {
         if (cardExchangeView == null){
             cardExchangeView = new CardExchangeView();
         }
@@ -71,19 +71,24 @@ public class CardExchangeView extends JFrame implements Observer {
      * Constructor
      * @throws IOException throws an exception for invalid input.
      */
-    public CardExchangeView() throws IOException {
-        text1 = String.valueOf(gameplay.getCurrentPlayer().getNumOfInfCard());
-        text2 = String.valueOf(gameplay.getCurrentPlayer().getNumOfCavCard());
-        text3 = String.valueOf(gameplay.getCurrentPlayer().getNumOfArtCard());
-        currentPlayer = "Current Player: " + gameplay.getCurrentPlayer().getPlayerName();
+    public CardExchangeView(){
+        text1 = String.valueOf(Gameplay.getInstance().getCurrentPlayer().getNumOfInfCard());
+        text2 = String.valueOf(Gameplay.getInstance().getCurrentPlayer().getNumOfCavCard());
+        text3 = String.valueOf(Gameplay.getInstance().getCurrentPlayer().getNumOfArtCard());
+        currentPlayer = "Current Player: " + Gameplay.getInstance().getCurrentPlayer().getPlayerName();
 
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         cardWindow=new JFrame("Card Exchange");
 
-        infantry = ImageIO.read(new File("./infantry.png"));
-        cavalry = ImageIO.read(new File("./cavalry.png"));
-        artillery = ImageIO.read(new File("./artillery.png"));
+        try {
+            infantry = ImageIO.read(new File("./infantry.png"));
+            cavalry = ImageIO.read(new File("./cavalry.png"));
+            artillery = ImageIO.read(new File("./artillery.png"));
+        } catch (Exception e) {
+            System.out.println("Image file load error");
+        }
+
 
         image1 = new JLabel(new ImageIcon(infantry));
         image2 = new JLabel(new ImageIcon(cavalry));
@@ -169,11 +174,11 @@ public class CardExchangeView extends JFrame implements Observer {
     @Override
     public void update(Observable observable, Object o) {
 
-        currentPlayer = "Current Player: " + gameplay.getCurrentPlayer().getPlayerName();
+        currentPlayer = "Current Player: " + Gameplay.getInstance().getCurrentPlayer().getPlayerName();
         player.setText(currentPlayer);
-        text1 = Integer.toString(gameplay.getCurrentPlayer().getNumOfInfCard());
-        text2 = Integer.toString(gameplay.getCurrentPlayer().getNumOfCavCard());
-        text3 = Integer.toString(gameplay.getCurrentPlayer().getNumOfArtCard());
+        text1 = Integer.toString(Gameplay.getInstance().getCurrentPlayer().getNumOfInfCard());
+        text2 = Integer.toString(Gameplay.getInstance().getCurrentPlayer().getNumOfCavCard());
+        text3 = Integer.toString(Gameplay.getInstance().getCurrentPlayer().getNumOfArtCard());
         num1.setText(text1);
         num2.setText(text2);
         num3.setText(text3);
