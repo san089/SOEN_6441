@@ -12,17 +12,21 @@ import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
 import com.concordia.riskgame.view.WorldDominationView;
 
+import javax.swing.*;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.net.Inet4Address;
 import java.util.*;
+
+import static com.concordia.riskgame.model.Modules.Gameplay.SaveGame;
 
 
 // TODO: Auto-generated Javadoc
 /**
  * Class to parse the commands entered by user and perform actions based on commands
  */
-public class CommandController {
+public class CommandController implements Serializable {
 
     public static String commandType; // command type
     public static HashMap<String, Integer> addContinent = new HashMap<>();
@@ -35,10 +39,13 @@ public class CommandController {
     public static ArrayList<String> removePlayer = new ArrayList<>();
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
-    
+    private String sSaveFileName="";
+
     public static Gameplay gameplay=Gameplay.getInstance();
     public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
     public static MapTools mapTools=new MapTools();
+    private static final long serialVersionUID = 45443434343L;
+
 
 
     /**
@@ -66,6 +73,12 @@ public class CommandController {
                 break;
             case "savemap":
                 saveMap(command);
+                break;
+            case "saveGame":
+                saveGame();
+                break;
+            case "loadGame":
+                loadGame(command);
                 break;
             case "editmap":
                 editMap(command);
@@ -305,7 +318,7 @@ public class CommandController {
         addContinent.clear();
         removeCountry.clear();
         addCountry.clear();
-        
+
 
         String[] args = command.split(" ");
         String arg_type;
@@ -536,9 +549,21 @@ public class CommandController {
         }
         String fileName = command.split(" ")[1];
         mapEditor.saveMapService(fileName);
-        
-        
+
+
     }
+
+    public static void saveGame(){
+        if(gameplay.getCurrentPhase() !=Phases.Startup || gameplay.getCurrentPhase() !=Phases.Attack ||gameplay.getCurrentPhase() !=Phases.Reinforcement || gameplay.getCurrentPhase() !=Phases.Fortification){
+        SaveGame();
+        }
+    }
+
+    public static void loadGame(String command){
+
+
+    }
+
 
 
     /**
