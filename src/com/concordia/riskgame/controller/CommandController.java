@@ -11,8 +11,7 @@ import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
 
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 
 
 import java.util.*;
@@ -559,8 +558,19 @@ public class CommandController implements Serializable {
     }
 
     public static void loadGame(String command){
-
-
+        String fileName = command.split(" ")[1];
+        System.out.println("hello"+" "+fileName);
+        FileInputStream fs = null;
+        try {
+            fs = new FileInputStream(fileName);
+            ObjectInputStream os = new ObjectInputStream(fs);
+            Gameplay gameModel = (Gameplay) os.readObject();
+            gameModel.addObserver(gameModel);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
