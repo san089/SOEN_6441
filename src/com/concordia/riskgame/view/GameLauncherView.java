@@ -25,6 +25,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -73,7 +74,14 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		gameLaunchPanel.add(startButton);
 
 		startButton.addActionListener(this);
-
+//		ArrayList<String> test = new ArrayList<>();
+//		test.add("d");
+//		test.add("d");
+//		test.add("d");
+//		test.add("d");
+//		test.add("d");
+//		test.add("d");
+//		new TournamentView(test, 3, 2);
 		initaliseCardLayoutUI();
 
 		CreateMenuBar();

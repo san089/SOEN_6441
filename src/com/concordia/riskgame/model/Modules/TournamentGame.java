@@ -2,6 +2,7 @@ package com.concordia.riskgame.model.Modules;
 
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.view.TournamentView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,7 @@ public class TournamentGame extends Thread{
             n--;
         }
         System.out.println("Tournament Done!!!!");
+        new TournamentView(tournamentResult, gameId, mapFiles.size());
     }
 
     private void addPlayer(Gameplay gameplay) {
