@@ -42,6 +42,7 @@ public class Gameplay extends Observable {
 	private static Gameplay gameplayObj = null;
 	private ArrayList<Player> removedPlayer;
 	private ArrayList<String> viewLogger;
+	private String gameMode;
 
 	public static Gameplay getInstance() {
 		if (gameplayObj == null) {
@@ -54,6 +55,7 @@ public class Gameplay extends Observable {
 			gameplayObj.removedPlayer = new ArrayList<>();
 			gameplayObj.viewLogger = new ArrayList<>();
 			gameplayObj.currentPlayer = null;
+			gameplayObj.gameMode = "Single";
 		}
 		return gameplayObj;
 	}
@@ -63,6 +65,13 @@ public class Gameplay extends Observable {
 	 */
 	private Gameplay() {
 
+	}
+
+	public void setGameMode(String gameMode){
+		this.gameMode = gameMode;
+	}
+	public String getGameMode(){
+		return gameMode;
 	}
 
 	public ArrayList<String> getViewLogger() {

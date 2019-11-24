@@ -12,6 +12,7 @@ public class TournamentGame extends Thread{
     private ArrayList<String> playerStrategies;
     private int gameId;
     private int numTurns;
+    private ArrayList<String> tournamentResult;
 
 
     public TournamentGame(ArrayList<String> mapFiles, ArrayList<String> playerStrategies, int gameId, int numTurns){
@@ -19,8 +20,12 @@ public class TournamentGame extends Thread{
         this.playerStrategies = playerStrategies;
         this.gameId = gameId;
         this.numTurns = numTurns;
+        this.tournamentResult = new ArrayList<>();
     }
 
+    public ArrayList<String> getTournamentResult(){
+        return tournamentResult;
+    }
     public ArrayList<String> getMapFiles() {
         return mapFiles;
     }
@@ -64,6 +69,7 @@ public class TournamentGame extends Thread{
         while (n != 0) {
             for (String mapPath : mapFiles){
                 Gameplay gameplay = Gameplay.getInstance();
+                gameplay.setGameMode("Tournament");
                 CommandController.parseCommand("loadmap " + mapPath);
                 gameplay.getPlayerQueue().clear();
                 gameplay.getPlayers().clear();
@@ -75,10 +81,12 @@ public class TournamentGame extends Thread{
                 while (t != 0) {
                     CommandController.parseCommand("botplay");
                     if (gameplay.getCurrentPlayer().isWinner()) {
+                        tournamentResult.add(gameplay.getCurrentPlayer().getPlayerName());
                         break;
                     }
                     t--;
                     if (t == 0) {
+                        tournamentResult.add("DRAW");
                         System.out.println("DRAW");
                     }
                 }
