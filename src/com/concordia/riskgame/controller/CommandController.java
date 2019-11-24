@@ -934,6 +934,10 @@ public class CommandController implements Serializable {
     }
 
     public static void runTournament(String Command){
+        if (!gameplay.getCurrentPhase().equals(Phases.Startup)){
+            gameplay.addToViewLogger("Not Startup Phase, cannot do tournament!");
+            return;
+        }
         if(validateTournamentCommand(Command)){
             String[] args = Command.split(" ");
 
