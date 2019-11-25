@@ -4,6 +4,7 @@ import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.utilities.MapTools;
 import com.concordia.riskgame.view.TournamentView;
 
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -91,9 +92,11 @@ public class TournamentGame extends Thread{
                         System.out.println("DRAW");
                     }
                 }
+                CommandController.parseCommand("closephaseview");
             }
             n--;
         }
+
         System.out.println("Tournament Done!!!!");
         new TournamentView(tournamentResult, gameId, mapFiles.size());
     }
