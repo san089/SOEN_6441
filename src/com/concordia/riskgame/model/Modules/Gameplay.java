@@ -12,25 +12,22 @@
 
 package com.concordia.riskgame.model.Modules;
 
+import java.io.*;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Phases;
+import com.concordia.riskgame.utilities.ScannerUtil;
 import com.concordia.riskgame.view.CardExchangeView;
 
+import javax.swing.*;
 import java.util.concurrent.TimeUnit;
 
 // TODO: Auto-generated Javadoc
-public class Gameplay extends Observable {
+public class Gameplay extends Observable implements Serializable, Observer {
 
 	private static final int MAX_PLAYER_LIMIT = 6;
 	private int playerCount;
@@ -39,9 +36,12 @@ public class Gameplay extends Observable {
 	private Queue<Player> playerQueue;
 	private Player currentPlayer;
 	private Phases currentPhase;
+	private static String  sSaveFileName="";
 	private static Gameplay gameplayObj = null;
 	private ArrayList<Player> removedPlayer;
 	private ArrayList<String> viewLogger;
+	private static final long serialVersionUID = 45443434343L;
+	private String gameMode;
 
 	public static Gameplay getInstance() {
 		if (gameplayObj == null) {
@@ -54,6 +54,7 @@ public class Gameplay extends Observable {
 			gameplayObj.removedPlayer = new ArrayList<>();
 			gameplayObj.viewLogger = new ArrayList<>();
 			gameplayObj.currentPlayer = null;
+			gameplayObj.gameMode = "Single";
 		}
 		return gameplayObj;
 	}
@@ -63,6 +64,13 @@ public class Gameplay extends Observable {
 	 */
 	private Gameplay() {
 
+	}
+
+	public void setGameMode(String gameMode){
+		this.gameMode = gameMode;
+	}
+	public String getGameMode(){
+		return gameMode;
 	}
 
 	public ArrayList<String> getViewLogger() {
@@ -214,6 +222,47 @@ public class Gameplay extends Observable {
 
 	}
 
+	public static  void SaveGame(){
+		sSaveFileName=FncSaveFileName();
+		try {
+			saveExistingGame(gameplayObj,sSaveFileName);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+
+	}
+
+	private static String FncSaveFileName() {
+		String sFilename="";
+		System.out.print("Enter file name:");
+		Scanner s= ScannerUtil.sc;
+		sFilename=s.nextLine();
+		return sFilename;
+
+	}
+
+
+
+	public static void saveExistingGame(Gameplay gameModel, String sSaveFileName)
+			throws FileNotFoundException, IOException {
+		System.out.println("Hi  : " + sSaveFileName);
+
+		FileOutputStream fs = new FileOutputStream("./Saved Games/" + sSaveFileName + ".bin");
+		ObjectOutputStream os = new ObjectOutputStream(fs);
+		try {
+			os.writeObject(gameModel);
+		}
+
+		catch(NotSerializableException nse) {
+			System.out.println(nse.toString());
+		}
+
+		os.flush();
+		fs.close();
+	}
+
+
 	/**
 	 * Exist duplicate player.
 	 *
@@ -296,7 +345,7 @@ public class Gameplay extends Observable {
 		playerQueue.clear();
 		playerQueue.addAll(getPlayers());
 		List<String> countries = new ArrayList<>();
-			
+
 		countries = getSelectedMap().listOfCountryNames();
 		for (Player player : getPlayers())
 			player.getCountriesOwned().clear();
@@ -321,12 +370,13 @@ public class Gameplay extends Observable {
 		setCurrentPlayer(playerQueue.element());
 		addToViewLogger("PLAYER TURN : Place army for " + currentPlayer.getPlayerName()
 				+ ". Number of remaining armies " + currentPlayer.getArmyCount());
-		
+
 		triggerObserver("domination");
 		triggerObserver("showmap");
-		
+
 
 	}
+
 
 	/**
 	 * Assign startup armies.
@@ -378,7 +428,7 @@ public class Gameplay extends Observable {
 	public void assignReinforcementArmies() {
 
 		for(Player player:getPlayers()) {
-			
+
 		int reinforcementArmyCount = ((player.getCountriesOwned().size()) / 3);
 		for (Continent continent : getSelectedMap().getOwnedContinents(player.getPlayerName())) {
 			reinforcementArmyCount = reinforcementArmyCount + continent.getControlValue();
@@ -428,7 +478,7 @@ public class Gameplay extends Observable {
 
 	/**
 	 * Get Abandoned Country count
-	 * 
+	 *
 	 * @return count count of countries abondoned.
 	 */
 
@@ -444,7 +494,7 @@ public class Gameplay extends Observable {
 
 	/**
 	 * Displays army distribution
-	 * 
+	 *
 	 */
 	public void displayArmyDistribution() {
 		addToViewLogger("PLAYER NAME : [(Country , Armies in the country)]");
@@ -459,7 +509,7 @@ public class Gameplay extends Observable {
 		}
 
 	}
-	
+
 
 	/**
 	 * Place all armies.
@@ -500,6 +550,11 @@ public class Gameplay extends Observable {
 		notifyObservers(observerName);
 	}
 
+
+
+
+
+
 	public void waitOneSecond() {
 		try {
 			TimeUnit.SECONDS.sleep(1);
@@ -509,4 +564,8 @@ public class Gameplay extends Observable {
 		}
 	}
 
+	@Override
+	public void update(Observable observable, Object o) {
+
+	}
 }

@@ -11,15 +11,19 @@ import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
 
-import java.io.IOException;
+import java.io.*;
+
+
 import java.util.*;
+
+import static com.concordia.riskgame.model.Modules.Gameplay.SaveGame;
 
 
 // TODO: Auto-generated Javadoc
 /**
  * Class to parse the commands entered by user and perform actions based on commands
  */
-public class CommandController {
+public class CommandController implements Serializable {
 
     public static String commandType; // command type
     public static HashMap<String, Integer> addContinent = new HashMap<>();
@@ -32,11 +36,14 @@ public class CommandController {
     public static ArrayList<String> removePlayer = new ArrayList<>();
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
-    
-    public static Gameplay gameplay;
+    private String sSaveFileName="";
+
+    public static Gameplay gameplay=Gameplay.getInstance();
+
     public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
     public static MapTools mapTools=new MapTools();
-
+    private static final long serialVersionUID = 45443434343L;
+    public static PhaseView phaseView;
 
     /**
      * This method takes command as input and calls respective methods corresponding to the command and executes the method.
@@ -63,6 +70,12 @@ public class CommandController {
                 break;
             case "savemap":
                 saveMap(command);
+                break;
+            case "saveGame":
+                saveGame();
+                break;
+            case "loadGame":
+                loadGame(command);
                 break;
             case "editmap":
                 editMap(command);
@@ -302,7 +315,7 @@ public class CommandController {
         addContinent.clear();
         removeCountry.clear();
         addCountry.clear();
-        
+
 
         String[] args = command.split(" ");
         String arg_type;
@@ -533,9 +546,32 @@ public class CommandController {
         }
         String fileName = command.split(" ")[1];
         mapEditor.saveMapService(fileName);
-        
-        
+
+
     }
+
+    public static void saveGame(){
+        if(gameplay.getCurrentPhase() !=Phases.Startup || gameplay.getCurrentPhase() !=Phases.Attack ||gameplay.getCurrentPhase() !=Phases.Reinforcement || gameplay.getCurrentPhase() !=Phases.Fortification){
+        SaveGame();
+        }
+    }
+
+    public static void loadGame(String command){
+        String fileName = command.split(" ")[1];
+        System.out.println("hello"+" "+fileName);
+        FileInputStream fs = null;
+        try {
+            fs = new FileInputStream(fileName);
+            ObjectInputStream os = new ObjectInputStream(fs);
+            Gameplay gameModel = (Gameplay) os.readObject();
+            gameModel.addObserver(gameModel);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     /**
@@ -568,7 +604,10 @@ public class CommandController {
             gameplay.setSelectedMap(selectedMap);
             gameplay.setCurrentPhase(Phases.Startup);
             gameplay.addToViewLogger("Switched to " + Phases.Startup + " Phase.");
-            new PhaseView();
+            if (phaseView != null) {
+                phaseView.setVisible(false);
+            }
+            phaseView = new  PhaseView();
         	
         } else {
             gameplay.addToViewLogger("The selected Map is invalid.Please select another map.Reason for Invalidity :" + selectedMap.getErrorMessage());
@@ -650,6 +689,9 @@ public class CommandController {
             gameplay.addObserver(CardExchangeView.getInstance());
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. Exchange your" +
                     " card first or exchange -none");
+            if (!gameplay.getCurrentPlayer().getStrategy().getStrategyName().equals("Human") && gameplay.getGameMode().equals("Single")) {
+                parseCommand("botplay");
+            }
         }
 
     }
@@ -678,7 +720,7 @@ public class CommandController {
         gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase." +
                 "Please exchange cards first or exchange none");
         gameplay.triggerObserver("domination");
-        if (!gameplay.getCurrentPlayer().getStrategy().equals("Human")) {
+        if (!gameplay.getCurrentPlayer().getStrategy().getStrategyName().equals("Human") && gameplay.getGameMode().equals("Single")) {
             parseCommand("botplay");
         }
     }
@@ -825,7 +867,7 @@ public class CommandController {
             gameplay.setCurrentPhase(Phases.Reinforcement);
             CardExchangeView.getInstance().setVisible(true);
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn! Player Strategy is : " + gameplay.getCurrentPlayer().getStrategy().getStrategyName());
-            if (!gameplay.getCurrentPlayer().getStrategy().equals("Human")) {
+            if (!gameplay.getCurrentPlayer().getStrategy().getStrategyName().equals("Human") && gameplay.getGameMode().equals("Single")) {
                 parseCommand("botplay");
             }
         }catch (Exception e){
