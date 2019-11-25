@@ -95,7 +95,7 @@ public class MapTools  {
 					importFileName.trim().substring(importFileName.length() - 4).equals(".bin"))*/ ){
 				File f = new File(importFileName);
 				gameMap.setName(f.getName());
-				gameMap.setPath(importFileName.substring(0, importFileName.lastIndexOf("/")));
+				gameMap.setPath(importFileName.substring(0, importFileName.lastIndexOf("\\")));
 					System.out.println("File in Correct format");
 				System.out.println(gameMap.getPath());
 				System.out.println(gameMap.getName());
