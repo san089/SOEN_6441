@@ -43,8 +43,7 @@ public class CommandController implements Serializable {
     public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
     public static MapTools mapTools=new MapTools();
     private static final long serialVersionUID = 45443434343L;
-
-
+    public static PhaseView phaseView;
 
     /**
      * This method takes command as input and calls respective methods corresponding to the command and executes the method.
@@ -605,7 +604,10 @@ public class CommandController implements Serializable {
             gameplay.setSelectedMap(selectedMap);
             gameplay.setCurrentPhase(Phases.Startup);
             gameplay.addToViewLogger("Switched to " + Phases.Startup + " Phase.");
-            new PhaseView();
+            if (phaseView != null) {
+                phaseView.setVisible(false);
+            }
+            phaseView = new  PhaseView();
         	
         } else {
             gameplay.addToViewLogger("The selected Map is invalid.Please select another map.Reason for Invalidity :" + selectedMap.getErrorMessage());
@@ -687,6 +689,9 @@ public class CommandController implements Serializable {
             gameplay.addObserver(CardExchangeView.getInstance());
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase. Exchange your" +
                     " card first or exchange -none");
+            if (!gameplay.getCurrentPlayer().getStrategy().getStrategyName().equals("Human") && gameplay.getGameMode().equals("Single")) {
+                parseCommand("botplay");
+            }
         }
 
     }
@@ -715,7 +720,7 @@ public class CommandController implements Serializable {
         gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s reinforce phase." +
                 "Please exchange cards first or exchange none");
         gameplay.triggerObserver("domination");
-        if (!gameplay.getCurrentPlayer().getStrategy().equals("Human")) {
+        if (!gameplay.getCurrentPlayer().getStrategy().getStrategyName().equals("Human") && gameplay.getGameMode().equals("Single")) {
             parseCommand("botplay");
         }
     }
@@ -862,7 +867,7 @@ public class CommandController implements Serializable {
             gameplay.setCurrentPhase(Phases.Reinforcement);
             CardExchangeView.getInstance().setVisible(true);
             gameplay.addToViewLogger("Now it's " + gameplay.getCurrentPlayer().getPlayerName() + "'s turn! Player Strategy is : " + gameplay.getCurrentPlayer().getStrategy().getStrategyName());
-            if (!gameplay.getCurrentPlayer().getStrategy().equals("Human")) {
+            if (!gameplay.getCurrentPlayer().getStrategy().getStrategyName().equals("Human") && gameplay.getGameMode().equals("Single")) {
                 parseCommand("botplay");
             }
         }catch (Exception e){
