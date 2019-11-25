@@ -11,6 +11,8 @@ import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
 
+import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.io.*;
 
 
@@ -131,6 +133,9 @@ public class CommandController implements Serializable {
                 break;
             case "showphases":
                 gameplay.addToViewLogger("Current phase is : " + gameplay.getCurrentPhase());
+                break;
+            case "closephaseview":
+                closePhaseView();
                 break;
             default:
                 invalidCommandMessage();
@@ -950,6 +955,13 @@ public class CommandController implements Serializable {
             TournamentGame t1 = new TournamentGame(mapFiles, strategyList, numberOfGames, numberOfTurns);
             t1.run();
 
+        }
+    }
+
+    public static void closePhaseView(){
+        System.out.println("\nClosing Phase View.");
+        for(Frame F : Frame.getFrames()){
+            F.dispose();
         }
     }
 
