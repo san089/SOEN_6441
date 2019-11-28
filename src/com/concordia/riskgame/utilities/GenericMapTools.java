@@ -27,7 +27,7 @@ import com.concordia.riskgame.model.Modules.Continent;
  /**
   * Class containing Map manipulation related functionalities
   */
-public class MapTools  {
+public class GenericMapTools  {
 	
 	/**
 	 * Pick map file.
@@ -57,8 +57,8 @@ public class MapTools  {
 						gameMap.setName(f.getName());
 						gameMap.setPath(importFileName.substring(0, importFileName.lastIndexOf("\\")));
 						JOptionPane.showMessageDialog(null, "File in Correct format");
-						System.out.println(gameMap.getPath());
-						System.out.println(gameMap.getName());
+	//					System.out.println(gameMap.getPath());
+	//					System.out.println(gameMap.getName());
 						sAppendFileName=gameMap.getPath();
 					}
 					else {

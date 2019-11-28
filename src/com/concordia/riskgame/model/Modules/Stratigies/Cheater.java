@@ -5,12 +5,17 @@ import com.concordia.riskgame.model.Modules.Country;
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Strategy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cheater implements Strategy {
+public class Cheater implements Strategy,Serializable {
 
-    private String strategyName = "Cheater";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String strategyName = "Cheater";
     public String ANSI_PURPLE = "\u001B[35m";
     Gameplay gameplay = Gameplay.getInstance();
 
@@ -25,6 +30,8 @@ public class Cheater implements Strategy {
     }
 
     public void doCardExchange(){
+    	this.gameplay = Gameplay.getInstance(); //For updating the class gameplay object when we load a saved game.
+    	
         try {
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
             CommandController.parseCommand("exchangecards 3 0 0");
@@ -46,6 +53,7 @@ public class Cheater implements Strategy {
 
         Country tempCountry = null;
         System.out.println(getStrategyName() + " bot playing reinforcement phase.");
+        System.out.println(" Current player is "+Gameplay.getInstance().getCurrentPlayer().getPlayerName());
         ArrayList<Country> ownedCountries = gameplay.getSelectedMap().getOwnedCountries(gameplay.getCurrentPlayer().getPlayerName());
 
 

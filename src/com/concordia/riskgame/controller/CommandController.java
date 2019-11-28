@@ -1,24 +1,39 @@
 package com.concordia.riskgame.controller;
 
-import com.concordia.riskgame.model.Modules.*;
+import java.awt.Frame;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+import com.concordia.riskgame.model.Modules.Card;
+import com.concordia.riskgame.model.Modules.Continent;
+import com.concordia.riskgame.model.Modules.Gameplay;
+import com.concordia.riskgame.model.Modules.Gameplay.GameplayBuilder;
 import com.concordia.riskgame.model.Modules.Map;
-import com.concordia.riskgame.model.Modules.Stratigies.*;
+import com.concordia.riskgame.model.Modules.Player;
+import com.concordia.riskgame.model.Modules.Strategy;
+import com.concordia.riskgame.model.Modules.TournamentGame;
+import com.concordia.riskgame.model.Modules.Stratigies.Aggressive;
+import com.concordia.riskgame.model.Modules.Stratigies.Benevolent;
+import com.concordia.riskgame.model.Modules.Stratigies.Cheater;
+import com.concordia.riskgame.model.Modules.Stratigies.Human;
 import com.concordia.riskgame.model.Modules.Stratigies.Random;
-import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.GenericMapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.utilities.ScannerUtil;
 import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
-
-import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.io.*;
-
-
-import java.util.*;
-
-import static com.concordia.riskgame.model.Modules.Gameplay.SaveGame;
 
 
 // TODO: Auto-generated Javadoc
@@ -43,7 +58,7 @@ public class CommandController implements Serializable {
     public static Gameplay gameplay=Gameplay.getInstance();
 
     public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
-    public static MapTools mapTools=new MapTools();
+    public static GenericMapTools mapTools=new GenericMapTools();
     private static final long serialVersionUID = 45443434343L;
     public static PhaseView phaseView;
 
@@ -73,8 +88,12 @@ public class CommandController implements Serializable {
             case "savemap":
                 saveMap(command);
                 break;
-            case "saveGame":
-                saveGame();
+            case "savegame":
+               try {
+				saveGame();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
                 break;
             case "loadGame":
                 loadGame(command);
@@ -555,12 +574,6 @@ public class CommandController implements Serializable {
 
     }
 
-    public static void saveGame(){
-        if(gameplay.getCurrentPhase() !=Phases.Startup || gameplay.getCurrentPhase() !=Phases.Attack ||gameplay.getCurrentPhase() !=Phases.Reinforcement || gameplay.getCurrentPhase() !=Phases.Fortification){
-        SaveGame();
-        }
-    }
-
     public static void loadGame(String command){
         String fileName = command.split(" ")[1];
         System.out.println("hello"+" "+fileName);
@@ -569,7 +582,14 @@ public class CommandController implements Serializable {
             fs = new FileInputStream(fileName);
             ObjectInputStream os = new ObjectInputStream(fs);
             Gameplay gameModel = (Gameplay) os.readObject();
-            gameModel.addObserver(gameModel);
+            new Gameplay.GameplayBuilder(gameModel.getPlayers(),gameModel.getSelectedMap(),gameModel.getCurrentPhase(),gameModel.getViewLogger()).setcurrentPlayer(gameModel.getCurrentPlayer()).setgameMode(gameModel.getGameMode()).setplayerCount().setplayerQueue(gameModel.getPlayerQueue())
+            .setremovedPlayer(gameModel.getRemovedPlayer()).build();      
+            
+            
+            phaseView = new  PhaseView();
+            os.close();
+            
+            
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException | ClassNotFoundException e) {
@@ -987,6 +1007,30 @@ public class CommandController implements Serializable {
         }
 
     }
+    
+    /**Function to save game */
+
+
+	public static void saveGame()
+			throws FileNotFoundException, IOException {
+	//	Scanner in=new Scanner(System.in); 
+		gameplay.addToViewLogger("Enter the save file name");
+		String saveFilename=ScannerUtil.sc.nextLine();
+		
+		
+		FileOutputStream fs = new FileOutputStream("./Saved_Games/" + saveFilename + ".bin");
+		ObjectOutputStream os = new ObjectOutputStream(fs);
+		try {
+			os.writeObject(Gameplay.getInstance());
+		}
+
+		catch(NotSerializableException nse) {
+			System.out.println(nse.toString());
+		}
+
+		os.flush();
+		fs.close();
+	}
 
 
     private static void attackmove(String command) {

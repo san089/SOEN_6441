@@ -11,21 +11,24 @@
 package com.concordia.riskgame.model.Modules;
 import com.concordia.riskgame.model.Modules.Stratigies.Human;
 import com.concordia.riskgame.utilities.Phases;
-import com.concordia.riskgame.utilities.ScannerUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
-import java.util.Scanner;
+
 
 
 /**
  * The Class Player.
  */
-public class Player extends Observable {
+public class Player extends Observable implements Serializable {
 	
-	private static final int COUNTRY_DIVISION_FACTOR=9;
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private  int playerIndex;
 	
 	private String playerName;
@@ -171,7 +174,6 @@ public class Player extends Observable {
 	private Gameplay gameplay = Gameplay.getInstance();;
 	private Map gameMap = gameplay.getSelectedMap();
 	private Player defensivePlayer;
-	private Scanner scanner = ScannerUtil.sc;
 	private boolean defendCommandInput = false;
 	private boolean attackMoveCommandInput =false;
 	private HashMap<Country, ArrayList<Country>> availableAttacks = new HashMap<>();

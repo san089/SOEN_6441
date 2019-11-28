@@ -3,11 +3,16 @@ package com.concordia.riskgame.model.Modules.Stratigies;
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.model.Modules.*;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Random implements Strategy {
+public class Random implements Strategy,Serializable {
 
-    private String strategyName = "Random";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String strategyName = "Random";
     public String ANSI_CYAN = "\u001B[36m";
     Gameplay gameplay = Gameplay.getInstance();
 
@@ -23,6 +28,8 @@ public class Random implements Strategy {
     }
 
     public void doCardExchange(){
+    	
+    	gameplay =Gameplay.getInstance();
         try {
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
             CommandController.parseCommand("exchangecards 3 0 0");

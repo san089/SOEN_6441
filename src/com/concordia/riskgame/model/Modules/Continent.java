@@ -10,6 +10,7 @@
 
 package com.concordia.riskgame.model.Modules;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +19,13 @@ import java.util.List;
  *
  *  Instantiates a new continent
  */
-public class Continent {
+public class Continent implements Serializable {
 
-    private String continentName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String continentName;
     private List<Country> countriesPresent;
     private int controlValue;
 

@@ -1,7 +1,7 @@
 package com.concordia.riskgame.model.Modules;
 
 import com.concordia.riskgame.controller.CommandController;
-import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.GenericMapTools;
 import com.concordia.riskgame.view.TournamentView;
 
 import java.awt.event.WindowEvent;

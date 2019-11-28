@@ -6,11 +6,16 @@ import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Strategy;
 import com.concordia.riskgame.utilities.Phases;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Aggressive implements Strategy {
+public class Aggressive implements Strategy,Serializable {
 
-    private String strategyName = "Aggressive";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String strategyName = "Aggressive";
     public String ANSI_BLUE = "\u001B[34m";
     private Gameplay gameplay =Gameplay.getInstance();
     private Country  strongestFrontCountry;
@@ -25,7 +30,9 @@ public class Aggressive implements Strategy {
     }
 
     public void doCardExchange(){
+    	gameplay =Gameplay.getInstance();
         try {
+        	
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
             CommandController.parseCommand("exchangecards 3 0 0");
             System.out.println("Bot Executing Command : " + "exchangecards 0 3 0");

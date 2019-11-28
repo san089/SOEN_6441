@@ -13,22 +13,26 @@
 package com.concordia.riskgame.model.Modules;
 
 import java.io.*;
-import java.sql.Time;
-import java.util.*;
+
 
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.model.Modules.Map;
 import com.concordia.riskgame.model.Modules.Player;
 import com.concordia.riskgame.utilities.Phases;
-import com.concordia.riskgame.utilities.ScannerUtil;
-import com.concordia.riskgame.view.CardExchangeView;
 
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 // TODO: Auto-generated Javadoc
-public class Gameplay extends Observable implements Serializable, Observer {
+public class Gameplay extends Observable implements Serializable {
 
+	private static final long serialVersionUID = 45443434343L;
 	private static final int MAX_PLAYER_LIMIT = 6;
 	private int playerCount;
 	private ArrayList<Player> players;
@@ -36,12 +40,62 @@ public class Gameplay extends Observable implements Serializable, Observer {
 	private Queue<Player> playerQueue;
 	private Player currentPlayer;
 	private Phases currentPhase;
-	private static String  sSaveFileName="";
 	private static Gameplay gameplayObj = null;
 	private ArrayList<Player> removedPlayer;
 	private ArrayList<String> viewLogger;
-	private static final long serialVersionUID = 45443434343L;
 	private String gameMode;
+	
+	
+	public static class GameplayBuilder {
+		private int playerCount;
+		private ArrayList<Player> players;
+		private Map selectedMap;
+		private Queue<Player> playerQueue;
+		private Player currentPlayer;
+		private Phases currentPhase;
+		private ArrayList<Player> removedPlayer;
+		private ArrayList<String> viewLogger;
+		private String gameMode;
+		
+		
+		public GameplayBuilder(ArrayList<Player> players, Map selectedMap, Phases currentPhase,
+				ArrayList<String> viewLogger) {
+			this.players = players;
+			this.selectedMap = selectedMap;
+			this.currentPhase = currentPhase;
+			this.viewLogger = viewLogger;
+		}
+		
+		
+		public GameplayBuilder setplayerCount() {
+			this.playerCount=this.players.size();
+			return this;			
+		}
+		
+		public GameplayBuilder setplayerQueue(Queue<Player> playerQueue) {
+			this.playerQueue=playerQueue;
+			return this;
+		}
+		public GameplayBuilder setcurrentPlayer(Player currentPlayer) {
+			this.currentPlayer=currentPlayer;
+			return this;
+		}
+		public GameplayBuilder setremovedPlayer(ArrayList<Player> removedPlayer) {
+			this.removedPlayer=removedPlayer;
+			return this;
+		}
+		public GameplayBuilder setgameMode(String gameMode) {
+			this.gameMode=gameMode;
+			return this;
+		}
+		
+		public void build() {
+			
+			setGamePlayInstance(this);
+			
+		}
+		
+	}
 
 	public static Gameplay getInstance() {
 		if (gameplayObj == null) {
@@ -58,6 +112,22 @@ public class Gameplay extends Observable implements Serializable, Observer {
 		}
 		return gameplayObj;
 	}
+	
+	public static void  setGamePlayInstance(GameplayBuilder builder) {
+		
+		gameplayObj.players = builder.players;
+		gameplayObj.selectedMap = builder.selectedMap;
+		gameplayObj.currentPhase = builder.currentPhase;
+		gameplayObj.playerCount = builder.playerCount;
+		gameplayObj.playerQueue = builder.playerQueue;
+		gameplayObj.removedPlayer = builder.removedPlayer;
+		gameplayObj.viewLogger = builder.viewLogger;
+		gameplayObj.currentPlayer = builder.currentPlayer;
+		gameplayObj.gameMode =builder.gameMode;
+		
+		
+	}
+
 
 	/**
 	 * Instantiates a new gameplay.
@@ -222,46 +292,11 @@ public class Gameplay extends Observable implements Serializable, Observer {
 
 	}
 
-	public static  void SaveGame(){
-		sSaveFileName=FncSaveFileName();
-		try {
-			saveExistingGame(gameplayObj,sSaveFileName);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-
-	}
-
-	private static String FncSaveFileName() {
-		String sFilename="";
-		System.out.print("Enter file name:");
-		Scanner s= ScannerUtil.sc;
-		sFilename=s.nextLine();
-		return sFilename;
-
-	}
 
 
 
-	public static void saveExistingGame(Gameplay gameModel, String sSaveFileName)
-			throws FileNotFoundException, IOException {
-		System.out.println("Hi  : " + sSaveFileName);
 
-		FileOutputStream fs = new FileOutputStream("./Saved Games/" + sSaveFileName + ".bin");
-		ObjectOutputStream os = new ObjectOutputStream(fs);
-		try {
-			os.writeObject(gameModel);
-		}
-
-		catch(NotSerializableException nse) {
-			System.out.println(nse.toString());
-		}
-
-		os.flush();
-		fs.close();
-	}
-
+	
 
 	/**
 	 * Exist duplicate player.
@@ -564,8 +599,6 @@ public class Gameplay extends Observable implements Serializable, Observer {
 		}
 	}
 
-	@Override
-	public void update(Observable observable, Object o) {
+	
 
-	}
 }
