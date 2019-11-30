@@ -5,6 +5,7 @@ SOEN 6441 Risk Game
 
 ## Architecture Diagram
 ![Architecture Diagram](https://github.com/san089/SOEN_6441/blob/master/Documents/ArchitectureDesign_Build2.png)
+![MVC Diagrame](http://assets.processon.com/chart_image/5da4e016e4b0ea86c2afe75d.png)
 
 
 
