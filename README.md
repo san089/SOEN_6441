@@ -5,6 +5,7 @@ SOEN 6441 Risk Game
 
 ## Architecture Diagram
 ![Architecture Diagram](https://github.com/san089/SOEN_6441/blob/master/Documents/ArchitectureDesign_Build2.png)
+![MVC Diagrame](http://assets.processon.com/chart_image/5da4e016e4b0ea86c2afe75d.png)
 
 
 
@@ -70,3 +71,6 @@ do a single attack from **countrynamefrom** to **countynameto** using **numdice*
     fortify fromcountry tocountry num
     fortify –none
     (move num number of armies from fromcountry to tocountry. If –none is specified, choose to not do a move during the fortification phase)
+    
+## Tournament Command
+tournament -M D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map|D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map|D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map -P Random|Benevolent|Aggressive -G 4 -D 10
