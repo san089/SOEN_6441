@@ -29,6 +29,9 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The Class Gameplay.
+ */
 // TODO: Auto-generated Javadoc
 public class Gameplay extends Observable implements Serializable {
 
@@ -46,6 +49,11 @@ public class Gameplay extends Observable implements Serializable {
 	private String gameMode;
 	
 	
+	
+	
+	/**
+	 * The Class GameplayBuilder- Nested static class which is the builder class for Gameplay.
+	 */
 	public static class GameplayBuilder {
 		private int playerCount;
 		private ArrayList<Player> players;
@@ -58,6 +66,14 @@ public class Gameplay extends Observable implements Serializable {
 		private String gameMode;
 		
 		
+		/**
+		 * Instantiates a new gameplay builder with mandatory variables.
+		 *
+		 * @param players the players
+		 * @param selectedMap the selected map
+		 * @param currentPhase the current phase
+		 * @param viewLogger the view logger
+		 */
 		public GameplayBuilder(ArrayList<Player> players, Map selectedMap, Phases currentPhase,
 				ArrayList<String> viewLogger) {
 			this.players = players;
@@ -67,28 +83,63 @@ public class Gameplay extends Observable implements Serializable {
 		}
 		
 		
+		/**
+		 * Setplayer count.
+		 *
+		 * @return the gameplay builder
+		 */
 		public GameplayBuilder setplayerCount() {
 			this.playerCount=this.players.size();
 			return this;			
 		}
 		
+		/**
+		 * Setplayer queue.
+		 *
+		 * @param playerQueue the player queue
+		 * @return the gameplay builder
+		 */
 		public GameplayBuilder setplayerQueue(Queue<Player> playerQueue) {
 			this.playerQueue=playerQueue;
 			return this;
 		}
+		
+		/**
+		 * Setcurrent player.
+		 *
+		 * @param currentPlayer the current player
+		 * @return the gameplay builder
+		 */
 		public GameplayBuilder setcurrentPlayer(Player currentPlayer) {
 			this.currentPlayer=currentPlayer;
 			return this;
 		}
+		
+		/**
+		 * Setremoved player.
+		 *
+		 * @param removedPlayer the removed player
+		 * @return the gameplay builder
+		 */
 		public GameplayBuilder setremovedPlayer(ArrayList<Player> removedPlayer) {
 			this.removedPlayer=removedPlayer;
 			return this;
 		}
+		
+		/**
+		 * Setgame mode.
+		 *
+		 * @param gameMode the game mode
+		 * @return the gameplay builder
+		 */
 		public GameplayBuilder setgameMode(String gameMode) {
 			this.gameMode=gameMode;
 			return this;
 		}
 		
+		/**
+		 * Builds the.
+		 */
 		public void build() {
 			
 			setGamePlayInstance(this);
@@ -97,6 +148,11 @@ public class Gameplay extends Observable implements Serializable {
 		
 	}
 
+	/**
+	 * Gets the single instance of Gameplay.
+	 *
+	 * @return single instance of Gameplay
+	 */
 	public static Gameplay getInstance() {
 		if (gameplayObj == null) {
 			gameplayObj = new Gameplay();
@@ -113,6 +169,11 @@ public class Gameplay extends Observable implements Serializable {
 		return gameplayObj;
 	}
 	
+	/**
+	 * Sets the game play instance.
+	 *
+	 * @param builder the new game play instance
+	 */
 	public static void  setGamePlayInstance(GameplayBuilder builder) {
 		
 		gameplayObj.players = builder.players;
@@ -136,60 +197,131 @@ public class Gameplay extends Observable implements Serializable {
 
 	}
 
+	/**
+	 * Sets the game mode.
+	 *
+	 * @param gameMode the new game mode
+	 */
 	public void setGameMode(String gameMode){
 		this.gameMode = gameMode;
 	}
+	
+	/**
+	 * Gets the game mode.
+	 *
+	 * @return the game mode
+	 */
 	public String getGameMode(){
 		return gameMode;
 	}
 
+	/**
+	 * Gets the view logger.
+	 *
+	 * @return the view logger
+	 */
 	public ArrayList<String> getViewLogger() {
 		return viewLogger;
 	}
 
+	/**
+	 * Adds the to view logger.
+	 *
+	 * @param logmessage the logmessage
+	 */
 	public void addToViewLogger(String logmessage) {
 		System.out.println(logmessage);
 		viewLogger.add(logmessage);
 		triggerObserver("logger");
 	}
 
+	/**
+	 * Sets the players.
+	 *
+	 * @param players the new players
+	 */
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
 	}
 
+	/**
+	 * Sets the player queue.
+	 *
+	 * @param playerQueue the new player queue
+	 */
 	public void setPlayerQueue(Queue<Player> playerQueue) {
 		this.playerQueue = playerQueue;
 	}
 
+	/**
+	 * Sets the current player.
+	 *
+	 * @param currentPlayer the new current player
+	 */
 	public void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
 		triggerObserver("player");
 	}
 
+	/**
+	 * Gets the player queue.
+	 *
+	 * @return the player queue
+	 */
 	public Queue<Player> getPlayerQueue() {
 		return playerQueue;
 	}
 
+	/**
+	 * Gets the current player.
+	 *
+	 * @return the current player
+	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
+	/**
+	 * Gets the removed player.
+	 *
+	 * @return the removed player
+	 */
 	public ArrayList<Player> getRemovedPlayer() {
 		return removedPlayer;
 	}
 
+	/**
+	 * Adds the removed player.
+	 *
+	 * @param player the player
+	 */
 	public void addRemovedPlayer(Player player) {
 		removedPlayer.add(player);
 	}
 
+	/**
+	 * Sets the player count.
+	 *
+	 * @param playerCount the new player count
+	 */
 	public void setPlayerCount(int playerCount) {
 		gameplayObj.playerCount = playerCount;
 	}
 
+	/**
+	 * Gets the player count.
+	 *
+	 * @return the player count
+	 */
 	public int getPlayerCount() {
 		return gameplayObj.playerCount;
 	}
 
+	/**
+	 * Gets the players.
+	 *
+	 * @return the players
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
@@ -204,6 +336,9 @@ public class Gameplay extends Observable implements Serializable {
 		playerQueue.add(currentPlayer);
 	}
 
+	/**
+	 * Simulate bot play.
+	 */
 	public void simulateBotPlay() {
 
 		gameplayObj.setCurrentPhase(Phases.Reinforcement);
@@ -232,12 +367,22 @@ public class Gameplay extends Observable implements Serializable {
 		return;
 	}
 
+	/**
+	 * Sets the army count.
+	 *
+	 * @param count the new army count
+	 */
 	public void setArmyCount(int count) {
 		for (Player player : getPlayers()) {
 			player.setArmyCount(count);
 		}
 	}
 
+	/**
+	 * Gets the selected map.
+	 *
+	 * @return the selected map
+	 */
 	public Map getSelectedMap() {
 		return selectedMap;
 
@@ -255,10 +400,20 @@ public class Gameplay extends Observable implements Serializable {
 
 	}
 
+	/**
+	 * Gets the current phase.
+	 *
+	 * @return the current phase
+	 */
 	public Phases getCurrentPhase() {
 		return currentPhase;
 	}
 
+	/**
+	 * Sets the current phase.
+	 *
+	 * @param currentPhase the new current phase
+	 */
 	public void setCurrentPhase(Phases currentPhase) {
 		gameplayObj.currentPhase = currentPhase;
 		viewLogger.clear();
@@ -269,6 +424,7 @@ public class Gameplay extends Observable implements Serializable {
 	 * Adds the player.
 	 *
 	 * @param playerName the player name
+	 * @param strategy the strategy
 	 * @return the string
 	 */
 	public String addPlayer(String playerName, Strategy strategy) {
@@ -512,7 +668,7 @@ public class Gameplay extends Observable implements Serializable {
 	}
 
 	/**
-	 * Get Abandoned Country count
+	 * Get Abandoned Country count.
 	 *
 	 * @return count count of countries abondoned.
 	 */
@@ -528,8 +684,7 @@ public class Gameplay extends Observable implements Serializable {
 
 
 	/**
-	 * Displays army distribution
-	 *
+	 * Displays army distribution.
 	 */
 	public void displayArmyDistribution() {
 		addToViewLogger("PLAYER NAME : [(Country , Armies in the country)]");
@@ -580,6 +735,11 @@ public class Gameplay extends Observable implements Serializable {
 
 	}
 
+	/**
+	 * Trigger observer.
+	 *
+	 * @param observerName the observer name
+	 */
 	public void triggerObserver(String observerName) {
 		setChanged();
 		notifyObservers(observerName);
@@ -590,6 +750,9 @@ public class Gameplay extends Observable implements Serializable {
 
 
 
+	/**
+	 * Wait one second.
+	 */
 	public void waitOneSecond() {
 		try {
 			TimeUnit.SECONDS.sleep(1);

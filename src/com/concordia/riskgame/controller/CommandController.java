@@ -582,8 +582,9 @@ public class CommandController implements Serializable {
             Gameplay gameModel = (Gameplay) os.readObject();
             new Gameplay.GameplayBuilder(gameModel.getPlayers(),gameModel.getSelectedMap(),gameModel.getCurrentPhase(),gameModel.getViewLogger()).setcurrentPlayer(gameModel.getCurrentPlayer()).setgameMode(gameModel.getGameMode()).setplayerCount().setplayerQueue(gameModel.getPlayerQueue())
             .setremovedPlayer(gameModel.getRemovedPlayer()).build();      
-                    
+                  
             phaseView = new  PhaseView();
+            Gameplay.getInstance().addToViewLogger("Game Loaded Succesfully");
             os.close();
             
             
@@ -1018,7 +1019,8 @@ public class CommandController implements Serializable {
 		FileOutputStream fs = new FileOutputStream("./Saved_Games/" + saveFilename + ".bin");
 		ObjectOutputStream os = new ObjectOutputStream(fs);
 		try {
-			os.writeObject(Gameplay.getInstance());
+            os.writeObject(Gameplay.getInstance());
+            Gameplay.getInstance().addToViewLogger("Game Saved in Saved_Games folder");
 		}
 
 		catch(NotSerializableException nse) {
