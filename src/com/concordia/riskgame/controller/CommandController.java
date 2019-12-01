@@ -28,9 +28,7 @@ import com.concordia.riskgame.model.Modules.Stratigies.Benevolent;
 import com.concordia.riskgame.model.Modules.Stratigies.Cheater;
 import com.concordia.riskgame.model.Modules.Stratigies.Human;
 import com.concordia.riskgame.model.Modules.Stratigies.Random;
-import com.concordia.riskgame.utilities.DominationMapTools;
-import com.concordia.riskgame.utilities.Phases;
-import com.concordia.riskgame.utilities.ScannerUtil;
+import com.concordia.riskgame.utilities.*;
 import com.concordia.riskgame.view.CardExchangeView;
 import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.PhaseView;
@@ -58,7 +56,7 @@ public class CommandController implements Serializable {
    // public static Gameplay gameplay=Gameplay.getInstance();
 
     public static MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
-    public static DominationMapTools mapTools=new DominationMapTools();
+    public static DominationMapTools mapTools=new ConquestMapAdapter(new ConquestMapTools());
     private static final long serialVersionUID = 45443434343L;
     public static PhaseView phaseView;
 

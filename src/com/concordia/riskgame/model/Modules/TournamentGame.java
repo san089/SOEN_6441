@@ -1,13 +1,9 @@
 package com.concordia.riskgame.model.Modules;
 
-import com.concordia.riskgame.controller.CommandController;
-import com.concordia.riskgame.utilities.DominationMapTools;
-import com.concordia.riskgame.view.TournamentView;
-
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+
+import com.concordia.riskgame.controller.CommandController;
+import com.concordia.riskgame.view.TournamentView;
 
 public class TournamentGame extends Thread{
     private ArrayList<String> mapFiles;

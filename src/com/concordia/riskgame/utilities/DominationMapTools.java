@@ -132,7 +132,8 @@ public class DominationMapTools  {
 					Data += line + "\n";
 				}
 			}
-			if (Data.toLowerCase().indexOf("[continents]") >= 0 && Data.toLowerCase().indexOf("[territories]") >= 0 && Data.toLowerCase().indexOf("author") >= 0 && Data.toLowerCase().indexOf("[map]") >= 0) {
+			if (Data.toLowerCase().indexOf("[continents]") >= 0 &&  Data.toLowerCase().indexOf("[territories]") >= 0 && Data.toLowerCase().indexOf("author") >= 0 && Data.toLowerCase().indexOf("[map]") >= 0 && Data.toLowerCase().indexOf("image") <= 0
+					&& Data.toLowerCase().indexOf("wrap") <= 0 && Data.toLowerCase().indexOf("scroll") <= 0 && Data.toLowerCase().indexOf("warn") <= 0) {
 				isMapValid = true;
 				gameMap.setErrorOccurred(false);
 				gameMap.setErrorMessage("No Errors");
@@ -140,7 +141,7 @@ public class DominationMapTools  {
 			else {
 				isMapValid = false;
 				gameMap.setErrorOccurred(true);
-				gameMap.setErrorMessage("Information missing");
+				gameMap.setErrorMessage("Information missing/Not in domination format");
 				return isMapValid;
 			}
 			String authorData = Data.substring(Data.toLowerCase().indexOf("[map]"), Data.toLowerCase().indexOf("[continents]"));

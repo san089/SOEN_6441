@@ -34,8 +34,8 @@ public class ConquestMapTools {
 					Data += line + "\n";
 				}
 			}
-			if (Data.toLowerCase().indexOf("[continents]") >= 0 &&  Data.toLowerCase().indexOf("[territories]") >= 0 && Data.toLowerCase().indexOf("author") >= 0 && Data.toLowerCase().indexOf("[map]") >= 0 && Data.toLowerCase().indexOf("[image]") >= 0
-					&& Data.toLowerCase().indexOf("[wrap]") >= 0 && Data.toLowerCase().indexOf("[scroll]") >= 0 && Data.toLowerCase().indexOf("[warn]") >= 0) {
+			if (Data.toLowerCase().indexOf("[continents]") >= 0 &&  Data.toLowerCase().indexOf("[territories]") >= 0 && Data.toLowerCase().indexOf("author") >= 0 && Data.toLowerCase().indexOf("[map]") >= 0 && Data.toLowerCase().indexOf("image") >= 0
+					&& Data.toLowerCase().indexOf("wrap") >= 0 && Data.toLowerCase().indexOf("scroll") >= 0 && Data.toLowerCase().indexOf("warn") >= 0) {
 				isMapValid = true;
 				gameMap.setErrorOccurred(false);
 				gameMap.setErrorMessage("No Errors");
@@ -43,7 +43,7 @@ public class ConquestMapTools {
 			else {
 				isMapValid = false;
 				gameMap.setErrorOccurred(true);
-				gameMap.setErrorMessage("Information missing");
+				gameMap.setErrorMessage("Information missing/Not in conquest format");
 				return isMapValid;
 			}
 			String continentData = Data.substring(Data.toLowerCase().indexOf("[continents]"), Data.toLowerCase().indexOf("[territories]"));

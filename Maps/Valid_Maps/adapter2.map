@@ -3,7 +3,8 @@ author=Anonymous
 Image=NA
 wrap=no
 scroll=both
-warn=no[Continents]
+warn=no
+[Continents]
 africa=9
 asia=6
 [Territories]

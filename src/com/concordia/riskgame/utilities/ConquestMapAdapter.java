@@ -13,13 +13,19 @@ public class ConquestMapAdapter extends DominationMapTools {
 	
 	@Override
 	public boolean parseAndValidateMap(Map gameMap, int size) {
-		return c_map.parseAndValidateMap(gameMap, size);
+		if(Constants.mapType.equalsIgnoreCase("conquest"))
+			return c_map.parseAndValidateMap(gameMap, size);
+		else
+			return super.parseAndValidateMap(gameMap, size);
 	}
 	
 	
 	@Override
 	public boolean saveDataIntoFile(Map gameMap, String name) {
-		return c_map.saveDataIntoFile(gameMap, name);
+		if(Constants.mapType.equalsIgnoreCase("conquest"))
+			return c_map.saveDataIntoFile(gameMap, name);
+		else
+			return super.saveDataIntoFile(gameMap, name);
 	}
 	
 

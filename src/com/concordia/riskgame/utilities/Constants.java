@@ -28,4 +28,5 @@ public class Constants {
     public static final int COMMON_VIEW_HEIGHT = COMMON_VIEW_WIDTH / 12 * 10;
     public static final Border blackline = BorderFactory.createLineBorder(Color.black);     
     public static final String mapLocation=System.getProperty("user.dir")+"\\Maps\\Valid_Maps\\";
+    public static final String mapType="Domination";
 }
