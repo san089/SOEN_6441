@@ -12,46 +12,8 @@ import com.concordia.riskgame.model.Modules.Map;
 public class ConquestMapTools {
 
 	
+	private DominationMapTools maptools=new DominationMapTools();
 
-	/**
-	 * Save data into file.
-	 *
-	 * @param gameMap the game map
-	 * @param name the name
-	 * @return true, if successful
-	 */
-	public boolean saveDataIntoFile(Map gameMap, String name) {
-				String data = "[Map]\nauthor=Anonymous\n[Continents]\n";
-				for (Continent c : gameMap.getContinents()) {
-					data = data + c.getContinentName();
-					if(c.getControlValue()==0){
-						c.setControlValue(c.getCountriesPresent().size());	
-					}
-					data = data + "=" + c.getControlValue();
-					data += "\n";
-				}
-				data += "[Territories]\n";
-				for (Continent c : gameMap.getContinents()) {
-					for (Country country : c.getCountriesPresent()) {
-						data += country.getCountryName() + "," + country.getLatitude() + "," + country.getLongitude() + "," + c.getContinentName() + "," + String.join(",", country.getListOfNeighbours()) + "\n";
-					}
-				}
-				PrintWriter writeData = null;
-				try {
-					writeData = new PrintWriter(Constants.mapLocation+name+".map");
-					writeData.println(data);
-					return true;
-				} 
-				catch (Exception e) {
-					System.out.println(e.getMessage());
-					return false;
-				}
-				finally{
-					writeData.close();
-				}
-		}
-	
-	
 	/**
 	 * Parses the and validate map.
 	 *
@@ -72,7 +34,8 @@ public class ConquestMapTools {
 					Data += line + "\n";
 				}
 			}
-			if (Data.toLowerCase().indexOf("[continents]") >= 0 && Data.toLowerCase().indexOf("[territories]") >= 0 && Data.toLowerCase().indexOf("author") >= 0 && Data.toLowerCase().indexOf("[map]") >= 0) {
+			if (Data.toLowerCase().indexOf("[continents]") >= 0 &&  Data.toLowerCase().indexOf("[territories]") >= 0 && Data.toLowerCase().indexOf("author") >= 0 && Data.toLowerCase().indexOf("[map]") >= 0 && Data.toLowerCase().indexOf("[image]") >= 0
+					&& Data.toLowerCase().indexOf("[wrap]") >= 0 && Data.toLowerCase().indexOf("[scroll]") >= 0 && Data.toLowerCase().indexOf("[warn]") >= 0) {
 				isMapValid = true;
 				gameMap.setErrorOccurred(false);
 				gameMap.setErrorMessage("No Errors");
@@ -83,7 +46,6 @@ public class ConquestMapTools {
 				gameMap.setErrorMessage("Information missing");
 				return isMapValid;
 			}
-			String authorData = Data.substring(Data.toLowerCase().indexOf("[map]"), Data.toLowerCase().indexOf("[continents]"));
 			String continentData = Data.substring(Data.toLowerCase().indexOf("[continents]"), Data.toLowerCase().indexOf("[territories]"));
 			String countryData = Data.substring(Data.toLowerCase().indexOf("[territories]"));
 			String[] countryDataArray = countryData.split("\n");
@@ -120,7 +82,7 @@ public class ConquestMapTools {
 					}
 				}
 			}
-			isMapValid=validateMap(gameMap,size);
+			isMapValid=maptools.validateMap(gameMap,size);
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -128,8 +90,43 @@ public class ConquestMapTools {
 		return isMapValid;
 	}
 	
-
-	
+	/**
+	 * Save data into file.
+	 *
+	 * @param gameMap the game map
+	 * @param name the name
+	 * @return true, if successful
+	 */
+	public boolean saveDataIntoFile(Map gameMap, String name) {
+				String data = "[Map]\nauthor=Anonymous\nImage=NA\nwrap=no\nscroll=both\nwarn=no\n\n[Continents]\n";
+				for (Continent c : gameMap.getContinents()) {
+					data = data + c.getContinentName();
+					if(c.getControlValue()==0){
+						c.setControlValue(c.getCountriesPresent().size());	
+					}
+					data = data + "=" + c.getControlValue();
+					data += "\n";
+				}
+				data += "[Territories]\n";
+				for (Continent c : gameMap.getContinents()) {
+					for (Country country : c.getCountriesPresent()) {
+						data += country.getCountryName() + "," + country.getLatitude() + "," + country.getLongitude() + "," + c.getContinentName() + "," + String.join(",", country.getListOfNeighbours()) + "\n";
+					}
+				}
+				PrintWriter writeData = null;
+				try {
+					writeData = new PrintWriter(Constants.mapLocation+name+".map");
+					writeData.println(data);
+					return true;
+				} 
+				catch (Exception e) {
+					System.out.println(e.getMessage());
+					return false;
+				}
+				finally{
+					writeData.close();
+				}
+		}
 	
 	
 }

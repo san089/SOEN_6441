@@ -102,7 +102,7 @@ public class Gameplay extends Observable implements Serializable {
 			gameplayObj = new Gameplay();
 			gameplayObj.players = new ArrayList<Player>();
 			gameplayObj.selectedMap = null;
-			gameplayObj.currentPhase = Phases.MapEditor;
+			gameplayObj.currentPhase = Phases.Startup;
 			gameplayObj.playerCount = 0;
 			gameplayObj.playerQueue = new LinkedList<Player>();
 			gameplayObj.removedPlayer = new ArrayList<>();

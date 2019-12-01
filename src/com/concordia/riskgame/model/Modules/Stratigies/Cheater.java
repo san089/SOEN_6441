@@ -17,7 +17,7 @@ public class Cheater implements Strategy,Serializable {
 	private static final long serialVersionUID = 1L;
 	private String strategyName = "Cheater";
     public String ANSI_PURPLE = "\u001B[35m";
-    Gameplay gameplay = Gameplay.getInstance();
+  //  Gameplay gameplay = Gameplay.getInstance();
 
     public String getColor() {
         return ANSI_PURPLE;
@@ -30,7 +30,7 @@ public class Cheater implements Strategy,Serializable {
     }
 
     public void doCardExchange(){
-    	this.gameplay = Gameplay.getInstance(); //For updating the class gameplay object when we load a saved game.
+    //	this.gameplay = Gameplay.getInstance(); //For updating the class gameplay object when we load a saved game.
     	
         try {
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
@@ -54,14 +54,14 @@ public class Cheater implements Strategy,Serializable {
         Country tempCountry = null;
         System.out.println(getStrategyName() + " bot playing reinforcement phase.");
         System.out.println(" Current player is "+Gameplay.getInstance().getCurrentPlayer().getPlayerName());
-        ArrayList<Country> ownedCountries = gameplay.getSelectedMap().getOwnedCountries(gameplay.getCurrentPlayer().getPlayerName());
+        ArrayList<Country> ownedCountries = Gameplay.getInstance().getSelectedMap().getOwnedCountries(Gameplay.getInstance().getCurrentPlayer().getPlayerName());
 
 
         //Doubling armies in all countries
         for(Country c : ownedCountries){
             System.out.println("Double the armies in " + c.getCountryName());
             c.setNoOfArmiesPresent(2*c.getNoOfArmiesPresent());
-            if(c.getNoOfArmiesPresent() > gameplay.getCurrentPlayer().getArmyCount()){
+            if(c.getNoOfArmiesPresent() > Gameplay.getInstance().getCurrentPlayer().getArmyCount()){
                 tempCountry = c;
             }
         }
@@ -69,11 +69,11 @@ public class Cheater implements Strategy,Serializable {
         //Building reinforcement command
         String reinforceCommand = "";
         if(tempCountry != null){
-            reinforceCommand = "reinforce " + tempCountry.getCountryName() + " " + gameplay.getCurrentPlayer().getArmyCount();
+            reinforceCommand = "reinforce " + tempCountry.getCountryName() + " " + Gameplay.getInstance().getCurrentPlayer().getArmyCount();
 
         }
         else{
-            reinforceCommand = "reinforce " + ownedCountries.get(0).getCountryName() + " " + gameplay.getCurrentPlayer().getArmyCount();
+            reinforceCommand = "reinforce " + ownedCountries.get(0).getCountryName() + " " + Gameplay.getInstance().getCurrentPlayer().getArmyCount();
         }
 
         //Executing reinforcement command
@@ -88,7 +88,7 @@ public class Cheater implements Strategy,Serializable {
 
     public void doAttack(){
         System.out.println(getStrategyName() + " bot playing reinforcement phase.");
-        ArrayList<Country> ownedCountries = gameplay.getSelectedMap().getOwnedCountries(gameplay.getCurrentPlayer().getPlayerName());
+        ArrayList<Country> ownedCountries = Gameplay.getInstance().getSelectedMap().getOwnedCountries(Gameplay.getInstance().getCurrentPlayer().getPlayerName());
 
         outerloop:
         for(Country c : ownedCountries){
@@ -96,10 +96,10 @@ public class Cheater implements Strategy,Serializable {
 
             if(neighbourCountries.size() != 0){
                 for(String neigbourCountry : neighbourCountries){
-                    Country neighbour = gameplay.getSelectedMap().searchCountry(neigbourCountry);
+                    Country neighbour = Gameplay.getInstance().getSelectedMap().searchCountry(neigbourCountry);
 
                     //if neighbour is owned by player itself do not attack
-                    if(neighbour.getOwnedBy().getPlayerName().equals(gameplay.getCurrentPlayer().getPlayerName())){
+                    if(neighbour.getOwnedBy().getPlayerName().equals(Gameplay.getInstance().getCurrentPlayer().getPlayerName())){
                         continue;
                     }
 
@@ -110,7 +110,7 @@ public class Cheater implements Strategy,Serializable {
                         c.setNoOfArmiesPresent(999);
                         String attackCommand = "attack " + c.getCountryName() + " " + neigbourCountry + " -allout";
                         CommandController.parseCommand(attackCommand);
-                        if(gameplay.getCurrentPlayer().isWinner()){
+                        if(Gameplay.getInstance().getCurrentPlayer().isWinner()){
                             break outerloop;
                         }
                         String attackmove = "attackmove " + defendArmyCount;
@@ -124,7 +124,7 @@ public class Cheater implements Strategy,Serializable {
             }
         }
 
-        if(gameplay.getCurrentPlayer().isWinner()){
+        if(Gameplay.getInstance().getCurrentPlayer().isWinner()){
             return;
         }
 
@@ -140,19 +140,19 @@ public class Cheater implements Strategy,Serializable {
 
     public void doFortification() {
 
-        if(gameplay.getCurrentPlayer().isWinner()){
+        if(Gameplay.getInstance().getCurrentPlayer().isWinner()){
             return;
         }
 
 
-        for(Country c : gameplay.getSelectedMap().getOwnedCountries(gameplay.getCurrentPlayer().getPlayerName())){
+        for(Country c : Gameplay.getInstance().getSelectedMap().getOwnedCountries(Gameplay.getInstance().getCurrentPlayer().getPlayerName())){
             List<String> neighbourCounties = c.getListOfNeighbours();
 
             for(String neighbour : neighbourCounties){
-                String ownerOfNeighbour = gameplay.getSelectedMap().searchCountry(neighbour).getOwnedBy().getPlayerName();
+                String ownerOfNeighbour = Gameplay.getInstance().getSelectedMap().searchCountry(neighbour).getOwnedBy().getPlayerName();
 
                 //If neighbour country owned by other player double the army in the country.
-                if(!ownerOfNeighbour.equals(gameplay.getCurrentPlayer().getPlayerName())){
+                if(!ownerOfNeighbour.equals(Gameplay.getInstance().getCurrentPlayer().getPlayerName())){
                     c.setNoOfArmiesPresent(2*c.getNoOfArmiesPresent());
                     break;
                 }

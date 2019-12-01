@@ -16,7 +16,7 @@ public class Benevolent implements Strategy,Serializable {
 	private static final long serialVersionUID = 1L;
 	private String strategyName = "Benevolent";
     public String ANSI_YELLOW = "\u001B[33m";
-    Gameplay gameplay = Gameplay.getInstance();
+   // Gameplay gameplay = Gameplay.getInstance();
 
     public String getColor() {
         return ANSI_YELLOW;
@@ -28,7 +28,7 @@ public class Benevolent implements Strategy,Serializable {
     }
 
     public void doCardExchange(){
-    	gameplay =Gameplay.getInstance();
+    //	gameplay =Gameplay.getInstance();
         try {
         	
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
@@ -48,8 +48,8 @@ public class Benevolent implements Strategy,Serializable {
     }
 
     public void doReinforcement(){
-    	gameplay =Gameplay.getInstance();
-        int armies_available = gameplay.getCurrentPlayer().getArmyCount();
+    //	gameplay =Gameplay.getInstance();
+        int armies_available = Gameplay.getInstance().getCurrentPlayer().getArmyCount();
         String countryName = getWeakestCountry();
         String reinforceCommand;
 
@@ -82,7 +82,7 @@ public class Benevolent implements Strategy,Serializable {
     }
 
     public void doFortification() {
-        int armies_available = gameplay.getCurrentPlayer().getArmyCount();
+        int armies_available = Gameplay.getInstance().getCurrentPlayer().getArmyCount();
         String countryName = getWeakestCountry();
         String fortifyCommand;
 
@@ -105,8 +105,8 @@ public class Benevolent implements Strategy,Serializable {
     }
 
     public String getWeakestCountry(){
-        Country weakest = gameplay.getSelectedMap().getOwnedCountries(gameplay.getCurrentPlayer().getPlayerName()).get(0);
-        ArrayList<Country> countryOwnedList = gameplay.getSelectedMap().getOwnedCountries(gameplay.getCurrentPlayer().getPlayerName());
+        Country weakest = Gameplay.getInstance().getSelectedMap().getOwnedCountries(Gameplay.getInstance().getCurrentPlayer().getPlayerName()).get(0);
+        ArrayList<Country> countryOwnedList = Gameplay.getInstance().getSelectedMap().getOwnedCountries(Gameplay.getInstance().getCurrentPlayer().getPlayerName());
         for(Country c : countryOwnedList){
             if(c.getNoOfArmiesPresent() < weakest.getNoOfArmiesPresent()){
                 weakest = c;

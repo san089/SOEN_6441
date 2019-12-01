@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.concordia.riskgame.model.Modules.*;
-import com.concordia.riskgame.utilities.GenericMapTools;
+import com.concordia.riskgame.utilities.*;
 import com.concordia.riskgame.view.MapEditorView;
 import com.concordia.riskgame.view.StartUpPhaseView;
 /**
@@ -36,7 +36,7 @@ public class StartupPhaseController implements ActionListener  {
 	private List<String> countries;
 	private Gameplay gameplay;
 	private StartUpPhaseView sView;
-	private GenericMapTools mapTool=new GenericMapTools();
+	private DominationMapTools mapTool=new ConquestMapAdapter(new ConquestMapTools());
 	private MapEditorController mapEditor=new MapEditorController(new MapEditorView(new Map()));
 
 	/**

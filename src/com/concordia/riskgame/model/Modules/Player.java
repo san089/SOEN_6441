@@ -114,8 +114,8 @@ public class Player extends Observable implements Serializable {
 
 	public void setArmyCount(int armyCount) {
 		this.armyCount = armyCount;
-		gameplay.triggerObserver("domination");
-		gameplay.triggerObserver("showmap");
+		Gameplay.getInstance().triggerObserver("domination");
+		Gameplay.getInstance().triggerObserver("showmap");
 	}
 
 
@@ -130,6 +130,9 @@ public class Player extends Observable implements Serializable {
 	
 	
 	public ArrayList<String> getCountriesOwned() {
+		ArrayList<String> countriesOwned=new ArrayList<String>();
+		for (Country country:Gameplay.getInstance().getSelectedMap().getOwnedCountries(this.playerName))
+			countriesOwned.add(country.getCountryName());
 		return countriesOwned;
 	}
 
@@ -171,8 +174,8 @@ public class Player extends Observable implements Serializable {
 	private Country fromCountry;
 	private Country toCountry;
 	private String[] commands;
-	private Gameplay gameplay = Gameplay.getInstance();;
-	private Map gameMap = gameplay.getSelectedMap();
+	//private Gameplay gameplay = Gameplay.getInstance();;
+	private Map gameMap = Gameplay.getInstance().getSelectedMap();
 	private Player defensivePlayer;
 	private boolean defendCommandInput = false;
 	private boolean attackMoveCommandInput =false;
@@ -196,17 +199,17 @@ public class Player extends Observable implements Serializable {
 		String countryName = commands[1];
 		int reinforcement = Integer.parseInt(commands[2]);
 		if (!getCountriesOwned().contains(commands[1])) {
-			gameplay.addToViewLogger("Not your country!");
+			Gameplay.getInstance().addToViewLogger("Not your country!");
 			return;
 		}
 		if(armyCount < reinforcement) {
-			gameplay.addToViewLogger("Entered count more than the number of armies available for the current player.Please enter a smaller value.");
+			Gameplay.getInstance().addToViewLogger("Entered count more than the number of armies available for the current player.Please enter a smaller value.");
 			return;
 		}
 
 		setArmyCount(armyCount - reinforcement);
-		int n = gameplay.getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
-		gameplay.getSelectedMap().searchCountry(countryName).setNoOfArmiesPresent(n + reinforcement);
+		int n = Gameplay.getInstance().getSelectedMap().searchCountry(countryName).getNoOfArmiesPresent();
+		Gameplay.getInstance().getSelectedMap().searchCountry(countryName).setNoOfArmiesPresent(n + reinforcement);
 
 	}
 
@@ -225,7 +228,7 @@ public class Player extends Observable implements Serializable {
 		toCountry = gameMap.searchCountry(commands[2]);
 		defensivePlayer = toCountry.getOwnedBy();
 		if (fromCountry == null || toCountry == null) {
-			gameplay.addToViewLogger("Cannot find the country");
+			Gameplay.getInstance().addToViewLogger("Cannot find the country");
 			return;
 		}
 
@@ -235,13 +238,13 @@ public class Player extends Observable implements Serializable {
 
 		if ("-allout".equals(commands[3])) {
 			autoAttack();
-			gameplay.triggerObserver("domination");
-			gameplay.triggerObserver("showmap");
+			Gameplay.getInstance().triggerObserver("domination");
+			Gameplay.getInstance().triggerObserver("showmap");
             if (isWinner()) {
                 return;
             }
 		} else {
-			gameplay.addToViewLogger("Input defend command!");
+			Gameplay.getInstance().addToViewLogger("Input defend command!");
 			defendCommandInput = true;
 		}
 		
@@ -254,19 +257,19 @@ public class Player extends Observable implements Serializable {
 		}
 		String[] command2 = command.split(" ");
 		if (!checkDefendCommand(command2)) {
-			gameplay.addToViewLogger("Incorrect defend command!");
+			Gameplay.getInstance().addToViewLogger("Incorrect defend command!");
 			return;
 		}
 		attackOnce();
 		if (isWinner()) {
 			return;
 		}
-		gameplay.triggerObserver("domination");
-		gameplay.triggerObserver("showmap");
+		Gameplay.getInstance().triggerObserver("domination");
+		Gameplay.getInstance().triggerObserver("showmap");
 
 		if (!checkAvailableAttack()) {
-			gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
-			gameplay.setCurrentPhase(Phases.Fortification);
+			Gameplay.getInstance().addToViewLogger("Moving from " + Gameplay.getInstance().getCurrentPhase() + " Phase to Fortification Phase.");
+			Gameplay.getInstance().setCurrentPhase(Phases.Fortification);
 		}
 		defendCommandInput = false;
 	}
@@ -281,14 +284,14 @@ public class Player extends Observable implements Serializable {
 		ArrayList<Country> defendCountry = new ArrayList<>();
 
 		boolean attackAvailable = false;
-		gameplay.addToViewLogger("Next available attacks are:");
-		for (String countryName : gameplay.getCurrentPlayer().getCountriesOwned()) {
-			Country country = gameplay.getSelectedMap().searchCountry(countryName);
+		Gameplay.getInstance().addToViewLogger("Next available attacks are:");
+		for (String countryName : Gameplay.getInstance().getCurrentPlayer().getCountriesOwned()) {
+			Country country = Gameplay.getInstance().getSelectedMap().searchCountry(countryName);
 			if (country.getNoOfArmiesPresent() != 1) {
 				for (String neighbor : country.getListOfNeighbours()) {
-					if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
-						Country neighborCountry = gameplay.getSelectedMap().searchCountry(neighbor);
-						gameplay.addToViewLogger(countryName + " " + country.getNoOfArmiesPresent() + " → " + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
+					if (!Gameplay.getInstance().getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
+						Country neighborCountry = Gameplay.getInstance().getSelectedMap().searchCountry(neighbor);
+						Gameplay.getInstance().addToViewLogger(countryName + " " + country.getNoOfArmiesPresent() + " → " + neighbor + " " + neighborCountry.getNoOfArmiesPresent());
 						attackAvailable = true;
 						defendCountry.add(neighborCountry);
 					}
@@ -328,11 +331,11 @@ public class Player extends Observable implements Serializable {
 			return false;
 		}
 		if (numOfDefensiveDice > toCountry.getNoOfArmiesPresent()) {
-			gameplay.addToViewLogger("Defensive country doesn't have enough armies to do defence!");
+			Gameplay.getInstance().addToViewLogger("Defensive country doesn't have enough armies to do defence!");
 			return false;
 		}
 		if (numOfDefensiveDice > 2 || numOfDefensiveDice <= 0) {
-			gameplay.addToViewLogger("Number of defensive dice invalid! It should be 0 < num <=2");
+			Gameplay.getInstance().addToViewLogger("Number of defensive dice invalid! It should be 0 < num <=2");
 			return false;
 		}
 		return true;
@@ -356,8 +359,8 @@ public class Player extends Observable implements Serializable {
 			defenderDiceLine+=String.valueOf(dice)+",";
 		
 		
-		gameplay.addToViewLogger(attackDiceLine.substring(0, attackDiceLine.length()-1));
-		gameplay.addToViewLogger(defenderDiceLine.substring(0, defenderDiceLine.length()-1));
+		Gameplay.getInstance().addToViewLogger(attackDiceLine.substring(0, attackDiceLine.length()-1));
+		Gameplay.getInstance().addToViewLogger(defenderDiceLine.substring(0, defenderDiceLine.length()-1));
 		int defensiveCountryLose = 0;
 		int offensiveCountryLose = 0;
 		for (int i = 0; i < Math.min(defensiveDice.size(), attackDice.size()); i++) {
@@ -370,38 +373,38 @@ public class Player extends Observable implements Serializable {
 				offensiveCountryLose++;
 			}
 		}
-		gameplay.addToViewLogger(fromCountry.getCountryName() + " lose " + offensiveCountryLose + " armies");
-		gameplay.addToViewLogger(toCountry.getCountryName() + " lose " + defensiveCountryLose + " armies");
+		Gameplay.getInstance().addToViewLogger(fromCountry.getCountryName() + " lose " + offensiveCountryLose + " armies");
+		Gameplay.getInstance().addToViewLogger(toCountry.getCountryName() + " lose " + defensiveCountryLose + " armies");
 
 
 		if (fromCountry.getNoOfArmiesPresent() == 1) {
-			gameplay.addToViewLogger("Offensive country left only one army, cannot do any more attack");
+			Gameplay.getInstance().addToViewLogger("Offensive country left only one army, cannot do any more attack");
 			if (!checkAvailableAttack()) {
-				gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
-				gameplay.setCurrentPhase(Phases.Fortification);
+				Gameplay.getInstance().addToViewLogger("Moving from " + Gameplay.getInstance().getCurrentPhase() + " Phase to Fortification Phase.");
+				Gameplay.getInstance().setCurrentPhase(Phases.Fortification);
 			}
 			return true;
 		}
 
 		if (toCountry.getNoOfArmiesPresent() == 0) {
 
-			gameplay.addToViewLogger("You've conquered " + commands[2]);
+			Gameplay.getInstance().addToViewLogger("You've conquered " + commands[2]);
 			//remove country from enemy Player
 			defensivePlayer.getCountriesOwned().remove(commands[2]);
 			//Change owner
-			gameplay.getCurrentPlayer().setCountriesOwned(commands[2]);
+			Gameplay.getInstance().getCurrentPlayer().setCountriesOwned(commands[2]);
 			toCountry.setOwnedBy(this);
 
 			isPlayerOut();
             if (isWinner()){
-                gameplay.addToViewLogger("Game Over! " +"Winner: " + gameplay.getCurrentPlayer().getPlayerName());
+                Gameplay.getInstance().addToViewLogger("Game Over! " +"Winner: " + Gameplay.getInstance().getCurrentPlayer().getPlayerName());
                 return true;
             }
 
 			//Set card flag, give a card at the end of this turn
 			setCardFlag();
-			gameplay.addToViewLogger("Input your move command!");
-			gameplay.addToViewLogger("Attack country has " + fromCountry.getNoOfArmiesPresent() + "armies");
+			Gameplay.getInstance().addToViewLogger("Input your move command!");
+			Gameplay.getInstance().addToViewLogger("Attack country has " + fromCountry.getNoOfArmiesPresent() + "armies");
 			attackMoveCommandInput = true;
 			return true;
 		}
@@ -415,15 +418,15 @@ public class Player extends Observable implements Serializable {
 		}
 		String[] moveCommands = command.split(" ");
 		if (!checkMoveCommands(moveCommands)) {
-			gameplay.addToViewLogger("Incorrect move command!");
+			Gameplay.getInstance().addToViewLogger("Incorrect move command!");
 			return;
 		}
 		int moveArmies = Integer.parseInt(moveCommands[1]);
 		fromCountry.setNoOfArmiesPresent(fromCountry.getNoOfArmiesPresent() - moveArmies);
 		toCountry.setNoOfArmiesPresent(moveArmies);
 		if (!checkAvailableAttack()) {
-			gameplay.addToViewLogger("Moving from " + gameplay.getCurrentPhase() + " Phase to Fortification Phase.");
-			gameplay.setCurrentPhase(Phases.Fortification);
+			Gameplay.getInstance().addToViewLogger("Moving from " + Gameplay.getInstance().getCurrentPhase() + " Phase to Fortification Phase.");
+			Gameplay.getInstance().setCurrentPhase(Phases.Fortification);
 		}
 		attackMoveCommandInput = false;
 	}
@@ -445,15 +448,15 @@ public class Player extends Observable implements Serializable {
 		try {
 			moveNum = Integer.parseInt(moveCommands[1]);
 		}catch (NumberFormatException ex) {
-			gameplay.addToViewLogger("Not an integer");
+			Gameplay.getInstance().addToViewLogger("Not an integer");
 			return false;
 		}
 		if (moveNum > fromCountry.getNoOfArmiesPresent() - 1) {
-			gameplay.addToViewLogger("Not so many armies");
+			Gameplay.getInstance().addToViewLogger("Not so many armies");
 			return false;
 		}
 		if (moveNum < 1) {
-			gameplay.addToViewLogger("You must move at least 1 army to conquered country");
+			Gameplay.getInstance().addToViewLogger("You must move at least 1 army to conquered country");
 			return false;
 		}
 		return true;
@@ -464,36 +467,36 @@ public class Player extends Observable implements Serializable {
 	 */
 	private boolean checkAttackCommand() {
 		if (!getCountriesOwned().contains(commands[1])) {
-			gameplay.addToViewLogger("Offensive Country is not your country! Re-input:");
+			Gameplay.getInstance().addToViewLogger("Offensive Country is not your country! Re-input:");
 			return false;
 		}
 		if (getCountriesOwned().contains(commands[2])) {
-			gameplay.addToViewLogger("You cannot attack yourself! Re-input:");
+			Gameplay.getInstance().addToViewLogger("You cannot attack yourself! Re-input:");
 			return false;
 		}
 		if (!fromCountry.getListOfNeighbours().contains(commands[2])) {
-			gameplay.addToViewLogger("Target country is not offensive country's neighbor! Re-input:");
+			Gameplay.getInstance().addToViewLogger("Target country is not offensive country's neighbor! Re-input:");
 			return false;
 		}
 		if (fromCountry.getNoOfArmiesPresent() == 1) {
-			gameplay.addToViewLogger("Offensive country doesn't have army to attack!");
+			Gameplay.getInstance().addToViewLogger("Offensive country doesn't have army to attack!");
 			return false;
 		}
 		if (!commands[3].equals("-allout")) {
 			try {
 				numOfAttackDice = Integer.parseInt(commands[3]);
 			}catch (NumberFormatException ex) {
-				gameplay.addToViewLogger("Attack dice is not an integer");
+				Gameplay.getInstance().addToViewLogger("Attack dice is not an integer");
 				return false;
 			}
 
 			if (numOfAttackDice > 3 || numOfAttackDice <= 0) {
-				gameplay.addToViewLogger("Attack dice invalid, should be 0 < num <= 3!");
+				Gameplay.getInstance().addToViewLogger("Attack dice invalid, should be 0 < num <= 3!");
 				return false;
 			}
 
 			if (numOfAttackDice > fromCountry.getNoOfArmiesPresent() - 1) {
-				gameplay.addToViewLogger("Offensive country only has " + (fromCountry.getNoOfArmiesPresent() - 1) + " armies to do attack!");
+				Gameplay.getInstance().addToViewLogger("Offensive country only has " + (fromCountry.getNoOfArmiesPresent() - 1) + " armies to do attack!");
 				return false;
 			}
 
@@ -509,12 +512,12 @@ public class Player extends Observable implements Serializable {
 		if (defensivePlayer.getCountriesOwned().size() == 0) {
 			int n = 0;
 			for (Card card : defensivePlayer.getCardsOwned()){
-				gameplay.getCurrentPlayer().addNewCard(card);
+				Gameplay.getInstance().getCurrentPlayer().addNewCard(card);
 				n++;
 			}
-			gameplay.addRemovedPlayer(defensivePlayer);
-			gameplay.getPlayers().remove(defensivePlayer);
-			gameplay.addToViewLogger(defensivePlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
+			Gameplay.getInstance().addRemovedPlayer(defensivePlayer);
+			Gameplay.getInstance().getPlayers().remove(defensivePlayer);
+			Gameplay.getInstance().addToViewLogger(defensivePlayer.getPlayerName() + " is out! You've got his "+ n + " cards");
 			}
 	}
 
@@ -522,7 +525,7 @@ public class Player extends Observable implements Serializable {
 	 * After each player out, check whether the winner player is the final winner. If it is, exit game.
 	 */
 	public boolean isWinner() {
-		if (gameplay.getPlayers().size() == 1) {
+		if (Gameplay.getInstance().getPlayers().size() == 1) {
 			return true;
 		}
 		return false;
@@ -558,23 +561,23 @@ public class Player extends Observable implements Serializable {
 		int num = Integer.parseInt(commands[3]);
 
 		if (!getCountriesOwned().contains(commands[1]) || !getCountriesOwned().contains(commands[2])) {
-			gameplay.addToViewLogger("Not your country!");
+			Gameplay.getInstance().addToViewLogger("Not your country!");
 			return false;
 		}
 		if (!fromCountry.getListOfNeighbours().contains(commands[2])) {
-			gameplay.addToViewLogger("Target country is not neighbor");
+			Gameplay.getInstance().addToViewLogger("Target country is not neighbor");
 			return false;
 		}
 		if (num >= gameMap.searchCountry(commands[1]).getNoOfArmiesPresent()) {
-			gameplay.addToViewLogger("You don't have so many armies");
+			Gameplay.getInstance().addToViewLogger("You don't have so many armies");
 			return false;
 		}
 		int n = gameMap.searchCountry(commands[1]).getNoOfArmiesPresent() - num;
 		gameMap.searchCountry(commands[1]).setNoOfArmiesPresent(n);
 		int m = gameMap.searchCountry(commands[2]).getNoOfArmiesPresent() + num;
 		gameMap.searchCountry(commands[2]).setNoOfArmiesPresent(m);
-		gameplay.triggerObserver("domination");
-		gameplay.triggerObserver("showmap");
+		Gameplay.getInstance().triggerObserver("domination");
+		Gameplay.getInstance().triggerObserver("showmap");
 		
 		return true;
 	}

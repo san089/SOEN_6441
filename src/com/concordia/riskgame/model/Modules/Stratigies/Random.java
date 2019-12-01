@@ -14,7 +14,7 @@ public class Random implements Strategy,Serializable {
 	private static final long serialVersionUID = 1L;
 	private String strategyName = "Random";
     public String ANSI_CYAN = "\u001B[36m";
-    Gameplay gameplay = Gameplay.getInstance();
+    //Gameplay gameplay = Gameplay.getInstance();
 
     public String getColor() {
 
@@ -29,7 +29,7 @@ public class Random implements Strategy,Serializable {
 
     public void doCardExchange(){
     	
-    	gameplay =Gameplay.getInstance();
+    //	gameplay =Gameplay.getInstance();
         try {
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
             CommandController.parseCommand("exchangecards 3 0 0");
@@ -48,9 +48,9 @@ public class Random implements Strategy,Serializable {
     }
 
     public void doReinforcement(){
-        int armies_available = gameplay.getCurrentPlayer().getArmyCount();
-        int randomIndex = generateRandomNumber(0, gameplay.getCurrentPlayer().getCountriesOwned().size());
-        String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(randomIndex);
+        int armies_available = Gameplay.getInstance().getCurrentPlayer().getArmyCount();
+        int randomIndex = generateRandomNumber(0, Gameplay.getInstance().getCurrentPlayer().getCountriesOwned().size());
+        String countryName = Gameplay.getInstance().getCurrentPlayer().getCountriesOwned().get(randomIndex);
         String reinforceCommand;
 
         if(armies_available > 0){
@@ -74,7 +74,7 @@ public class Random implements Strategy,Serializable {
         System.out.println("\nBot will perform attack " + numberOfTimesToAttack + " times\n");
         for(int i=0;i<numberOfTimesToAttack;i++){
             System.out.println("\n\nAttack ID : " + i+1);
-            if(gameplay.getCurrentPlayer().checkAvailableAttack()){
+            if(Gameplay.getInstance().getCurrentPlayer().checkAvailableAttack()){
                 performRandomAttack();
             }
             else {
@@ -102,7 +102,7 @@ public class Random implements Strategy,Serializable {
         Country attackCountry= null;
         Country defendCountry= null;
         try {
-            HashMap<Country, ArrayList<Country>> availableAttacks = gameplay.getCurrentPlayer().getAvailableAttacks();
+            HashMap<Country, ArrayList<Country>> availableAttacks = Gameplay.getInstance().getCurrentPlayer().getAvailableAttacks();
 
             //Setting attacking country randomly
             int randomAttackIndex = generateRandomNumber(0, availableAttacks.size());
@@ -139,7 +139,7 @@ public class Random implements Strategy,Serializable {
             System.out.println("Some exception occured while executing attack command.");
         }
 
-        if(gameplay.getCurrentPlayer().isAttackMoveCommandInput()){
+        if(Gameplay.getInstance().getCurrentPlayer().isAttackMoveCommandInput()){
             try {
                 CommandController.parseCommand("attackmove 1");
             }
@@ -153,9 +153,9 @@ public class Random implements Strategy,Serializable {
 
 
     public void doFortification() {
-        int armies_available = gameplay.getCurrentPlayer().getArmyCount();
-        int randomIndex = generateRandomNumber(0, gameplay.getCurrentPlayer().getCountriesOwned().size());
-        String countryName = gameplay.getCurrentPlayer().getCountriesOwned().get(randomIndex);
+        int armies_available = Gameplay.getInstance().getCurrentPlayer().getArmyCount();
+        int randomIndex = generateRandomNumber(0, Gameplay.getInstance().getCurrentPlayer().getCountriesOwned().size());
+        String countryName = Gameplay.getInstance().getCurrentPlayer().getCountriesOwned().get(randomIndex);
         String fortifyCommand;
 
         if(armies_available > 0){

@@ -18,7 +18,7 @@ public class CardExchangeViewTest {
 
    CardExchangeView cardExchangeView;
    Player currentPlayer;
-   Gameplay gameplay = Gameplay.getInstance();
+ //  Gameplay gameplay = Gameplay.getInstance();
    Scanner scanner;
    String command;
 
@@ -47,9 +47,9 @@ public class CardExchangeViewTest {
         currentPlayer.addNewCard(newCard);
         newCard = Card.getCard(Card.class);
         currentPlayer.addNewCard(newCard);
-        gameplay.setCurrentPlayer(currentPlayer);
-        gameplay.setCurrentPhase(Phases.Reinforcement);
-        gameplay.addObserver(CardExchangeView.getInstance());
+        Gameplay.getInstance().setCurrentPlayer(currentPlayer);
+        Gameplay.getInstance().setCurrentPhase(Phases.Reinforcement);
+        Gameplay.getInstance().addObserver(CardExchangeView.getInstance());
 
     }
 

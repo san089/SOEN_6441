@@ -1,7 +1,7 @@
 package com.concordia.riskgame.model.Modules;
 
 import com.concordia.riskgame.controller.CommandController;
-import com.concordia.riskgame.utilities.GenericMapTools;
+import com.concordia.riskgame.utilities.DominationMapTools;
 import com.concordia.riskgame.view.TournamentView;
 
 import java.awt.event.WindowEvent;
@@ -70,20 +70,20 @@ public class TournamentGame extends Thread{
         int n = gameId;
         while (n != 0) {
             for (String mapPath : mapFiles){
-                Gameplay gameplay = Gameplay.getInstance();
-                gameplay.setGameMode("Tournament");
+             //   Gameplay gameplay = Gameplay.getInstance();
+                Gameplay.getInstance().setGameMode("Tournament");
                 CommandController.parseCommand("loadmap " + mapPath);
-                gameplay.getPlayerQueue().clear();
-                gameplay.getPlayers().clear();
-                gameplay.getRemovedPlayer().clear();
-                addPlayer(gameplay);
+                Gameplay.getInstance().getPlayerQueue().clear();
+                Gameplay.getInstance().getPlayers().clear();
+                Gameplay.getInstance().getRemovedPlayer().clear();
+                addPlayer(Gameplay.getInstance());
                 CommandController.parseCommand("populatecountries");
                 CommandController.parseCommand("placeall");
                 int t = numTurns;
                 while (t != 0) {
                     CommandController.parseCommand("botplay");
-                    if (gameplay.getCurrentPlayer().isWinner()) {
-                        tournamentResult.add(gameplay.getCurrentPlayer().getPlayerName());
+                    if (Gameplay.getInstance().getCurrentPlayer().isWinner()) {
+                        tournamentResult.add(Gameplay.getInstance().getCurrentPlayer().getPlayerName());
                         break;
                     }
                     t--;

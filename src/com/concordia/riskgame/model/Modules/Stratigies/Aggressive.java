@@ -17,7 +17,7 @@ public class Aggressive implements Strategy,Serializable {
 	private static final long serialVersionUID = 1L;
 	private String strategyName = "Aggressive";
     public String ANSI_BLUE = "\u001B[34m";
-    private Gameplay gameplay =Gameplay.getInstance();
+    //private Gameplay gameplay =Gameplay.getInstance();
     private Country  strongestFrontCountry;
 
     public String getColor() {
@@ -30,7 +30,7 @@ public class Aggressive implements Strategy,Serializable {
     }
 
     public void doCardExchange(){
-    	gameplay =Gameplay.getInstance();
+    //	gameplay =Gameplay.getInstance();
         try {
         	
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
@@ -53,7 +53,7 @@ public class Aggressive implements Strategy,Serializable {
     public void doReinforcement(){
         try {
             strongestFrontCountry = getStrongestFrontCountry();
-            String command = "reinforce " + strongestFrontCountry.getCountryName() + " " + gameplay.getCurrentPlayer().getArmyCount();
+            String command = "reinforce " + strongestFrontCountry.getCountryName() + " " + Gameplay.getInstance().getCurrentPlayer().getArmyCount();
             System.out.println("Bot Executing Command : " + command);
             CommandController.parseCommand(command);
         }
@@ -66,13 +66,13 @@ public class Aggressive implements Strategy,Serializable {
     public void doAttack(){
         try {
             for (String neighbor : strongestFrontCountry.getListOfNeighbours()) {
-                if (gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
+                if (Gameplay.getInstance().getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
                     continue;
                 }
                 String command = "attack " + strongestFrontCountry.getCountryName() + " " + neighbor + " -allout";
                 System.out.println("Bot Executing Command : " + command);
                 CommandController.parseCommand(command);
-                if (gameplay.getCurrentPlayer().isWinner()){
+                if (Gameplay.getInstance().getCurrentPlayer().isWinner()){
                     return;
                 }
                 if (strongestFrontCountry.getNoOfArmiesPresent() != 1) {
@@ -102,8 +102,8 @@ public class Aggressive implements Strategy,Serializable {
         for (Country country : frontBattleLine()) {
             int most = 0;
             for (String neighbor : country.getListOfNeighbours()){
-                if (gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
-                    Country currentNeighbor = gameplay.getSelectedMap().searchCountry(neighbor);
+                if (Gameplay.getInstance().getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
+                    Country currentNeighbor = Gameplay.getInstance().getSelectedMap().searchCountry(neighbor);
                     if ((currentNeighbor.getNoOfArmiesPresent() - 1) > most) {
                         most = currentNeighbor.getNoOfArmiesPresent() - 1;
                         bestNeighbor = currentNeighbor;
@@ -154,10 +154,10 @@ public class Aggressive implements Strategy,Serializable {
 
     public ArrayList<Country> frontBattleLine() {
         ArrayList<Country> frontBattleCountry = new ArrayList<>();
-        for (String country : gameplay.getCurrentPlayer().getCountriesOwned()) {
-            Country currentCountry = gameplay.getSelectedMap().searchCountry(country);
+        for (String country : Gameplay.getInstance().getCurrentPlayer().getCountriesOwned()) {
+            Country currentCountry = Gameplay.getInstance().getSelectedMap().searchCountry(country);
             for (String neighbor : currentCountry.getListOfNeighbours()){
-                if (!gameplay.getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
+                if (!Gameplay.getInstance().getCurrentPlayer().getCountriesOwned().contains(neighbor)) {
                     frontBattleCountry.add(currentCountry);
                     break;
                 }

@@ -46,7 +46,7 @@ public class StartUpPhaseView extends JFrame  {
 	public final static String[] playerStrategies= {"Human","Aggressive","Benevolent","Random","Cheater"};
 
 	//private StartupPhaseController startupController;
-	private Gameplay gamePlay;
+	//private Gameplay gamePlay;
 	private JFrame gameWindow;
 	private JPanel StartupViewPanel;
 	private JButton addPlayerButton;
@@ -87,8 +87,8 @@ public class StartUpPhaseView extends JFrame  {
 	public StartUpPhaseView(JFrame frame,JPanel panel) {
 		this.gameWindow=frame;
 		StartUpPhaseView.cardsContainerPanel=panel;
-		this.gamePlay = Gameplay.getInstance();
-		gamePlay.setCurrentPhase(Phases.Startup);
+	//	this.gamePlay = Gameplay.getInstance();
+		Gameplay.getInstance().setCurrentPhase(Phases.Startup);
 		initaliseUI();
 		new PhaseView();
 
@@ -232,7 +232,7 @@ public class StartUpPhaseView extends JFrame  {
 	public void placeArmiesUI() {
 		placeArmiesViewPanel=new JPanel();
 		ArrayList<String> playerNames=new ArrayList<String>();
-		for(Player player:gamePlay.getPlayers())
+		for(Player player:Gameplay.getInstance().getPlayers())
 			playerNames.add(player.getPlayerName());
 		playerList=new JComboBox<String>(playerNames.toArray(new String[playerNames.size()]));
 		placeArmiesViewPanel.add(playerList);

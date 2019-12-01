@@ -27,7 +27,7 @@ import com.concordia.riskgame.model.Modules.Continent;
  /**
   * Class containing Map manipulation related functionalities
   */
-public class GenericMapTools  {
+public class DominationMapTools  {
 	
 	/**
 	 * Pick map file.
