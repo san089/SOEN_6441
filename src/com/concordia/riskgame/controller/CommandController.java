@@ -573,8 +573,7 @@ public class CommandController implements Serializable {
     }
 
     public static void loadGame(String command){
-        String fileName = command.split(" ")[1];
-     //   System.out.println("hello"+" "+fileName);
+        String fileName = Constants.saveLocation+command.split(" ")[1];
         FileInputStream fs = null;
         try {
             fs = new FileInputStream(fileName);
@@ -1016,7 +1015,7 @@ public class CommandController implements Serializable {
 		String saveFilename=ScannerUtil.sc.nextLine();
 		
 		
-		FileOutputStream fs = new FileOutputStream("./Saved_Games/" + saveFilename + ".bin");
+		FileOutputStream fs = new FileOutputStream(Constants.saveLocation + saveFilename + ".bin");
 		ObjectOutputStream os = new ObjectOutputStream(fs);
 		try {
             os.writeObject(Gameplay.getInstance());

@@ -29,4 +29,5 @@ public class Constants {
     public static final Border blackline = BorderFactory.createLineBorder(Color.black);     
     public static final String mapLocation=System.getProperty("user.dir")+"\\Maps\\Valid_Maps\\";
     public static final String mapType="Domination";
+    public static final String saveLocation="./Saved_Games/";
 }
