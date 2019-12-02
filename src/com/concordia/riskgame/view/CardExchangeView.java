@@ -58,7 +58,6 @@ public class CardExchangeView extends JFrame implements Observer {
     /**
      * Card exchange view is singleton model.
      * @return The only one instance of card exchange view.
-     * @throws IOException throws an exception if any input output mismatch
      */
     public static CardExchangeView getInstance() {
         if (cardExchangeView == null){
@@ -69,7 +68,6 @@ public class CardExchangeView extends JFrame implements Observer {
 
     /**
      * Constructor
-     * @throws IOException throws an exception for invalid input.
      */
     public CardExchangeView(){
         text1 = String.valueOf(Gameplay.getInstance().getCurrentPlayer().getNumOfInfCard());

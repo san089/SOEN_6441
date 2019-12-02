@@ -64,7 +64,6 @@ public class CommandController implements Serializable {
      * This method takes command as input and calls respective methods corresponding to the command and executes the method.
      *
      * @param command takes command input from user
-     * @throws IOException throws an exception if input is invalid.
      */
     public static void parseCommand(String command) {
         command = command.trim().replaceAll(" +", " "); //replace multiple whitespaces with one.
@@ -467,6 +466,7 @@ public class CommandController implements Serializable {
      *
      * @param operation Type of Operation, either add or remove
      * @param playername The name of the player to be added or removed.
+     * @param playerstrategy The playerstrategy.
      */
     public static void gamePlayerAddRemove(String operation, String playername, String playerstrategy){
         if(operation.trim().equals("-add"))
@@ -660,7 +660,6 @@ public class CommandController implements Serializable {
      *
      * @param command the command
      *
-     * @throws  IOException if the number entered by the user is not valid.
      */
     public static void placeArmy(String command) {
     	Scanner in = ScannerUtil.sc;
@@ -722,7 +721,6 @@ public class CommandController implements Serializable {
     /**
      * Place the armies in round robin fashion for all players.
      *
-     * @throws IOException throws an exception if input is invalid.
      */
     public static void placeAll() {
     	Gameplay.getInstance().placeAllArmies();
@@ -753,7 +751,6 @@ public class CommandController implements Serializable {
      *
      * @param command the command
      *
-     * @throws  IOException when the input is not valid.
      */
     public static void reinforce(String command)
     {
@@ -851,7 +848,6 @@ public class CommandController implements Serializable {
      * Fortify army from one country to another.
      *
      * @param command the command
-     * @throws  IOException when error placing army.
      */
     public static void fortify(String command)
     {
@@ -1005,7 +1001,12 @@ public class CommandController implements Serializable {
 
     }
     
-    /**Function to save game */
+    /**
+     * Function to save game.
+     *
+     * @throws FileNotFoundException the file not found exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
 
 
 	public static void saveGame()
