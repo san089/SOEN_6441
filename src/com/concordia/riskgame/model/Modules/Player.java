@@ -65,35 +65,6 @@ public class Player extends Observable implements Serializable {
 		this.strategy = new Human();
 	}
 
-	public int getNumOfInfCard() {
-		int n = 0;
-		for (Card card : cardsOwned) {
-			if (card == Card.INFANTRY) {
-				n++;
-			}
-		}
-		return n;
-	}
-
-	public int getNumOfCavCard() {
-		int n = 0;
-		for (Card card : cardsOwned) {
-			if (card == Card.CAVALRY) {
-				n++;
-			}
-		}
-		return n;
-	}
-	public int getNumOfArtCard() {
-		int n = 0;
-		for (Card card : cardsOwned) {
-			if (card == Card.ARTILLERY) {
-				n++;
-			}
-		}
-		return n;
-	}
-	
 	public void setPlayerIndex(int playerIndex) {
 		this.playerIndex = playerIndex;
 	}
@@ -249,6 +220,53 @@ public class Player extends Observable implements Serializable {
 		}
 		
 	}
+
+	/**
+	 * To get player's number of infantry card
+	 * @return
+	 */
+	public int getNumOfInfCard() {
+		int n = 0;
+		for (Card card : cardsOwned) {
+			if (card == Card.INFANTRY) {
+				n++;
+			}
+		}
+		return n;
+	}
+
+	/**
+	 * To get player's number of cavalery card
+	 * @return
+	 */
+	public int getNumOfCavCard() {
+		int n = 0;
+		for (Card card : cardsOwned) {
+			if (card == Card.CAVALRY) {
+				n++;
+			}
+		}
+		return n;
+	}
+
+	/**
+	 * To get number of art cards
+	 * @return
+	 */
+	public int getNumOfArtCard() {
+		int n = 0;
+		for (Card card : cardsOwned) {
+			if (card == Card.ARTILLERY) {
+				n++;
+			}
+		}
+		return n;
+	}
+
+	/**
+	 * check defending command
+	 * @param command
+	 */
 
 	public void defendCommand(String command) {
 		if (!defendCommandInput) {
@@ -553,6 +571,12 @@ public class Player extends Observable implements Serializable {
 	
 		
 	}
+
+	/**
+	 * Player do fortification
+	 * @param command
+	 * @return
+	 */
 
 	public boolean fortifyArmy(String command) {
 		String[] commands = command.split(" ");

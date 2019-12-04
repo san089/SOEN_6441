@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Cheater player's turn
+ */
 public class Cheater implements Strategy,Serializable {
 
     /**
@@ -17,7 +20,6 @@ public class Cheater implements Strategy,Serializable {
 	private static final long serialVersionUID = 1L;
 	private String strategyName = "Cheater";
     public String ANSI_PURPLE = "\u001B[35m";
-  //  Gameplay gameplay = Gameplay.getInstance();
 
     public String getColor() {
         return ANSI_PURPLE;
@@ -29,9 +31,10 @@ public class Cheater implements Strategy,Serializable {
         return strategyName;
     }
 
+    /**
+     * Cheater do card exchange
+     */
     public void doCardExchange(){
-    //	this.gameplay = Gameplay.getInstance(); //For updating the class gameplay object when we load a saved game.
-    	
         try {
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
             CommandController.parseCommand("exchangecards 3 0 0");
@@ -48,6 +51,10 @@ public class Cheater implements Strategy,Serializable {
             System.out.println("Some exception occured while exchange cards command.");
         }
     }
+
+    /**
+     * cheater do reinforcement
+     */
 
     public void doReinforcement(){
 
@@ -86,6 +93,9 @@ public class Cheater implements Strategy,Serializable {
         }
     }
 
+    /**
+     * cheater do attack
+     */
     public void doAttack(){
         System.out.println(getStrategyName() + " bot playing reinforcement phase.");
         ArrayList<Country> ownedCountries = Gameplay.getInstance().getSelectedMap().getOwnedCountries(Gameplay.getInstance().getCurrentPlayer().getPlayerName());
@@ -137,6 +147,10 @@ public class Cheater implements Strategy,Serializable {
             System.out.println("EXCEPTION!! BOT " + getStrategyName()  + ". Some exception occured ");
         }
     }
+
+    /**
+     * cheater do fortification
+     */
 
     public void doFortification() {
 
