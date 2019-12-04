@@ -7,16 +7,15 @@ import com.concordia.riskgame.model.Modules.Gameplay;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * This class is one of the player's strategy, Benevolent player .
+ *
+ */
 public class Benevolent implements Strategy,Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String strategyName = "Benevolent";
     public String ANSI_YELLOW = "\u001B[33m";
-   // Gameplay gameplay = Gameplay.getInstance();
 
     public String getColor() {
         return ANSI_YELLOW;
@@ -27,8 +26,10 @@ public class Benevolent implements Strategy,Serializable {
         return strategyName;
     }
 
+    /**
+     * Benevolent player do card exchange.
+     */
     public void doCardExchange(){
-    //	gameplay =Gameplay.getInstance();
         try {
         	
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
@@ -47,8 +48,11 @@ public class Benevolent implements Strategy,Serializable {
         }
     }
 
+    /**
+     * Benevolent player do reinforce
+     */
+
     public void doReinforcement(){
-    //	gameplay =Gameplay.getInstance();
         int armies_available = Gameplay.getInstance().getCurrentPlayer().getArmyCount();
         String countryName = getWeakestCountry();
         String reinforceCommand;
@@ -69,6 +73,10 @@ public class Benevolent implements Strategy,Serializable {
         }
     }
 
+    /**
+     * Benevolent player do attack, just skip attack phase
+     */
+
     public void doAttack(){
         System.out.println("Benevolent Bot Does not attack.");
         try{
@@ -81,6 +89,9 @@ public class Benevolent implements Strategy,Serializable {
 
     }
 
+    /**
+     * Benevolent player do fortification
+     */
     public void doFortification() {
         int armies_available = Gameplay.getInstance().getCurrentPlayer().getArmyCount();
         String countryName = getWeakestCountry();
@@ -103,6 +114,11 @@ public class Benevolent implements Strategy,Serializable {
             System.out.println("Some exception occured while exchange cards command.");
         }
     }
+
+    /**
+     * Benevolent player get the weakest country to fortify
+     * @return weakest country's name
+     */
 
     public String getWeakestCountry(){
         Country weakest = Gameplay.getInstance().getSelectedMap().getOwnedCountries(Gameplay.getInstance().getCurrentPlayer().getPlayerName()).get(0);

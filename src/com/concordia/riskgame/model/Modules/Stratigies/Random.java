@@ -6,6 +6,10 @@ import com.concordia.riskgame.model.Modules.*;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Random player's turn
+ */
+
 public class Random implements Strategy,Serializable {
 
     /**
@@ -14,7 +18,6 @@ public class Random implements Strategy,Serializable {
 	private static final long serialVersionUID = 1L;
 	private String strategyName = "Random";
     public String ANSI_CYAN = "\u001B[36m";
-    //Gameplay gameplay = Gameplay.getInstance();
 
     public String getColor() {
 
@@ -27,9 +30,11 @@ public class Random implements Strategy,Serializable {
         return strategyName;
     }
 
+    /**
+     * Random player do card exchange
+     */
     public void doCardExchange(){
     	
-    //	gameplay =Gameplay.getInstance();
         try {
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
             CommandController.parseCommand("exchangecards 3 0 0");
@@ -46,6 +51,10 @@ public class Random implements Strategy,Serializable {
             System.out.println("Some exception occured while exchange cards command.");
         }
     }
+
+    /**
+     * Random player do reinforcement
+     */
 
     public void doReinforcement(){
         int armies_available = Gameplay.getInstance().getCurrentPlayer().getArmyCount();
@@ -68,6 +77,10 @@ public class Random implements Strategy,Serializable {
             System.out.println("Some exception occured while exchange cards command.");
         }
     }
+
+    /**
+     * Random player do attack
+     */
 
     public void doAttack(){
         int numberOfTimesToAttack = generateRandomNumber(1, 10);
@@ -97,6 +110,10 @@ public class Random implements Strategy,Serializable {
             System.out.println("In attack phase of bot " + getStrategyName()+ ". Some exception occured while executing command 'attack -noattack'");
         }
     }
+
+    /**
+     * Random player do random attack
+     */
 
     public void performRandomAttack(){
         Country attackCountry= null;
@@ -150,7 +167,9 @@ public class Random implements Strategy,Serializable {
 
     }
 
-
+    /**
+     * Random player do fortification
+     */
 
     public void doFortification() {
         int armies_available = Gameplay.getInstance().getCurrentPlayer().getArmyCount();
@@ -176,6 +195,12 @@ public class Random implements Strategy,Serializable {
         }
     }
 
+    /**
+     * Generate a random number for reinforcement, attack, fortification
+     * @param min
+     * @param max
+     * @return a random integer
+     */
     public int generateRandomNumber(int min, int max){
         java.util.Random rand = new java.util.Random(); //using fully qualified name as my class name is also Random
         return rand.nextInt((max - min) ) + min ;

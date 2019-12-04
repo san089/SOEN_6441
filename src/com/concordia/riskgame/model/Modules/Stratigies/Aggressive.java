@@ -9,15 +9,16 @@ import com.concordia.riskgame.utilities.Phases;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * This class is one of the player's strategy, aggressive player .
+ *
+ */
+
 public class Aggressive implements Strategy,Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String strategyName = "Aggressive";
     public String ANSI_BLUE = "\u001B[34m";
-    //private Gameplay gameplay =Gameplay.getInstance();
     private Country  strongestFrontCountry;
 
     public String getColor() {
@@ -29,8 +30,11 @@ public class Aggressive implements Strategy,Serializable {
         return strategyName;
     }
 
+    /**
+     * Aggressive player do card exchange once cards are available.
+     */
+
     public void doCardExchange(){
-    //	gameplay =Gameplay.getInstance();
         try {
         	
             System.out.println("Bot Executing Command : " + "exchangecards 3 0 0");
@@ -50,6 +54,10 @@ public class Aggressive implements Strategy,Serializable {
 
     }
 
+    /**
+     * Aggressive player do reinforcement in reinforce phase.
+     */
+
     public void doReinforcement(){
         try {
             strongestFrontCountry = getStrongestFrontCountry();
@@ -62,6 +70,10 @@ public class Aggressive implements Strategy,Serializable {
         }
 
     }
+
+    /**
+     * Aggressive player do attack in attack phase.
+     */
 
     public void doAttack(){
         try {
@@ -94,6 +106,11 @@ public class Aggressive implements Strategy,Serializable {
         }
     }
 
+    /**
+     * Aggressive player do fortification in fortify phase. First find the player's front battle line country, check the
+     * most reinforce they can get, and where they can get, then find the best country, get the best neighbor.
+     */
+
     public void doFortification() {
         Map<Country, Integer> frontBattleCountry = new HashMap<>();
         HashMap<Country, Country> frontBattleCountryNeighbor = new HashMap<>();
@@ -113,7 +130,7 @@ public class Aggressive implements Strategy,Serializable {
             frontBattleCountry.put(country, most + country.getNoOfArmiesPresent());
             frontBattleCountryNeighbor.put(country, bestNeighbor);
         }
-
+        //find the best country
         for (Country country : frontBattleCountry.keySet()) {
             int m = frontBattleCountry.get(country);
             int n = frontBattleCountry.get(bestCountry);
@@ -142,6 +159,10 @@ public class Aggressive implements Strategy,Serializable {
         }
     }
 
+    /**
+     * This function is to find the strongest country to do attack
+     * @return
+     */
     public Country getStrongestFrontCountry(){
         Country strongest = frontBattleLine().get(0);
         for(Country c : frontBattleLine()){
@@ -152,6 +173,10 @@ public class Aggressive implements Strategy,Serializable {
         return strongest;
     }
 
+    /**
+     * this country find all the available attack country
+     * @return front line country arraylist
+     */
     public ArrayList<Country> frontBattleLine() {
         ArrayList<Country> frontBattleCountry = new ArrayList<>();
         for (String country : Gameplay.getInstance().getCurrentPlayer().getCountriesOwned()) {

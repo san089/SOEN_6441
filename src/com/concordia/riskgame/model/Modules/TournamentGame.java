@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.view.TournamentView;
 
+/**
+ * This class is the tournament mode
+ */
+
 public class TournamentGame extends Thread{
     private ArrayList<String> mapFiles;
     private ArrayList<String> playerStrategies;
@@ -12,7 +16,13 @@ public class TournamentGame extends Thread{
     private int numTurns;
     private ArrayList<String> tournamentResult;
 
-
+    /**
+     * Constructor, get command from command controller, parse everything from the command
+     * @param mapFiles map list
+     * @param playerStrategies player's strategy and also are player's name
+     * @param gameId number of game
+     * @param numTurns number of turn
+     */
     public TournamentGame(ArrayList<String> mapFiles, ArrayList<String> playerStrategies, int gameId, int numTurns){
         this.mapFiles = mapFiles;
         this.playerStrategies = playerStrategies;
@@ -60,13 +70,16 @@ public class TournamentGame extends Thread{
         runTournament();
     }
 
+    /**
+     * Run tournament mode in triple-nesting loop, outer loop control the number of game, second loop control the map,
+     * third loop control the number of turn.
+     */
 
     public void runTournament(){
         System.out.println("Starting tournament");
         int n = gameId;
         while (n != 0) {
             for (String mapPath : mapFiles){
-             //   Gameplay gameplay = Gameplay.getInstance();
                 Gameplay.getInstance().setGameMode("Tournament");
                 CommandController.parseCommand("loadmap " + mapPath);
                 Gameplay.getInstance().getPlayerQueue().clear();
@@ -96,6 +109,11 @@ public class TournamentGame extends Thread{
         System.out.println("Tournament Done!!!!");
         new TournamentView(tournamentResult, gameId, mapFiles.size());
     }
+
+    /**
+     * Tournament mode initialize player.
+     * @param gameplay
+     */
 
     private void addPlayer(Gameplay gameplay) {
 

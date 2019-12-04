@@ -18,6 +18,12 @@ public class TournamentView extends JFrame {
     private int gameCount;
     private int mapCount;
 
+    /**
+     * Tournament view constructor
+     * @param result
+     * @param gameCount
+     * @param mapCount
+     */
 
     public TournamentView(ArrayList<String> result, int gameCount, int mapCount){
         this.resultList = result;
@@ -44,6 +50,11 @@ public class TournamentView extends JFrame {
         commonViewFrame.add(resultScrollPane);
 
     }
+
+    /**
+     * Create tournament table
+     * @return
+     */
 
     public JScrollPane createTable() {
 
