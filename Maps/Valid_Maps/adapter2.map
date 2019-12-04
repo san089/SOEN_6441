@@ -1,0 +1,13 @@
+[Map]
+author=Anonymous
+Image=NA
+wrap=no
+scroll=both
+warn=no
+[Continents]
+africa=9
+asia=6
+[Territories]
+Pak,0.0,0.0,africa,india
+india,0.0,0.0,asia,Pak
+

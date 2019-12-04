@@ -4,7 +4,9 @@ import com.concordia.riskgame.model.Modules.Continent;
 import com.concordia.riskgame.model.Modules.Country;
 import com.concordia.riskgame.model.Modules.Gameplay;
 import com.concordia.riskgame.model.Modules.Map;
-import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.ConquestMapAdapter;
+import com.concordia.riskgame.utilities.ConquestMapTools;
+import com.concordia.riskgame.utilities.DominationMapTools;
 import com.concordia.riskgame.utilities.Phases;
 import com.concordia.riskgame.view.MapEditorView;
 
@@ -522,7 +524,7 @@ public class MapEditorController implements ActionListener {
      * Save the File.
      */
     public void save() {
-        MapTools mapTool = new MapTools();
+        DominationMapTools mapTool = new ConquestMapAdapter(new ConquestMapTools());
         if (mapTool.validateMap(gameMap, 3)) {
             System.out.println("Done");
             boolean bool = true;
@@ -556,7 +558,7 @@ public class MapEditorController implements ActionListener {
      * @param mapName the map name
      */
     public void saveMapService(String mapName) {
-   	 MapTools mapTool = new MapTools();
+   	 DominationMapTools mapTool = new ConquestMapAdapter(new ConquestMapTools());
         if (mapTool.validateMap(gameMap, 2)) {
             System.out.println("Done");
             boolean bool = true;

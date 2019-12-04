@@ -23,15 +23,15 @@ import java.util.Observable;
 
 
 public class CardExchangeController extends Observable {
-    Gameplay gameplay;
+ //   Gameplay gameplay;
     Player currentPlayer;
     int num1, num2, num3;
     /**
      * This method is the constructor of CardExchangeController.
      */
     public CardExchangeController() {
-        gameplay = Gameplay.getInstance();
-        currentPlayer = gameplay.getCurrentPlayer();
+     //   gameplay = Gameplay.getInstance();
+        currentPlayer = Gameplay.getInstance().getCurrentPlayer();
         num1 = 0;
         num2 = 0;
         num3 = 0;
@@ -74,9 +74,9 @@ public class CardExchangeController extends Observable {
         } catch (NumberFormatException ex) {
             return false;
         }
-        if (num1 > gameplay.getCurrentPlayer().getNumOfInfCard() ||
-            num2 > gameplay.getCurrentPlayer().getNumOfCavCard() ||
-            num3 > gameplay.getCurrentPlayer().getNumOfArtCard()) {
+        if (num1 > Gameplay.getInstance().getCurrentPlayer().getNumOfInfCard() ||
+            num2 > Gameplay.getInstance().getCurrentPlayer().getNumOfCavCard() ||
+            num3 > Gameplay.getInstance().getCurrentPlayer().getNumOfArtCard()) {
             return false;
         }
 

@@ -10,6 +10,7 @@
 
 package com.concordia.riskgame.model.Modules;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -21,8 +22,12 @@ import java.util.Random;
  */
 
 
-public class Dice {
-    private final int NUMBER_CEIL = 6;
+public class Dice implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final int NUMBER_CEIL = 6;
 
     /**
      * Roll one dice.

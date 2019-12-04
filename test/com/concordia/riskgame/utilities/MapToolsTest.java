@@ -51,7 +51,7 @@ public class MapToolsTest {
 
     @Test
     public void countryNotConnextedInContinent() {
-        MapTools mp = new MapTools();
+        DominationMapTools mp = new DominationMapTools();
         printLine();
         System.out.println("Test Case 1. Country is a neighbour of country in other continent but not a neighbour in its own continent");
         assertFalse(mp.pickMapFileService(new Map(), countryNotConnectedInItsContinent));
@@ -60,7 +60,7 @@ public class MapToolsTest {
 
     @Test
     public void informationMissing(){
-        MapTools mp = new MapTools();
+        DominationMapTools mp = new DominationMapTools();
         printLine();
         System.out.println("Test Case 2. A missing tag/annotation in map file.");
         assertFalse(mp.pickMapFileService(new Map(), informationMissing));
@@ -69,7 +69,7 @@ public class MapToolsTest {
 
     @Test
     public void continentWithNoCountry(){
-        MapTools mp = new MapTools();
+        DominationMapTools mp = new DominationMapTools();
         printLine();
         System.out.println("Test Case 3. A map that has a continent with no country");
         assertFalse(mp.pickMapFileService(new Map(), mapWithNoCountryTest));
@@ -77,7 +77,7 @@ public class MapToolsTest {
 
     @Test
     public void continentNotConnected(){
-        MapTools mp = new MapTools();
+        DominationMapTools mp = new DominationMapTools();
         printLine();
         System.out.println("Test Case 4. A map having two continent but the continents are not connected.");
         assertFalse(mp.pickMapFileService(new Map(), twoContinentNotConnected));
@@ -85,7 +85,7 @@ public class MapToolsTest {
 
     @Test
     public void invalidMapFile(){
-        MapTools mp = new MapTools();
+        DominationMapTools mp = new DominationMapTools();
         printLine();
         System.out.println("Test Case 5. Map File Invalid.");
         assertFalse(mp.pickMapFileService(new Map(), invalidMapFile));
@@ -93,7 +93,7 @@ public class MapToolsTest {
 
     @Test
     public void validMapTest(){
-        MapTools mp = new MapTools();
+        DominationMapTools mp = new DominationMapTools();
         printLine();
         System.out.println("Test Case 6. A Small valid map.");
         assertTrue(mp.pickMapFileService(new Map(), smallValidMap));

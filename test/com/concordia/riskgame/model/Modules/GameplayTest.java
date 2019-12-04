@@ -13,7 +13,7 @@
 package com.concordia.riskgame.model.Modules;
 
 import com.concordia.riskgame.controller.CommandController;
-import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.DominationMapTools;
 import com.concordia.riskgame.utilities.Phases;
 
 import org.junit.After;
@@ -46,7 +46,7 @@ public class GameplayTest {
     private Player currentPlayer;
     private int floorCountryPerPlayer,ceilingCountryperPlayer;
     private Map gameMap;
-    private MapTools maptools;
+    private DominationMapTools maptools;
     Scanner sc = new Scanner(System.in);
 
     @BeforeClass
@@ -63,7 +63,7 @@ public class GameplayTest {
     public void setUp() throws Exception {
         gamePlay = Gameplay.getInstance();
         gameMap=new Map();
-        maptools=new MapTools();
+        maptools=new DominationMapTools();
         countries=new ArrayList<String>();
         players=new ArrayList<Player>();
         playerQueue=new LinkedList<Player>();

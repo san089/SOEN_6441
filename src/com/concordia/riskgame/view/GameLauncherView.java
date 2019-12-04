@@ -16,20 +16,17 @@ package com.concordia.riskgame.view;
 import com.concordia.riskgame.controller.CommandController;
 import com.concordia.riskgame.controller.StartupPhaseController;
 import com.concordia.riskgame.model.Modules.Map;
-import com.concordia.riskgame.utilities.MapTools;
+import com.concordia.riskgame.utilities.*;
 import com.concordia.riskgame.utilities.ScannerUtil;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 
 /**
  * ===============================================
@@ -47,7 +44,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 
 	private JPanel gameLaunchPanel;
 	private JButton startButton;
-	private MapTools mapTool;
+	private DominationMapTools mapTool;
 
 
 	private com.concordia.riskgame.view.MapEditorView mapEditorView;
@@ -62,7 +59,7 @@ public class GameLauncherView extends JFrame implements ActionListener {
 		gameWindow=new JFrame("***********************************************************RISK GAME****************************************************");
 		
 		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mapTool=new MapTools();
+		mapTool=new ConquestMapAdapter(new ConquestMapTools());
 		gameLaunchPanel = new JPanel();
 		gameLaunchPanel.setLayout(null);
 		gameLaunchPanel.setVisible(true);

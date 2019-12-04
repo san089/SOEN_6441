@@ -10,6 +10,7 @@
 
 package com.concordia.riskgame.model.Modules;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -20,8 +21,12 @@ import java.util.Observable;
  *
  */
 
-public class Country extends Observable {
-    private String countryName;
+public class Country extends Observable implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String countryName;
     private Player ownedBy;
     private int noOfArmiesPresent;
     private List<String> listOfNeighbours;

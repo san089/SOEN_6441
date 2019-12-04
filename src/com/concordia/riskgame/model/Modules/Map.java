@@ -9,6 +9,7 @@
  */
 package com.concordia.riskgame.model.Modules;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,12 @@ import java.util.List;
 /**
  * Model class for Map
  */
-public class Map {
-    private String name;
+public class Map implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String name;
     private String authorName;
     private String path;
     private boolean errorOccurred;
