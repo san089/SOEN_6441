@@ -73,4 +73,6 @@ do a single attack from **countrynamefrom** to **countynameto** using **numdice*
     (move num number of armies from fromcountry to tocountry. If –none is specified, choose to not do a move during the fortification phase)
     
 ## Tournament Command
-tournament -M D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map|D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map|D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map -P Random|Benevolent|Aggressive -G 4 -D 10
+
+    tournament -M D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map|D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map|D:\SOEN_6441\Maps\Valid_Maps\BigValidMap.map -P Random|Benevolent|Aggressive -G 4 -D 10
+
